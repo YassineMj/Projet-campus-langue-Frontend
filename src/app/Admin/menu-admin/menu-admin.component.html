@@ -1,0 +1,132 @@
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+
+<section>
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar" style="border-radius: 5%">
+    <!-- Logo Section -->
+    <div class="sidebar-logo" style="text-align: center">
+      <img
+        src="../../../assets/images/icon-campus.png"
+        alt="Logo"
+        style="max-width: 50%"
+      />
+    </div>
+
+    <ul class="sidebar-nav" id="sidebar-nav" style="margin-top: 10px">
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          routerLink="/menu-admin/dashboard"
+          routerLinkActive="active"
+        >
+          <i
+            class="fa fa fa-chart-line iconmenu"
+            style="margin-right: 10px; color: #000000"
+          ></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <!-- Professeurs -->
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          routerLink="/menu-admin/professeurs"
+          routerLinkActive="active"
+        >
+          <i
+            class="fa fa-user-tie iconmenu"
+            style="margin-right: 10px; color: #000000"
+          ></i>
+          <span>Professeurs</span>
+        </a>
+      </li>
+      <!-- End Professors Nav -->
+
+      <!-- Matières -->
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          routerLink="/menu-admin/matiere"
+          routerLinkActive="active"
+        >
+          <i
+            class="fa fa-book iconmenu"
+            style="margin-right: 10px; color: #000000"
+          ></i>
+          <span>Matières</span>
+        </a>
+      </li>
+      <!-- End Subjects Nav -->
+
+      <!-- Groupes -->
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          routerLink="/menu-admin/groupes"
+          routerLinkActive="active"
+        >
+          <i
+            class="fa fa-users iconmenu"
+            style="margin-right: 10px; color: #000000"
+          ></i>
+          <span>Groupes</span>
+        </a>
+      </li>
+      <!-- End Groups Nav -->
+
+      <!-- Niveaux -->
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          routerLink="/menu-admin/niveaux"
+          routerLinkActive="active"
+        >
+          <i
+            class="fa fa-layer-group iconmenu"
+            style="margin-right: 10px; color: #000000"
+          ></i>
+          <span>Niveaux</span>
+        </a>
+      </li>
+      <!-- End Levels Nav -->
+
+      <!-- Établissements -->
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          routerLink="/menu-admin/etablissements"
+          routerLinkActive="active"
+        >
+          <i
+            class="fa fa-school iconmenu"
+            style="margin-right: 10px; color: #000000"
+          ></i>
+          <span>Établissements</span>
+        </a>
+      </li>
+      <!-- End Schools Nav -->
+    </ul>
+  </aside>
+
+  <!-- End Sidebar -->
+
+  <!-- End Sidebar-->
+
+  <section>
+    <div id="main-content">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+</section>
