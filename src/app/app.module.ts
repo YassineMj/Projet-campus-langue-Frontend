@@ -3,10 +3,26 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MenuAdminComponent } from './Admin/menu-admin/menu-admin.component';
+import { DashboardComponent } from './Admin/dashboard/dashboard.component';
+import { ProfesseursComponent } from './Admin/professeurs/professeurs.component';
+import { GroupesComponent } from './Admin/groupes/groupes.component';
+import { MatieresComponent } from './Admin/matieres/matieres.component';
+import { NiveauxComponent } from './Admin/niveaux/niveaux.component';
+import { EtablissementsComponent } from './Admin/etablissements/etablissements.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MenuAdminComponent,
+    DashboardComponent,
+    ProfesseursComponent,
+    GroupesComponent,
+    MatieresComponent,
+    NiveauxComponent,
+    EtablissementsComponent,
+    
   ],
   imports: [
     BrowserModule,

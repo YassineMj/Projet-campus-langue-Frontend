@@ -1,0 +1,106 @@
+/* Apply the gradient to the text */
+.text-gradient {
+    background: linear-gradient(to right, #ff7e5f, #fbde00);
+    /* Gradient colors */
+    -webkit-background-clip: text;
+    /* Apply the background to the text */
+    color: transparent;
+    /* Make the text color transparent so the gradient shows */
+    font-weight: 400;
+}
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
+    position: relative;
+    margin-bottom: 30px;
+    box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625rem rgba(90, 97, 105, 0.1), 0 0.25rem 0.53125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
+}
+.dashboard-title {
+  font-family: 'Arial', sans-serif; /* You can choose a custom font */
+  font-weight: 600; /* Slightly bolder for the main title */
+  font-size: 2.5rem; /* Large title font size */
+  color: #333; /* Dark text color for better contrast */
+  text-transform: uppercase; /* Modern uppercase style */
+  letter-spacing: 1px; /* Adds slight spacing for readability */
+}
+
+.dashboard-subtitle {
+  font-family: 'Arial', sans-serif;
+  font-weight: 400; /* Lighter weight for the description */
+  font-size: 1.125rem; /* Slightly larger than normal text size for readability */
+  color: #6c757d; /* Muted text color */
+  line-height: 1.6; /* Space between lines for better legibility */
+  max-width: 80%; /* Restrict width for better text alignment */
+  margin: 0 auto; /* Center the text */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-title {
+    font-size: 2rem; /* Smaller font on smaller screens */
+  }
+
+  .dashboard-subtitle {
+    font-size: 1rem; /* Adjust subtitle font size */
+    max-width: 90%; /* Allow more space on smaller screens */
+  }
+}
+
+.l-bg-cherry {
+    background: linear-gradient(to right, #493240, #f09) !important;
+    color: #fff;
+}
+
+.l-bg-blue-dark {
+    background: linear-gradient(to right, #373b44, #4286f4) !important;
+    color: #fff;
+}
+
+.l-bg-green-dark {
+    background: linear-gradient(to right, #0a504a, #38ef7d) !important;
+    color: #fff;
+}
+
+.l-bg-orange-dark {
+    background: linear-gradient(to right, #a86008, #ffba56) !important;
+    color: #fff;
+}
+
+.card .card-statistic-3 .card-icon-large .fas,
+.card .card-statistic-3 .card-icon-large .far,
+.card .card-statistic-3 .card-icon-large .fab,
+.card .card-statistic-3 .card-icon-large .fal {
+    font-size: 110px;
+}
+
+.card .card-statistic-3 .card-icon {
+    text-align: center;
+    line-height: 50px;
+    margin-left: 15px;
+    color: #000;
+    position: absolute;
+    right: -5px;
+    top: 20px;
+    opacity: 0.1;
+}
+
+.l-bg-cyan {
+    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+    color: #fff;
+}
+
+.l-bg-green {
+    background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important;
+    color: #fff;
+}
+
+.l-bg-orange {
+    background: linear-gradient(to right, #f9900e, #ffba56) !important;
+    color: #fff;
+}
+
+.l-bg-cyan {
+    background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+    color: #fff;
+}
