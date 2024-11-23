@@ -1,0 +1,591 @@
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+
+<br />
+<div class="container" style="margin-top: 0%">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 ml-auto mr-auto">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding-bottom: 3%;
+        "
+      >
+        <img
+          src="../../../assets/images/iconprof.png"
+          width="6%"
+          alt="Icône"
+          class="icon-img mb-2"
+          style="margin-right: 10px"
+        />
+        <h2 style="margin: 0" class="text-black">Liste des Professeurs</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="mb-2 d-flex justify-content-between align-items-center">
+            <div class="position-relative">
+              <span class="position-absolute search"
+                ><i class="fa fa-search"></i
+              ></span>
+              <input
+                class="form-control searchform w-100"
+                placeholder="Rechercher..."
+              />
+            </div>
+            <div class="px-2">
+              <button
+                data-bs-toggle="modal"
+                data-bs-target="#addModal"
+                style="
+                  margin-right: 7px;
+                  height: 30px;
+                  background-color: #0a9dd2;
+                  color: white;
+                  padding: 0 10px; /* Remove top/bottom padding */
+                  font-size: 14px;
+                  display: inline-flex;
+                  justify-content: center; /* Horizontally center the text */
+                  align-items: center; /* Vertically center the text */
+                "
+                class="btn"
+              >
+                <i class="fa fa-add" style="margin-right: 8%"></i> Ajouter
+              </button>
+              <!--print-->
+              <button
+                class="btn print-btn"
+                style="
+                  height: 30px;
+                  color: white;
+                  font-size: 14px;
+                  display: inline-flex;
+                  justify-content: center;
+                  align-items: center;
+                  border: 2px solid #0a9dd2;
+                  background-color: rgb(255, 255, 255);
+                  transition: all 0.3s ease;
+                  margin-right: 7px;
+                "
+                (click)="printTable()"
+              >
+                <i class="fa fa-print" style="color: #0a9dd2"></i>
+              </button>
+              <!--dowload-->
+              <button
+                class="btn download-btn"
+                style="
+                  height: 30px;
+                  color: white;
+                  padding: 0 10px;
+                  font-size: 14px;
+                  display: inline-flex;
+                  justify-content: center;
+                  align-items: center;
+                  border: 2px solid #0a9dd2;
+                  background-color: rgb(255, 255, 255);
+                  transition: all 0.3s ease;
+                "
+                (click)="downloadAsExcel()"
+              >
+                <i class="fa fa-download" style="color: #0a9dd2"></i>
+              </button>
+
+              <!--modal-->
+              <div
+                class="modal fade"
+                id="addModal"
+                tabindex="-1"
+                aria-labelledby="addModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header hed">
+                      <h1 class="modal-title fs-5" id="addModalLabel">
+                        <i class="fa fa-plus"></i> Ajouter des Informations
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close text-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
+                      <div class="modal-body">
+                        <div class="container-fluid">
+                          <div class="row">
+                            <!-- Nom -->
+
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label for="addNom" class="form-label">
+                                  Nom <span class="required">*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="addNom"
+                                  name="nom"
+                                  [(ngModel)]="nom"
+                                  required
+                                  #nomInput="ngModel"
+                                  placeholder="Nom"
+                                />
+                                <div
+                                  *ngIf="nomInput.invalid && nomInput.touched"
+                                  class="text-danger"
+                                >
+                                  Nom est obligatoire.
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Prénom -->
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label for="addPrenom" class="form-label">
+                                  Prénom <span class="required">*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="addPrenom"
+                                  name="prenom"
+                                  [(ngModel)]="prenom"
+                                  required
+                                  #prenomInput="ngModel"
+                                  placeholder="Prénom"
+                                />
+                                <div
+                                  *ngIf="
+                                    prenomInput.invalid && prenomInput.touched
+                                  "
+                                  class="text-danger"
+                                >
+                                  Prénom est obligatoire.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <!-- CIN -->
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label for="addCIN" class="form-label">
+                                  CIN <span class="required">*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="addCIN"
+                                  name="cin"
+                                  [(ngModel)]="cin"
+                                  required
+                                  #cinInput="ngModel"
+                                  placeholder="CIN"
+                                />
+                                <div
+                                  *ngIf="cinInput.invalid && cinInput.touched"
+                                  class="text-danger"
+                                >
+                                  CIN est obligatoire.
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Téléphone -->
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label for="addTelephone" class="form-label">
+                                  Téléphone <span class="required">*</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="addTelephone"
+                                  name="telephone"
+                                  [(ngModel)]="telephone"
+                                  required
+                                  pattern="^[0-9]+$"
+                                  #telephoneInput="ngModel"
+                                  placeholder="Téléphone"
+                                />
+                                <div
+                                  *ngIf="
+                                    telephoneInput.invalid &&
+                                    telephoneInput.touched
+                                  "
+                                  class="text-danger"
+                                >
+                                  Téléphone est obligatoire et doit contenir
+                                  uniquement des chiffres.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Adresse -->
+                          <div class="mb-3">
+                            <label for="addAdresse" class="form-label"
+                              >Adresse</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="addAdresse"
+                              name="adresse"
+                              [(ngModel)]="adresse"
+                              placeholder="Adresse"
+                            />
+                          </div>
+                          <!-- Description -->
+                          <div class="mb-3">
+                            <label for="addDescription" class="form-label"
+                              >Description</label
+                            >
+                            <textarea
+                              class="form-control formtexterea"
+                              id="addDescription"
+                              name="description"
+                              [(ngModel)]="description"
+                              rows="3"
+                              placeholder="Description..."
+                            ></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer justify-content-center">
+                        <button
+                          type="button"
+                          class="btn btn-round colormodalfermer"
+                          data-bs-dismiss="modal"
+                        >
+                          <i class="fa fa-close text-white"></i>
+                        </button>
+                        <button
+                          type="submit"
+                          class="btn btn-round colormodalmodifier"
+                          [disabled]="addForm.invalid"
+                          [disabled]="true"
+                        >
+                          <i class="fa fa-save text-white"></i> Enregistrer
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive table-container">
+            <table class="table" id="professorsTable">
+              <thead>
+                <tr>
+                  <th><b>Nom</b></th>
+                  <th><b>Prénom</b></th>
+                  <th><b>CIN</b></th>
+                  <th><b>Adresse</b></th>
+                  <th><b>Téléphone</b></th>
+                  <th><b>Description</b></th>
+                  <th class="text-right"><b>Actions</b></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John</td>
+                  <td>Doe</td>
+                  <td>AB123456</td>
+                  <td>123 Main St</td>
+                  <td>+123456789</td>
+                  <td>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  </td>
+                  <td
+                    class="td-actions text-right"
+                    style="
+                      display: flex;
+                      justify-content: flex-end;
+                      align-items: center;
+                    "
+                  >
+                    <!-- Edit Button -->
+                    <button
+                      type="button"
+                      rel="tooltip"
+                      class="btn btn-round btn-just-icon"
+                      style="margin-right: 4px"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editModal"
+                    >
+                      <i class="fa fa-edit" style="font-size: medium"></i>
+                    </button>
+                    <!-- Delete Button -->
+                    <button
+                      type="button"
+                      rel="tooltip"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteConfirmationModal"
+                      class="btn btn-danger btn-round btn-just-icon"
+                    >
+                      <i
+                        class="fa fa-trash"
+                        style="font-size: medium; padding-bottom: 11%"
+                      ></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Modal de confirmation de suppression -->
+            <div
+              class="modal fade"
+              id="deleteConfirmationModal"
+              tabindex="-1"
+              aria-labelledby="deleteConfirmationModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header MODAL" style="height: 60px">
+                    <h4
+                      class="modal-title"
+                      style="color: rgb(255, 255, 255); font-size: 22px"
+                      id="deleteConfirmationModalLabel"
+                    >
+                      <b> Confirmation de Suppression</b>
+                    </h4>
+                    <button
+                      type="button"
+                      style="color: rgb(255, 255, 255)"
+                      class="btn-close btn-close-white"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+
+                  <div class="modal-body text-danger">
+                    <div class="alert alert-danger" role="alert">
+                      <i class="fa-solid fa-triangle-exclamation"></i>
+                      Est-ce que vous voulez supprimer professeur ?
+                    </div>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                    <!-- Bouton Annuler -->
+                    <button
+                      type="button"
+                      class="btn colormodalfermer"
+                      data-bs-dismiss="modal"
+                      style="border-radius: 50px"
+                    >
+                      <i class="fa-solid fa-close"></i>
+                    </button>
+                    <!-- Bouton Supprimer -->
+                    <button
+                      type="button"
+                      class="btn btn-danger colormodalsupp"
+                      style="border-radius: 50px"
+                      data-bs-dismiss="modal"
+                    >
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal for Editing -->
+            <div class="modal fade" id="editModal">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header hed">
+                    <h1 class="modal-title fs-5" id="editModalLabel">
+                      <i class="fa fa-pen"></i> Modifier les Informations
+                    </h1>
+                    <button
+                      type="button"
+                      class="btn-close text-white"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
+                    <div class="modal-body">
+                      <div class="container-fluid">
+                        <div class="row">
+                          <!-- Nom -->
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label for="editNom" class="form-label"
+                                >Nom <span class="required">*</span></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="editNom"
+                                name="editNom"
+                                [(ngModel)]="editNom"
+                                required
+                                #editNomInput="ngModel"
+                              />
+                              <div
+                                *ngIf="
+                                  editNomInput.invalid && editNomInput.touched
+                                "
+                                class="text-danger"
+                              >
+                                Nom est obligatoire.
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Prénom -->
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label for="editPrenom" class="form-label"
+                                >Prénom <span class="required">*</span></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="editPrenom"
+                                name="editPrenom"
+                                [(ngModel)]="editPrenom"
+                                required
+                                #editPrenomInput="ngModel"
+                              />
+                              <div
+                                *ngIf="
+                                  editPrenomInput.invalid &&
+                                  editPrenomInput.touched
+                                "
+                                class="text-danger"
+                              >
+                                Prénom est obligatoire.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <!-- CIN -->
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label for="editCIN" class="form-label"
+                                >CIN <span class="required">*</span></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="editCIN"
+                                name="editCIN"
+                                [(ngModel)]="editCIN"
+                                required
+                                #editCINInput="ngModel"
+                              />
+                              <div
+                                *ngIf="
+                                  editCINInput.invalid && editCINInput.touched
+                                "
+                                class="text-danger"
+                              >
+                                CIN est obligatoire.
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Téléphone -->
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label for="editTelephone" class="form-label"
+                                >Téléphone
+                                <span class="required">*</span></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="editTelephone"
+                                name="editTelephone"
+                                [(ngModel)]="editTelephone"
+                                required
+                                pattern="^[0-9]+$"
+                                #editTelephoneInput="ngModel"
+                              />
+                              <div
+                                *ngIf="
+                                  editTelephoneInput.invalid &&
+                                  editTelephoneInput.touched
+                                "
+                                class="text-danger"
+                              >
+                                Téléphone est obligatoire et doit contenir
+                                uniquement des chiffres.
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Adresse -->
+                        <div class="mb-3">
+                          <label for="editAdresse" class="form-label"
+                            >Adresse
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="editAdresse"
+                            name="editAdresse"
+                            [(ngModel)]="editAdresse"
+                          />
+                        </div>
+                        <!-- Description -->
+                        <div class="mb-3">
+                          <label for="editDescription" class="form-label"
+                            >Description
+                          </label>
+                          <textarea
+                            class="form-control formtexterea"
+                            id="editDescription"
+                            name="editDescription"
+                            placeholder="Description.."
+                            [(ngModel)]="editDescription"
+                            rows="3"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                      <button
+                        type="button"
+                        class="btn btn-round colormodalfermer"
+                        data-bs-dismiss="modal"
+                      >
+                        <i class="fa fa-close text-white"></i>
+                      </button>
+                      <button
+                        type="submit"
+                        class="btn btn-round colormodalmodifier"
+                        [disabled]="editForm.invalid"
+                      >
+                        <i class="fa fa-save text-white"></i> Enregistrer
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- End of Modal -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
