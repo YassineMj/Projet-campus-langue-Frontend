@@ -1,19 +1,33 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-groupes',
-  templateUrl: './groupes.component.html',
-  styleUrls: ['./groupes.component.css']
+  selector: 'app-cours',
+  templateUrl: './cours.component.html',
+  styleUrls: ['./cours.component.css']
 })
-export class GroupesComponent {
- 
+  
+export class CoursComponent {
+   // For adding a new subject
   nom: string = '';
   description: string = '';
   language: string = ''; // New attribute for language selection
 
 
+ 
+  // Function to handle form submission for adding a new subject
+  onSubmit(form: any) {
+    if (form.valid) {
+      console.log('New Subject Added:', {
+        nom: this.nom,
+        description: this.description,
+        language: this.language
+      });
 
-  // Predefined list of languages
+      // Logic to save the new subject data (e.g., send data to a service)
+    }
+  }
+
+    // Predefined list of languages
   languages: string[] = [
     'Français',
     'Anglais',
@@ -23,61 +37,56 @@ export class GroupesComponent {
     'Chinois'
   ];
 
+  // Sample table data with unique id for each subject
+  tableData = [
+    { id: 1, nom: 'francais pour premiere annee', description: 'Lorem ipsum...', language: 'Français' },
+    { id: 2, nom: 'mathematiques pour seconde', description: 'Lorem ipsum...', language: 'Anglais' },
+  ];
 
-// Sample table data
-tableData = [
-  { id: 1, nom: 'Groupe 1', cours: 'Cours A', prof: 'Prof X', emploiTemps: 'Lundi 10h' },
-  { id: 2, nom: 'Groupe 2', cours: 'Cours B', prof: 'Prof Y', emploiTemps: 'Mardi 14h' },
-];
+  // Fields for editing
+  editId: number | null = null;  // To store the ID for editing
+  editNom: string = '';
+  editDescription: string = '';
+  editLanguage: string = '';
 
-// Fields for editing
-editNom: string = '';
-editCours: string = '';
-editProf: string = '';
-editEmploiTemps: string = '';
-
-// Pre-fill edit form when clicking "Edit"
-onEdit(item: any) {
-  this.editNom = item.nom;
-  this.editCours = item.cours;
-  this.editProf = item.prof;
-  this.editEmploiTemps = item.emploiTemps;
-}
-
-// Handle form submission
-onEditSubmit(editForm: any) {
-  if (editForm.valid) {
-    console.log('Updated Values:', {
-      nom: this.editNom,
-      cours: this.editCours,
-      prof: this.editProf,
-      emploiTemps: this.editEmploiTemps,
-    });
-    // Logic to update the table or backend
+  // Pre-fill edit form when clicking "Edit"
+  onEdit(item: any): void {
+    this.editId = item.id;  // Store the ID of the subject being edited
+    this.editNom = item.nom;
+    this.editDescription = item.description;
+    this.editLanguage = item.language;
   }
-}
 
-  // Dropdown data for Cours and Prof
-courses: string[] = ['Cours A', 'Cours B', 'Cours C'];
-professors: string[] = ['Prof X', 'Prof Y', 'Prof Z'];
+  // Function to handle form submission for editing a subject
+  onEditSubmit(editForm: any) {
+    if (editForm.valid && this.editId !== null) {
+      const updatedItem = {
+        id: this.editId,  // Ensure you're updating the correct ID
+        nom: this.editNom,
+        description: this.editDescription,
+        language: this.editLanguage
+      };
 
-// Data-bound properties
-cours: string = '';
-prof: string = '';
-emploiTemps: string = '';
+      // Update the subject in tableData
+      const index = this.tableData.findIndex((item) => item.id === this.editId);
+      if (index !== -1) {
+        this.tableData[index] = updatedItem;
+        console.log('Updated Subject:', updatedItem);
+      }
 
-// Handle form submission
-onSubmit(addForm: any) {
-  if (addForm.valid) {
-    console.log('Form Data:', {
-      nom: this.nom,
-      cours: this.cours,
-      prof: this.prof,
-      emploiTemps: this.emploiTemps
-    });
-    // Your logic for saving data
+      // Reset edit fields after submission
+      this.clearEditFields();
+    }
   }
-}
+
+  // Function to clear edit form fields
+  clearEditFields(): void {
+    this.editId = null;
+    this.editNom = '';
+    this.editDescription = '';
+    this.editLanguage = '';
+  }
+
 // Function to print the list
 printTable(): void {
   // Get the table element by its ID (adjust the ID as needed)
@@ -255,4 +264,6 @@ downloadAsExcel(): void {
 
 
 
+  
 }
+

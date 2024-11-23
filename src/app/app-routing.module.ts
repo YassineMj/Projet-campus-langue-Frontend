@@ -7,6 +7,7 @@ import { ProfesseursComponent } from './Admin/professeurs/professeurs.component'
 import { MatieresComponent } from './Admin/matieres/matieres.component';
 import { NiveauxComponent } from './Admin/niveaux/niveaux.component';
 import { GroupesComponent } from './Admin/groupes/groupes.component';
+import { CoursComponent } from './Admin/cours/cours.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,10 @@ const routes: Routes = [
       {
         path: 'dashboard',  // Route pour le dashboard
         component: DashboardComponent,  // Composant du dashboard
+      },
+       {
+        path: 'cours',  // Route pour le dashboard
+        component: CoursComponent,  // Composant du dashboard
       },
       {
         path: 'etablissements',  // Route pour les établissements
