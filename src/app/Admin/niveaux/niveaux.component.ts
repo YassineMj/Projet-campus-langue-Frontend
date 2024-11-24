@@ -1,76 +1,117 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-niveaux',
   templateUrl: './niveaux.component.html',
   styleUrls: ['./niveaux.component.css']
 })
-export class NiveauxComponent {
-  // For adding a new subject
-  
-  // Sample table data with unique id for each subject
-  tableData = [
-    { id: 1, nom: 'niv1' },
-    { id: 2, nom: 'niv2' },
-    { id: 3, nom: 'niv3' }
-  ];
+export class NiveauxComponent implements OnInit {
 
-  // For adding a new subject
+  constructor(private _service: GlobalService) {}
+
+  
+  filterNiveaux(): void {
+    this.filteredNiveaux = this.niveaux.filter(n => 
+      n.nom?.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  loadNiveaux(): void {
+    this._service.getNiveaux().subscribe(
+      (data) => {
+        this.niveaux = data;
+        this.filteredNiveaux = this.niveaux;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des niveaux', error);
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadNiveaux();
+  }
+
+  // For adding a new level
   nom: string = '';
 
-  // For editing a subject (pre-filled values)
+  // For editing a level (Pre-filled values)
   editNom: string = '';
-  editId: number | null = null;  // Store ID for the subject being edited
 
-  // Function to handle form submission for editing a subject
-  onEditSubmit(editForm: any) {
-    if (editForm.valid && this.editId !== null) {
-      const updatedSubject = {
-        id: this.editId,  // Ensure you're updating the correct subject ID
-        nom: this.editNom,
-      };
+  niveaux: any[] = [];
+  filteredNiveaux: any[] = [];
+  searchTerm: string = '';
 
-      // Find the subject in tableData and update it
-      const index = this.tableData.findIndex(subject => subject.id === this.editId);
-      if (index !== -1) {
-        this.tableData[index] = updatedSubject;  // Replace the old subject with the updated one
-        console.log('Updated subject:', updatedSubject);
-      }
-
-      // Reset edit fields after submitting
-      this.clearEditFields();
-    }
-  }
-
-  // Function to pre-fill the edit form when clicking the Edit button
-  onEdit(subject: any) {
-    this.editId = subject.id;  // Set the ID of the subject being edited
-    this.editNom = subject.nom;  // Pre-fill the subject name
-  }
-
-  // Function to handle form submission for adding a new subject
+  // Function to handle form submission for adding a new level
   onSubmit(form: any) {
     if (form.valid) {
-      const newSubject = {
-        id: this.tableData.length + 1,  // Generate a new ID based on tableData length (can be improved)
-        nom: this.nom,
-      };
-      
-      // Add new subject to the tableData
-      this.tableData.push(newSubject);
-      console.log('New subject added:', newSubject);
-
-      // Reset form fields after submission
-      this.nom = '';
+      const newLevel = {
+        nom: this.nom
+      };      
+      this._service.createNiveau(newLevel).subscribe(
+        (response) => {
+          console.log('Niveau ajouté avec succès:', response);
+          alert('Niveau ajouté avec succès!');
+          form.reset();
+          this.ngOnInit();
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout du niveau:', error);
+          alert('Une erreur s\'est produite lors de l\'ajout.');
+        }
+      );
     }
   }
 
-  // Function to reset the form fields after editing
-  clearEditFields() {
-    this.editId = null;
-    this.editNom = '';
+  id: any;
+  onEdit(item: any) {
+    this.editNom = item.nom;  // Set the current level's name
+    this.id = item.id;
+  }
+  
+  onEditSubmit(editForm: any) {
+    if (editForm.valid) {
+      const updatedLevel = {
+        nom: this.editNom
+      };
+      
+      this._service.updateNiveau(this.id, updatedLevel).subscribe(
+        (response) => {
+          console.log('Niveau mis à jour avec succès :', response);
+          alert('Niveau mis à jour avec succès');
+          this.ngOnInit();
+          editForm.reset();
+        },
+        (error) => {
+          console.error('Erreur lors de la mise à jour du niveau :', error);
+          alert('Erreur lors de la mise à jour');
+        }
+      );
+    }
   }
 
+  openDeleteModal(niveauId: number): void {
+    this.id = niveauId;
+    console.log(this.id);
+  }
+
+  confirmDelete(): void {
+    if (this.id) {
+      this._service.deleteNiveau(this.id).subscribe(
+        () => {
+          console.log('Niveau supprimé avec succès');
+          alert('Niveau supprimé avec succès');
+          this.niveaux = this.niveaux.filter(n => n.id != this.id);
+          this.ngOnInit()
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression du niveau:', error);
+          alert('Erreur lors de la suppression.');
+        }
+      );
+    }
+  }
  
 
 // Function to print the list

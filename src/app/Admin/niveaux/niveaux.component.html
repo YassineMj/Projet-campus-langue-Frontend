@@ -46,6 +46,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTerm" 
+                (ngModelChange)="filterNiveaux()"
               />
             </div>
             <div class="px-2">
@@ -192,7 +194,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of tableData">
+                <tr *ngFor="let item of filteredNiveaux">
                   <td>{{ item.nom }}</td>
                   <td class="td-actions text-right">
                     <!-- Edit Button -->
@@ -215,6 +217,8 @@
                       data-bs-toggle="modal"
                       data-bs-target="#deleteConfirmationModal"
                       class="btn btn-danger btn-round btn-just-icon"
+                      (click)="openDeleteModal(item.id)"
+
                     >
                       <i class="fa fa-trash" style="font-size: medium"></i>
                     </button>
@@ -346,6 +350,8 @@
                     class="btn btn-danger colormodalsupp"
                     style="border-radius: 50px"
                     data-bs-dismiss="modal"
+                    (click)="confirmDelete()"
+
                   >
                     <i class="fa-solid fa-trash-can"></i>
                   </button>

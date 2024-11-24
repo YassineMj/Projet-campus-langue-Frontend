@@ -46,6 +46,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTerm" 
+                (ngModelChange)="filterEtablissements()"
               />
             </div>
             <div class="px-2">
@@ -166,7 +168,7 @@
                               class="form-control formtexterea"
                               id="addDescription"
                               name="description"
-                              [(ngModel)]="Adresse"
+                              [(ngModel)]="description"
                               rows="3"
                               placeholder="Adresse..."
                             ></textarea>
@@ -202,12 +204,12 @@
               <thead>
                 <tr>
                   <th><b>Nom</b></th>
-                  <th><b>Description</b></th>
+                  <th><b><Address></Address></b></th>
                   <th class="text-right"><b>Actions</b></th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of tableData; let i = index">
+                <tr *ngFor="let item of filteredEtablissements">
                   <td>{{ item.nom }}</td>
                   <td>{{ item.description }}</td>
                   <td class="td-actions text-right">
@@ -216,7 +218,7 @@
                       type="button"
                       rel="tooltip"
                       class="btn btn-round btn-just-icon"
-                      (click)="onEdit(item, i)"
+                      (click)="onEdit(item)"
                       data-bs-toggle="modal"
                       data-bs-target="#editModal"
                       style="margin-right: 5%"
@@ -231,6 +233,7 @@
                       data-bs-toggle="modal"
                       data-bs-target="#deleteConfirmationModal"
                       class="btn btn-danger btn-round btn-just-icon"
+                      (click)="openDeleteModal(item.id)"
                     >
                       <i class="fa fa-trash" style="font-size: medium"></i>
                     </button>
@@ -303,7 +306,7 @@
                               class="form-control formtexterea"
                               id="editAdresse"
                               name="editAdresse"
-                              [(ngModel)]="editAdresse"
+                              [(ngModel)]="editDescription"
                               rows="3"
                               placeholder="Adresse..."
                             ></textarea>
@@ -380,6 +383,7 @@
                     class="btn btn-danger colormodalsupp"
                     style="border-radius: 50px"
                     data-bs-dismiss="modal"
+                    (click)="confirmDelete()"
                   >
                     <i class="fa-solid fa-trash-can"></i>
                   </button>
