@@ -126,6 +126,8 @@
                         aria-label="Close"
                       ></button>
                     </div>
+
+                    <!-- Modal ajouter -->
                     <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
                       <div class="modal-body">
                         <div class="container-fluid">
@@ -218,7 +220,7 @@
                                   class="form-control"
                                   id="addTelephone"
                                   name="telephone"
-                                  [(ngModel)]="telephone"
+                                  [(ngModel)]="tel"
                                   required
                                   pattern="^[0-9]+$"
                                   #telephoneInput="ngModel"
@@ -285,12 +287,14 @@
                         </button>
                       </div>
                     </form>
+
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="table-responsive table-container">
+            <!-- Modal d'affichage' -->
             <table class="table" id="professorsTable">
               <thead>
                 <tr>
@@ -304,15 +308,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>John</td>
-                  <td>Doe</td>
-                  <td>AB123456</td>
-                  <td>123 Main St</td>
-                  <td>+123456789</td>
-                  <td>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  </td>
+                <tr *ngFor="let professor of professors">
+                  <td>{{ professor.nom }}</td>
+                  <td>{{ professor.prenom }}</td>
+                  <td>{{ professor.cin }}</td>
+                  <td>{{ professor.adresse }}</td>
+                  <td>{{ professor.tel }}</td>
+                  <td>{{ professor.description }}</td>
+
                   <td
                     class="td-actions text-right"
                     style="
@@ -329,6 +332,7 @@
                       style="margin-right: 4px"
                       data-bs-toggle="modal"
                       data-bs-target="#editModal"
+                      (click)="openEditModal(professor)"
                     >
                       <i class="fa fa-edit" style="font-size: medium"></i>
                     </button>
@@ -339,6 +343,7 @@
                       data-bs-toggle="modal"
                       data-bs-target="#deleteConfirmationModal"
                       class="btn btn-danger btn-round btn-just-icon"
+                      (click)="openDeleteModal(professor.id)"
                     >
                       <i
                         class="fa fa-trash"
@@ -347,6 +352,7 @@
                     </button>
                   </td>
                 </tr>
+                
               </tbody>
             </table>
             <!-- Modal de confirmation de suppression -->
@@ -373,6 +379,7 @@
                       class="btn-close btn-close-white"
                       data-bs-dismiss="modal"
                       aria-label="Close"
+
                     ></button>
                   </div>
 
@@ -398,6 +405,8 @@
                       class="btn btn-danger colormodalsupp"
                       style="border-radius: 50px"
                       data-bs-dismiss="modal"
+                      (click)="confirmDelete()"
+
                     >
                       <i class="fa-solid fa-trash-can"></i>
                     </button>

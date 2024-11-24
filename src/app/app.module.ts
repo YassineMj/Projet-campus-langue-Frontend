@@ -12,6 +12,9 @@ import { NiveauxComponent } from './Admin/niveaux/niveaux.component';
 import { EtablissementsComponent } from './Admin/etablissements/etablissements.component';
 import { CoursComponent } from './Admin/cours/cours.component';
 
+import { HttpClientModule } from '@angular/common/http';
+
+
 
 
 @NgModule({
@@ -31,7 +34,8 @@ import { CoursComponent } from './Admin/cours/cours.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-     FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
