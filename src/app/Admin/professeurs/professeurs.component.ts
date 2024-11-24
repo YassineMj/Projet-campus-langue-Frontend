@@ -1,16 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-professeurs',
   templateUrl: './professeurs.component.html',
   styleUrls: ['./professeurs.component.css']
 })
-export class ProfesseursComponent {
+export class ProfesseursComponent implements OnInit{
+
+  loadProfessors(): void {
+    this._service.getProfessors().subscribe(
+      (data) => {
+        this.professors = data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des professeurs', error);
+      }
+    );
+  }
+
+  professors: any[] = []; // Liste des professeurs
+
+  constructor(private _service: GlobalService) {}
+
+  ngOnInit(): void {
+    this.loadProfessors();
+  }
 
   nom = '';
   prenom = '';
   cin = '';
-  telephone = '';
+  tel = '';
   adresse = '';
   description = '';
 
@@ -20,23 +40,77 @@ export class ProfesseursComponent {
         nom: this.nom,
         prenom: this.prenom,
         cin: this.cin,
-        telephone: this.telephone,
+        tel: this.tel,
         adresse: this.adresse,
-        description: this.description,
+        //description: this.description,
       });
-      // Add any other logic for submission here
+
+      this._service.addProfessor({
+        nom: this.nom,
+        prenom: this.prenom,
+        cin: this.cin,
+        tel: this.tel,
+        adresse: this.adresse,
+        //description: this.description,
+      }).subscribe(
+        (response) => {
+          console.log('Professeur ajouté avec succès:', response);
+          alert('Professeur ajouté avec succès!');
+          form.reset(); // Réinitialiser le formulaire
+          this.ngOnInit()
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout du professeur:', error);
+          alert('Une erreur s\'est produite lors de l\'ajout.');
+        }
+      );
     } else {
       console.log('Form invalid');
     }
   }
 
+  selectedProfessorId: number = 0;
+
+openDeleteModal(professorId: number): void {
+  this.selectedProfessorId = professorId;
+  console.log(this.selectedProfessorId);
+  
+}
+
+confirmDelete(): void {
+  if (this.selectedProfessorId) {
+    this._service.deleteProfessor(this.selectedProfessorId).subscribe(
+      () => {
+        console.log('Professeur supprimé avec succès');
+        alert('Professeur supprimé avec succès');
+        this.ngOnInit() // Actualiser la liste
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression:', error);
+        alert('Erreur lors de la suppression.');
+      }
+    );
+  }
+}
+
    // Pre-filled values
-  editNom = 'John';
-  editPrenom = 'Doe';
-  editCIN = 'AB123456';
-  editTelephone = '+123456789';
-  editAdresse = '123 Main St';
+  id:any
+  editNom = '';
+  editPrenom = '';
+  editCIN = '';
+  editTelephone = '';
+  editAdresse = '';
   editDescription = '';
+
+  openEditModal(professeur: any) {
+    this.id = professeur.id;
+    this.editNom = professeur.nom;
+    this.editPrenom = professeur.prenom;
+    this.editCIN = professeur.cin;
+    this.editTelephone = professeur.tel;
+    this.editAdresse = professeur.adresse;
+    this.editDescription = professeur.description;
+  }
 
   onEditSubmit(form: any) {
     if (form.valid) {
@@ -44,10 +118,34 @@ export class ProfesseursComponent {
         nom: this.editNom,
         prenom: this.editPrenom,
         cin: this.editCIN,
-        telephone: this.editTelephone,
+        tel: this.editTelephone,
         adresse: this.editAdresse,
-        description: this.editDescription
+        //description: this.editDescription
       });
+
+        if (this.id) {
+          this._service
+            .updateProfesseur(this.id, {
+              nom: this.editNom,
+              prenom: this.editPrenom,
+              cin: this.editCIN,
+              tel: this.editTelephone,
+              adresse: this.editAdresse,
+              //description: this.editDescription
+            })
+            .subscribe(
+              (response) => {
+                console.log('Professeur mis à jour avec succès :', response);
+                alert('Professeur mis à jour avec succès');
+                this.ngOnInit();
+              },
+              (error) => {
+                console.error('Erreur lors de la mise à jour du professeur :', error);
+                alert('Erreur lors de la mise à jour');
+              }
+            );
+        }
+      
     }
   }
   
