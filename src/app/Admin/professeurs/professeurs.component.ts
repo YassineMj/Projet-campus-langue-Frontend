@@ -12,6 +12,7 @@ export class ProfesseursComponent implements OnInit{
     this._service.getProfessors().subscribe(
       (data) => {
         this.professors = data;
+        this.filteredProfessors=this.professors;
       },
       (error) => {
         console.error('Erreur lors du chargement des professeurs', error);
@@ -19,12 +20,26 @@ export class ProfesseursComponent implements OnInit{
     );
   }
 
+
   professors: any[] = []; // Liste des professeurs
+  filteredProfessors: any[] = [];
+  searchTerm: string = '';
 
   constructor(private _service: GlobalService) {}
 
   ngOnInit(): void {
     this.loadProfessors();
+  }
+
+  filterProfessors(): void {
+    this.filteredProfessors = this.professors.filter(p => 
+      p.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.prenom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.cin?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.tel?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.adresse?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
   }
 
   nom = '';
@@ -42,7 +57,7 @@ export class ProfesseursComponent implements OnInit{
         cin: this.cin,
         tel: this.tel,
         adresse: this.adresse,
-        //description: this.description,
+        description: this.description,
       });
 
       this._service.addProfessor({
@@ -51,7 +66,7 @@ export class ProfesseursComponent implements OnInit{
         cin: this.cin,
         tel: this.tel,
         adresse: this.adresse,
-        //description: this.description,
+        description: this.description,
       }).subscribe(
         (response) => {
           console.log('Professeur ajouté avec succès:', response);
@@ -83,7 +98,9 @@ confirmDelete(): void {
       () => {
         console.log('Professeur supprimé avec succès');
         alert('Professeur supprimé avec succès');
-        this.ngOnInit() // Actualiser la liste
+        this.professors = this.professors.filter(p => p.id != this.selectedProfessorId);
+        this.filterProfessors(); // Update the list after deletion
+        //this.ngOnInit() // Actualiser la liste
       },
       (error) => {
         console.error('Erreur lors de la suppression:', error);
@@ -120,7 +137,7 @@ confirmDelete(): void {
         cin: this.editCIN,
         tel: this.editTelephone,
         adresse: this.editAdresse,
-        //description: this.editDescription
+        description: this.editDescription
       });
 
         if (this.id) {
@@ -131,7 +148,7 @@ confirmDelete(): void {
               cin: this.editCIN,
               tel: this.editTelephone,
               adresse: this.editAdresse,
-              //description: this.editDescription
+              description: this.editDescription
             })
             .subscribe(
               (response) => {

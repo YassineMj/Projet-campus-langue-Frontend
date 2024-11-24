@@ -45,6 +45,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTerm" 
+                (ngModelChange)="filterMatieres()"
               />
             </div>
             <div class="px-2">
@@ -142,7 +144,7 @@
                                   class="form-control"
                                   id="addNom"
                                   name="nom"
-                                  [(ngModel)]="nom"
+                                  [(ngModel)]="libelle"
                                   required
                                   #nomInput="ngModel"
                                   placeholder="Nom"
@@ -206,8 +208,8 @@
     </thead>
     <tbody>
       <!-- Loop through the matieres array -->
-      <tr *ngFor="let item of matieres; let i = index">
-        <td>{{ item.nom }}</td>
+      <tr *ngFor="let item of filteredMatieres">
+        <td>{{ item.libelle }}</td>
         <td>{{ item.description }}</td>
         <td class="td-actions text-right">
           <!-- Edit Button -->
@@ -218,7 +220,7 @@
             data-bs-toggle="modal"
             data-bs-target="#editModal"
             style="margin-right: 5%"
-            (click)="onEdit(item, i)"
+            (click)="onEdit(item)"
           >
             <i class="fa fa-edit" style="font-size: medium"></i>
           </button>
@@ -230,6 +232,7 @@
             data-bs-toggle="modal"
             data-bs-target="#deleteConfirmationModal"
             class="btn btn-danger btn-round btn-just-icon"
+            (click)="openDeleteModal(item.id)"
           >
             <i class="fa fa-trash" style="font-size: medium"></i>
           </button>
@@ -237,6 +240,66 @@
       </tr>
     </tbody>
   </table>
+
+  <div
+              class="modal fade"
+              id="deleteConfirmationModal"
+              tabindex="-1"
+              aria-labelledby="deleteConfirmationModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header MODAL" style="height: 60px">
+                    <h4
+                      class="modal-title"
+                      style="color: rgb(255, 255, 255); font-size: 22px"
+                      id="deleteConfirmationModalLabel"
+                    >
+                      <b> Confirmation de Suppression</b>
+                    </h4>
+                    <button
+                      type="button"
+                      style="color: rgb(255, 255, 255)"
+                      class="btn-close btn-close-white"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+
+                    ></button>
+                  </div>
+
+                  <div class="modal-body text-danger">
+                    <div class="alert alert-danger" role="alert">
+                      <i class="fa-solid fa-triangle-exclamation"></i>
+                      Est-ce que vous voulez supprimer matiere ?
+                    </div>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                    <!-- Bouton Annuler -->
+                    <button
+                      type="button"
+                      class="btn colormodalfermer"
+                      data-bs-dismiss="modal"
+                      style="border-radius: 50px"
+                    >
+                      <i class="fa-solid fa-close"></i>
+                    </button>
+                    <!-- Bouton Supprimer -->
+                    <button
+                      type="button"
+                      class="btn btn-danger colormodalsupp"
+                      style="border-radius: 50px"
+                      data-bs-dismiss="modal"
+                      (click)="confirmDelete()"
+
+                    >
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
 </div>
 
 <!-- Modal for Editing -->
@@ -275,7 +338,7 @@
                     class="form-control"
                     id="editNom"
                     name="editNom"
-                    [(ngModel)]="editNom"
+                    [(ngModel)]="editLibelle"
                     required
                     #editNomInput="ngModel"
                     placeholder="Nom de la Matière"

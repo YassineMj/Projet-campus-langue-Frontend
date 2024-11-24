@@ -1,58 +1,141 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-etablissements',
   templateUrl: './etablissements.component.html',
   styleUrls: ['./etablissements.component.css']
 })
-export class EtablissementsComponent {
+export class EtablissementsComponent implements OnInit {
+
+  constructor(private _service: GlobalService) {}
+
+  filterEtablissements(): void {
+    this.filteredEtablissements = this.etablissements.filter(e => 
+      e.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      e.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
+     
+    );
+  }
+
+  loadEtablissemnts(): void {
+    this._service.getEtablissements().subscribe(
+      (data) => {
+        this.etablissements = data;
+        this.filteredEtablissements=this.etablissements;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des langues', error);
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadEtablissemnts();
+  }
+
 
 // For adding a new subject
   nom: string = '';
-  Adresse: string = '';
+  description: string = '';
+  
 
   // For editing a subject (Pre-filled values)
   editNom: string = '';
-  editAdresse: string = '';
-  editIndex: number | null = null; // Track which item is being edited
+  editDescription: string = '';
 
-  tableData = [
-    { nom: 'la place', description: 'ahrame' }, // Example data
-    // Add other items as needed
-  ];
+  etablissements:any[]=[]
+  filteredEtablissements:any[]=[]
+  searchTerm: string = '';
 
   // Function to handle form submission for adding a new subject
   onSubmit(form: any) {
     if (form.valid) {
       const newSubject = {
         nom: this.nom,
-        description: this.Adresse
-      };
-      this.tableData.push(newSubject); // Add new item to the list (or send it to a service)
+        description: this.description
+      };      
       console.log('New subject added:', newSubject);
-      form.reset(); // Reset the form after submission
+      this._service.createEtablissement({
+        nom: this.nom,
+        description: this.description
+      }).subscribe(
+        (response) => {
+          console.log('Etablissement ajouté avec succès:', response);
+          alert('Etablissement ajouté avec succès!');
+          form.reset(); // Réinitialiser le formulaire
+          this.ngOnInit()
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout du Etablissement:', error);
+          alert('Une erreur s\'est produite lors de l\'ajout.');
+        }
+      );
     }
   }
 
+  id:any
+onEdit(item: any) {
+  this.editNom = item.nom;  // Set the current subject's name
+  this.editDescription = item.description;  // Set the current subject's description
+  this.id =item.id;
+}
+  
  onEditSubmit(editForm: any) {
-  if (editForm.valid && this.editIndex !== null) {
+  if (editForm.valid) {
     // Update the subject in tableData
     const updatedSubject = {
       nom: this.editNom,
-      description: this.editAdresse
+      description: this.editDescription
     };
-    this.tableData[this.editIndex] = updatedSubject;  // Replace the old subject with the updated one
     console.log('Subject updated:', updatedSubject);
-    editForm.reset();  // Reset the form after submission
+    
+    this._service
+        .updateEtablissement(this.id, {
+          nom: this.editNom,
+          description: this.editDescription
+        })
+        .subscribe(
+          (response) => {
+            console.log('Etablissement mis à jour avec succès :', response);
+            alert('Etablissement mis à jour avec succès');
+            this.ngOnInit();
+            editForm.reset();
+          },
+          (error) => {
+            console.error('Erreur lors de la mise à jour du Etablissement :', error);
+            alert('Erreur lors de la mise à jour');
+          }
+        );
+        
+  }
+}
+
+openDeleteModal(etablissementeId: number): void {
+  this.id = etablissementeId;
+  console.log(this.id);
+  
+}
+
+confirmDelete(): void {
+  if (this.id) {
+    this._service.deleteEtablissement(this.id).subscribe(
+      () => {
+        console.log('Etablissement supprimé avec succès');
+        alert('Etablissement supprimé avec succès');
+        this.etablissements = this.etablissements.filter(p => p.id != this.id);
+        this.filterEtablissements(); // Update the list after deletion
+        //this.ngOnInit() // Actualiser la liste
+      },
+      (error) => {
+        console.error('Erreur lors de Etablissement:', error);
+        alert('Erreur lors de la suppression.');
+      }
+    );
   }
 }
 
 
-onEdit(item: any, index: number) {
-  this.editNom = item.nom;  // Set the current subject's name
-  this.editAdresse = item.description;  // Set the current subject's description
-  this.editIndex = index;  // Store the index of the item being edited
-}
 
 // Function to print the list
 printTable(): void {

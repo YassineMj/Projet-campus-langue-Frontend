@@ -1,58 +1,139 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../global.service';
 
 @Component({
   selector: 'app-matieres',
   templateUrl: './matieres.component.html',
   styleUrls: ['./matieres.component.css']
 })
-export class MatieresComponent {
+export class MatieresComponent implements OnInit {
+
+  constructor(private _service: GlobalService) {}
+  
+   
+   matieres:any[]=[]
+   filteredMatieres:any[]=[]
+   searchTerm: string = '';
+
+   filterMatieres(): void {
+    this.filteredMatieres = this.matieres.filter(m => 
+      m.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      m.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
+     
+    );
+  }
+
+  loadMatiers(): void {
+    this._service.getLangues().subscribe(
+      (data) => {
+        this.matieres = data;
+        this.filteredMatieres=this.matieres;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des professeurs', error);
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadMatiers();
+  }
 
    // For adding a new subject
-  nom: string = '';
+  libelle: string = '';
   description: string = '';
 
   // Handle form submission
   onSubmit(form: any) {
     if (form.valid) {
       console.log('Updated values:', {
-        nom: this.editNom,
-        description: this.editDescription
-      });    // Your logic to save the data can go here, e.g., send data to a service
+        libelle: this.libelle,
+        description: this.description
+      });   
+      
+      this._service.createLangue({
+        libelle: this.libelle,
+        description: this.description
+      }).subscribe(
+        (response) => {
+          console.log('Matiere ajouté avec succès:', response);
+          alert('Matiere ajouté avec succès!');
+          form.reset(); // Réinitialiser le formulaire
+          this.ngOnInit()
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout du Matiere:', error);
+          alert('Une erreur s\'est produite lors de l\'ajout.');
+        }
+      );
+
     }
   }
  
- // List of matieres
-  matieres: { nom: string; description: string }[] = [
-    { nom: 'Mathematiques', description: 'Calcul et Analyse' },
-    { nom: 'Physique', description: 'Mécanique et Dynamique' }
-  ];
 
   // Variables for editing
-  editNom: string = '';
+  editLibelle : string = '';
   editDescription: string = '';
-  editIndex: number = -1;
+  id:any
 
   // Function to handle edit button click
-  onEdit(item: any, index: number) {
+  onEdit(item: any) {
     // Set the current data to edit
-    this.editNom = item.nom;
+    this.editLibelle = item.libelle;
     this.editDescription = item.description;
-    this.editIndex = index;
+    this.id =item.id;
   }
 
   // Function to handle edit form submission
   onEditSubmit(editForm: any) {
-    if (this.editIndex >= 0) {
-      // Update the existing item in the array
-      this.matieres[this.editIndex] = {
-        nom: this.editNom,
-        description: this.editDescription
-      };
-
-      // Reset the form
-      editForm.reset();
+    if (this.id) {
+      this._service
+        .updateLangue(this.id, {
+          libelle: this.editLibelle,
+          description: this.editDescription
+        })
+        .subscribe(
+          (response) => {
+            console.log('Matiere mis à jour avec succès :', response);
+            alert('Matiere mis à jour avec succès');
+            this.ngOnInit();
+          },
+          (error) => {
+            console.error('Erreur lors de la mise à jour du Matiere :', error);
+            alert('Erreur lors de la mise à jour');
+          }
+        );
+        editForm.reset();
     }
   }
+
+
+  selectedMatiereId:any
+
+  openDeleteModal(matiereId: number): void {
+    this.selectedMatiereId = matiereId;
+    console.log(this.selectedMatiereId);
+    
+  }
+
+  confirmDelete(): void {
+    if (this.selectedMatiereId) {
+      this._service.deleteLangue(this.selectedMatiereId).subscribe(
+        () => {
+          console.log('Matiere supprimé avec succès');
+          alert('Matiere supprimé avec succès');
+          this.matieres = this.matieres.filter(p => p.id != this.selectedMatiereId);
+          this.filterMatieres(); // Update the list after deletion
+          //this.ngOnInit() // Actualiser la liste
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression:', error);
+          alert('Erreur lors de la suppression.');
+        }
+      );
+    }
+  }
+
 // Function to print the list
 printTable(): void {
   // Get the table element by its ID (adjust the ID as needed)

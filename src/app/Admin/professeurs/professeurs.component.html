@@ -45,6 +45,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTerm" 
+                (ngModelChange)="filterProfessors()"
               />
             </div>
             <div class="px-2">
@@ -308,7 +310,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let professor of professors">
+                <tr *ngFor="let professor of filteredProfessors">
                   <td>{{ professor.nom }}</td>
                   <td>{{ professor.prenom }}</td>
                   <td>{{ professor.cin }}</td>
@@ -317,12 +319,7 @@
                   <td>{{ professor.description }}</td>
 
                   <td
-                    class="td-actions text-right"
-                    style="
-                      display: flex;
-                      justify-content: flex-end;
-                      align-items: center;
-                    "
+                   
                   >
                     <!-- Edit Button -->
                     <button
