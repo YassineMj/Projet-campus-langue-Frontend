@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
+import * as bootstrap from 'bootstrap';
+
 
 @Component({
   selector: 'app-matieres',
@@ -22,15 +24,19 @@ export class MatieresComponent implements OnInit {
      
     );
   }
+  isLoading: boolean = false;
 
   loadMatiers(): void {
+    this.isLoading = true; // Activer le spinner
     this._service.getLangues().subscribe(
       (data) => {
         this.matieres = data;
         this.filteredMatieres=this.matieres;
+        this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
         console.error('Erreur lors du chargement des professeurs', error);
+        this.isLoading = false; // Désactiver le spinner
       }
     );
   }
@@ -46,6 +52,7 @@ export class MatieresComponent implements OnInit {
   // Handle form submission
   onSubmit(form: any) {
     if (form.valid) {
+      this.isLoading = true;
       console.log('Updated values:', {
         libelle: this.libelle,
         description: this.description
@@ -57,13 +64,15 @@ export class MatieresComponent implements OnInit {
       }).subscribe(
         (response) => {
           console.log('Matiere ajouté avec succès:', response);
-          alert('Matiere ajouté avec succès!');
+          //alert('Matiere ajouté avec succès!');
           form.reset(); // Réinitialiser le formulaire
           this.ngOnInit()
+          this.isLoading = false;
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du Matiere:', error);
           alert('Une erreur s\'est produite lors de l\'ajout.');
+          this.isLoading = false;
         }
       );
 
@@ -86,6 +95,7 @@ export class MatieresComponent implements OnInit {
 
   // Function to handle edit form submission
   onEditSubmit(editForm: any) {
+    this.isLoading = true;
     if (this.id) {
       this._service
         .updateLangue(this.id, {
@@ -95,12 +105,14 @@ export class MatieresComponent implements OnInit {
         .subscribe(
           (response) => {
             console.log('Matiere mis à jour avec succès :', response);
-            alert('Matiere mis à jour avec succès');
+            //alert('Matiere mis à jour avec succès');
             this.ngOnInit();
+            this.isLoading = false;
           },
           (error) => {
             console.error('Erreur lors de la mise à jour du Matiere :', error);
             alert('Erreur lors de la mise à jour');
+            this.isLoading = false;
           }
         );
         editForm.reset();
@@ -118,19 +130,40 @@ export class MatieresComponent implements OnInit {
 
   confirmDelete(): void {
     if (this.selectedMatiereId) {
+      this.isLoading=true
+
       this._service.deleteLangue(this.selectedMatiereId).subscribe(
         () => {
           console.log('Matiere supprimé avec succès');
-          alert('Matiere supprimé avec succès');
+          //alert('Matiere supprimé avec succès');
           this.matieres = this.matieres.filter(p => p.id != this.selectedMatiereId);
           this.filterMatieres(); // Update the list after deletion
           //this.ngOnInit() // Actualiser la liste
+          this.isLoading=false
+          this.closeModal()
         },
         (error) => {
           console.error('Erreur lors de la suppression:', error);
           alert('Erreur lors de la suppression.');
+          this.isLoading=false
+
         }
       );
+    }
+  }
+
+  closeModal(): void {
+    const modalElement = document.getElementById('deleteConfirmationModal');
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      modalInstance?.hide();
+  
+      // Supprimer manuellement les classes ajoutées par Bootstrap
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove(); // Supprime le backdrop (fond gris)
+      }
     }
   }
 

@@ -45,6 +45,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTerm" 
+                (ngModelChange)="filterCours()"
               />
             </div>
             <div class="px-2">
@@ -155,6 +157,31 @@
                                 </div>
                               </div>
                             </div>
+                            <!-- Tarif -->
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label for="addNom" class="form-label">
+                                  Tarif
+                                  <span class="required"> *</span>
+                                </label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="addNom"
+                                  name="nom"
+                                  [(ngModel)]="tarif"
+                                  required
+                                  #tarifInput="ngModel"
+                                  placeholder="tarif"
+                                />
+                                <div
+                                  *ngIf="tarifInput.invalid && tarifInput.touched"
+                                  class="text-danger"
+                                >
+                                  Nom est obligatoire.
+                                </div>
+                              </div>
+                            </div>
                             <!-- Language Dropdown -->
                             <div class="col-md-6">
                               <div class="mb-3">
@@ -163,23 +190,21 @@
                                   <span class="required"> *</span>
                                 </label>
                                 <select
-                                  id="addLanguage"
-                                  class="form-control"
-                                  name="language"
-                                  [(ngModel)]="language"
-                                  required
-                                  #languageInput="ngModel"
-                                >
-                                  <option value="" disabled selected>
-                                    Choisir une matière
-                                  </option>
-                                  <option
-                                    *ngFor="let lang of languages"
-                                    [value]="lang"
+                                    id="addLanguage"
+                                    class="form-control"
+                                    name="language"
+                                    [(ngModel)]="language"
+                                    required
+                                    #languageInput="ngModel"
                                   >
-                                    {{ lang }}
-                                  </option>
-                                </select>
+                                    <option value="" disabled selected>
+                                      Choisir une matière
+                                    </option>
+                                    <option *ngFor="let lang of languages" [value]="lang.id">
+                                      {{ lang.libelle }}
+                                    </option>
+                                  </select>
+
                                 <div
                                   *ngIf="
                                     languageInput.invalid &&
@@ -217,12 +242,18 @@
                           <i class="fa fa-close text-white"></i>
                         </button>
                         <button
-                          type="submit"
-                          class="btn btn-round colormodalmodifier"
-                          [disabled]="addForm.invalid"
-                        >
-                          <i class="fa fa-save text-white"></i> Enregistrer
-                        </button>
+                        type="submit"
+                        class="btn btn-round colormodalmodifier"
+                        [disabled]="addForm.invalid || isLoading"
+                        [disabled]="true"
+                      >
+                      <ng-container *ngIf="!isLoading">
+                        <i class="fa fa-save text-white"></i> Enregistrer
+                      </ng-container>
+                      <ng-container *ngIf="isLoading">
+                        <i class="fa fa-spinner fa-spin text-white"></i> En cours...
+                      </ng-container>
+                      </button>
                       </div>
                     </form>
                   </div>
@@ -232,20 +263,31 @@
           </div>
     <!-- Table for displaying list of matieres -->
 <div class="table-responsive table-container">
-  <table class="table" id="matieresTable">
+  <div *ngIf="isLoading" style="text-align: center;">
+    <div>
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+  </div>
+  <table *ngIf="!isLoading" class="table">
     <thead>
       <tr>
         <th><b>Nom de cours</b></th>
         <th><b>Description</b></th>
         <th><b>Matière</b></th>
+        <th><b>Tarif</b></th>
+
         <th class="text-right"><b>Actions</b></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of tableData">
-        <td>{{ item.nom }}</td>
+      <tr *ngFor="let item of filteredCours">
+        <td>{{ item.libelle }}</td>
         <td>{{ item.description }}</td>
-        <td>{{ item.language }}</td>
+        <td>{{ item.langue.libelle }}</td>
+        <td>{{ item.tarif }}</td>
+
         <td class="td-actions text-right">
           <!-- Edit Button -->
           <button
@@ -267,6 +309,7 @@
             data-bs-toggle="modal"
             data-bs-target="#deleteConfirmationModal"
             class="btn btn-danger btn-round btn-just-icon"
+            (click)="openDeleteModal(item.id)"
           >
             <i class="fa fa-trash" style="font-size: medium"></i>
           </button>
@@ -312,6 +355,32 @@
                 </div>
               </div>
 
+              <!-- Tarif -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="addNom" class="form-label">
+                    Tarif
+                    <span class="required"> *</span>
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="addNom"
+                    name="nom"
+                    [(ngModel)]="editTarif"
+                    required
+                    #tarifInput="ngModel"
+                    placeholder="tarif"
+                  />
+                  <div
+                    *ngIf="tarifInput.invalid && tarifInput.touched"
+                    class="text-danger"
+                  >
+                    Nom est obligatoire.
+                  </div>
+                </div>
+              </div>
+
               <!-- Language Dropdown -->
               <div class="col-md-6">
                 <div class="mb-3">
@@ -329,7 +398,7 @@
                     <option value="" disabled selected>
                       Sélectionner une Matière
                     </option>
-                    <option *ngFor="let lang of languages" [value]="lang">{{ lang }}</option>
+                    <option *ngFor="let lang of languages" [value]="lang.id">{{ lang.libelle }}</option>
                   </select>
                   <div *ngIf="editLanguageInput.invalid && editLanguageInput.touched" class="text-danger">
                     La langue est obligatoire.
@@ -363,12 +432,18 @@
             <i class="fa fa-close text-white"></i>
           </button>
           <button
-            type="submit"
-            class="btn btn-round colormodalmodifier"
-            [disabled]="editForm.invalid"
-          >
-            <i class="fa fa-save text-white"></i> Enregistrer
-          </button>
+          type="submit"
+          class="btn btn-round colormodalmodifier"
+          [disabled]="editForm.invalid || isLoading"
+          [disabled]="true"
+        >
+        <ng-container *ngIf="!isLoading">
+          <i class="fa fa-save text-white"></i> Enregistrer
+        </ng-container>
+        <ng-container *ngIf="isLoading">
+          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
+        </ng-container>
+        </button>
         </div>
       </form>
     </div>
@@ -419,13 +494,19 @@
                   </button>
                   <!-- Bouton Supprimer -->
                   <button
-                    type="button"
-                    class="btn btn-danger colormodalsupp"
-                    style="border-radius: 50px"
-                    data-bs-dismiss="modal"
-                  >
+                  type="button"
+                  class="btn btn-danger colormodalsupp"
+                  style="border-radius: 50px; display: flex; align-items: center; justify-content: center;"
+                  [disabled]="isLoading"
+                  (click)="confirmDelete()"
+                >
+                  <ng-container *ngIf="!isLoading">
                     <i class="fa-solid fa-trash-can"></i>
-                  </button>
+                  </ng-container>
+                  <ng-container *ngIf="isLoading">
+                    <i class="fa fa-spinner fa-spin"></i> Suppression...
+                  </ng-container>
+                </button>
                 </div>
               </div>
             </div>

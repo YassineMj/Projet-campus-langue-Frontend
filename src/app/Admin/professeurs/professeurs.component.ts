@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
+import * as bootstrap from 'bootstrap';
+
 
 @Component({
   selector: 'app-professeurs',
@@ -8,17 +10,23 @@ import { GlobalService } from '../global.service';
 })
 export class ProfesseursComponent implements OnInit{
 
-  loadProfessors(): void {
-    this._service.getProfessors().subscribe(
-      (data) => {
-        this.professors = data;
-        this.filteredProfessors=this.professors;
-      },
-      (error) => {
-        console.error('Erreur lors du chargement des professeurs', error);
-      }
-    );
-  }
+  isLoading: boolean = false;
+
+loadProfessors(): void {
+  this.isLoading = true; // Activer le spinner
+  this._service.getProfessors().subscribe(
+    (data) => {
+      this.professors = data;
+      this.filteredProfessors = this.professors;
+      this.isLoading = false; // Désactiver le spinner
+    },
+    (error) => {
+      console.error('Erreur lors du chargement des professeurs', error);
+      this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+    }
+  );
+}
+
 
 
   professors: any[] = []; // Liste des professeurs
@@ -51,6 +59,8 @@ export class ProfesseursComponent implements OnInit{
 
   onSubmit(form: any) {
     if (form.valid) {
+      this.isLoading = true; // Activer le mode de chargement
+
       console.log('Form data:', {
         nom: this.nom,
         prenom: this.prenom,
@@ -70,13 +80,17 @@ export class ProfesseursComponent implements OnInit{
       }).subscribe(
         (response) => {
           console.log('Professeur ajouté avec succès:', response);
-          alert('Professeur ajouté avec succès!');
+         // alert('Professeur ajouté avec succès!');
           form.reset(); // Réinitialiser le formulaire
           this.ngOnInit()
+          this.isLoading = false; // Désactiver le mode de chargement
+
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du professeur:', error);
           alert('Une erreur s\'est produite lors de l\'ajout.');
+          this.isLoading = false; // Désactiver le mode de chargement
+
         }
       );
     } else {
@@ -86,29 +100,6 @@ export class ProfesseursComponent implements OnInit{
 
   selectedProfessorId: number = 0;
 
-openDeleteModal(professorId: number): void {
-  this.selectedProfessorId = professorId;
-  console.log(this.selectedProfessorId);
-  
-}
-
-confirmDelete(): void {
-  if (this.selectedProfessorId) {
-    this._service.deleteProfessor(this.selectedProfessorId).subscribe(
-      () => {
-        console.log('Professeur supprimé avec succès');
-        alert('Professeur supprimé avec succès');
-        this.professors = this.professors.filter(p => p.id != this.selectedProfessorId);
-        this.filterProfessors(); // Update the list after deletion
-        //this.ngOnInit() // Actualiser la liste
-      },
-      (error) => {
-        console.error('Erreur lors de la suppression:', error);
-        alert('Erreur lors de la suppression.');
-      }
-    );
-  }
-}
 
    // Pre-filled values
   id:any
@@ -131,6 +122,8 @@ confirmDelete(): void {
 
   onEditSubmit(form: any) {
     if (form.valid) {
+      this.isLoading = true; // Activer le mode de chargement
+
       console.log('Updated values:', {
         nom: this.editNom,
         prenom: this.editPrenom,
@@ -153,16 +146,64 @@ confirmDelete(): void {
             .subscribe(
               (response) => {
                 console.log('Professeur mis à jour avec succès :', response);
-                alert('Professeur mis à jour avec succès');
+                //alert('Professeur mis à jour avec succès');
                 this.ngOnInit();
+                this.isLoading = false;
+
               },
               (error) => {
                 console.error('Erreur lors de la mise à jour du professeur :', error);
                 alert('Erreur lors de la mise à jour');
+                this.isLoading = false;
+
               }
             );
         }
       
+    }
+  }
+
+  openDeleteModal(professorId: number): void {
+    this.selectedProfessorId = professorId;
+    console.log(this.selectedProfessorId);
+    
+  }
+  
+  confirmDelete(): void {
+    if (this.selectedProfessorId) {
+      this.isLoading=true
+      this._service.deleteProfessor(this.selectedProfessorId).subscribe(
+        () => {
+          console.log('Professeur supprimé avec succès');
+          //alert('Professeur supprimé avec succès');
+          this.professors = this.professors.filter(p => p.id != this.selectedProfessorId);
+          this.filterProfessors(); // Update the list after deletion
+          this.isLoading=false
+          this.closeModal()
+          //this.ngOnInit() // Actualiser la liste
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression:', error);
+          alert('Erreur lors de la suppression.');
+          this.closeModal();
+          this.isLoading=false
+        }
+      );
+    }
+  }
+  
+  closeModal(): void {
+    const modalElement = document.getElementById('deleteConfirmationModal');
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      modalInstance?.hide();
+  
+      // Supprimer manuellement les classes ajoutées par Bootstrap
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove(); // Supprime le backdrop (fond gris)
+      }
     }
   }
   

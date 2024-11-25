@@ -279,17 +279,25 @@
                         >
                           <i class="fa fa-close text-white"></i>
                         </button>
+
+
                         <button
                           type="submit"
                           class="btn btn-round colormodalmodifier"
-                          [disabled]="addForm.invalid"
+                          [disabled]="addForm.invalid || isLoading"
                           [disabled]="true"
                         >
+                        <ng-container *ngIf="!isLoading">
                           <i class="fa fa-save text-white"></i> Enregistrer
+                        </ng-container>
+                        <ng-container *ngIf="isLoading">
+                          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
+                        </ng-container>
                         </button>
+                        
+
                       </div>
                     </form>
-
                   </div>
                 </div>
               </div>
@@ -297,7 +305,16 @@
           </div>
           <div class="table-responsive table-container">
             <!-- Modal d'affichage' -->
-            <table class="table" id="professorsTable">
+            <div *ngIf="isLoading" style="text-align: center;">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+            </div>
+            
+
+            <table *ngIf="!isLoading" class="table" id="professorsTable">
               <thead>
                 <tr>
                   <th><b>Nom</b></th>
@@ -397,16 +414,23 @@
                       <i class="fa-solid fa-close"></i>
                     </button>
                     <!-- Bouton Supprimer -->
+                    
                     <button
-                      type="button"
-                      class="btn btn-danger colormodalsupp"
-                      style="border-radius: 50px"
-                      data-bs-dismiss="modal"
-                      (click)="confirmDelete()"
+          type="button"
+          class="btn btn-danger colormodalsupp"
+          style="border-radius: 50px; display: flex; align-items: center; justify-content: center;"
+          [disabled]="isLoading"
+          (click)="confirmDelete()"
+        >
+          <ng-container *ngIf="!isLoading">
+            <i class="fa-solid fa-trash-can"></i>
+          </ng-container>
+          <ng-container *ngIf="isLoading">
+            <i class="fa fa-spinner fa-spin"></i> Suppression...
+          </ng-container>
+        </button>
 
-                    >
-                      <i class="fa-solid fa-trash-can"></i>
-                    </button>
+
                   </div>
                 </div>
               </div>
@@ -575,13 +599,21 @@
                       >
                         <i class="fa fa-close text-white"></i>
                       </button>
+
                       <button
-                        type="submit"
-                        class="btn btn-round colormodalmodifier"
-                        [disabled]="editForm.invalid"
-                      >
-                        <i class="fa fa-save text-white"></i> Enregistrer
-                      </button>
+                          type="submit"
+                          class="btn btn-round colormodalmodifier"
+                          [disabled]="editForm.invalid || isLoading"
+                          [disabled]="true"
+                        >
+                        <ng-container *ngIf="!isLoading">
+                          <i class="fa fa-save text-white"></i> Enregistrer
+                        </ng-container>
+                        <ng-container *ngIf="isLoading">
+                          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
+                        </ng-container>
+                        </button>
+
                     </div>
                   </form>
                 </div>

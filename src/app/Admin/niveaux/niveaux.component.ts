@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
+import * as bootstrap from 'bootstrap';
+
 
 @Component({
   selector: 'app-niveaux',
@@ -16,15 +18,21 @@ export class NiveauxComponent implements OnInit {
       n.nom?.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
-
+  isLoading: boolean = false;
   loadNiveaux(): void {
+    this.isLoading = true; // Activer le spinner
+
     this._service.getNiveaux().subscribe(
       (data) => {
         this.niveaux = data;
         this.filteredNiveaux = this.niveaux;
+        this.isLoading = false; // Désactiver le spinner
+
       },
       (error) => {
         console.error('Erreur lors du chargement des niveaux', error);
+        this.isLoading = false; // Désactiver le spinner
+
       }
     );
   }
@@ -46,19 +54,23 @@ export class NiveauxComponent implements OnInit {
   // Function to handle form submission for adding a new level
   onSubmit(form: any) {
     if (form.valid) {
+      this.isLoading = true;
       const newLevel = {
         nom: this.nom
       };      
       this._service.createNiveau(newLevel).subscribe(
         (response) => {
           console.log('Niveau ajouté avec succès:', response);
-          alert('Niveau ajouté avec succès!');
+          //alert('Niveau ajouté avec succès!');
           form.reset();
           this.ngOnInit();
+          this.isLoading = false;
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du niveau:', error);
           alert('Une erreur s\'est produite lors de l\'ajout.');
+          this.isLoading = false;
+
         }
       );
     }
@@ -72,6 +84,8 @@ export class NiveauxComponent implements OnInit {
   
   onEditSubmit(editForm: any) {
     if (editForm.valid) {
+      this.isLoading = true;
+
       const updatedLevel = {
         nom: this.editNom
       };
@@ -79,13 +93,17 @@ export class NiveauxComponent implements OnInit {
       this._service.updateNiveau(this.id, updatedLevel).subscribe(
         (response) => {
           console.log('Niveau mis à jour avec succès :', response);
-          alert('Niveau mis à jour avec succès');
+          //alert('Niveau mis à jour avec succès');
           this.ngOnInit();
           editForm.reset();
+          this.isLoading = false;
+
         },
         (error) => {
           console.error('Erreur lors de la mise à jour du niveau :', error);
           alert('Erreur lors de la mise à jour');
+          this.isLoading = false;
+
         }
       );
     }
@@ -98,18 +116,40 @@ export class NiveauxComponent implements OnInit {
 
   confirmDelete(): void {
     if (this.id) {
+      this.isLoading = true;
+
       this._service.deleteNiveau(this.id).subscribe(
         () => {
           console.log('Niveau supprimé avec succès');
-          alert('Niveau supprimé avec succès');
+          //alert('Niveau supprimé avec succès');
           this.niveaux = this.niveaux.filter(n => n.id != this.id);
           this.ngOnInit()
+          this.isLoading = false;
+          this.closeModal();
+
         },
         (error) => {
           console.error('Erreur lors de la suppression du niveau:', error);
           alert('Erreur lors de la suppression.');
+          this.isLoading = false;
+          this.closeModal();
         }
       );
+    }
+  }
+
+  closeModal(): void {
+    const modalElement = document.getElementById('deleteConfirmationModal');
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      modalInstance?.hide();
+  
+      // Supprimer manuellement les classes ajoutées par Bootstrap
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove(); // Supprime le backdrop (fond gris)
+      }
     }
   }
  

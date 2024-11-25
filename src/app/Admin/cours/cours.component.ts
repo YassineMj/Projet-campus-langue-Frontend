@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GlobalService } from '../global.service';
+import * as bootstrap from 'bootstrap';
+
 
 @Component({
   selector: 'app-cours',
@@ -6,86 +9,182 @@ import { Component } from '@angular/core';
   styleUrls: ['./cours.component.css']
 })
   
-export class CoursComponent {
-   // For adding a new subject
+export class CoursComponent implements OnInit {
+
+  constructor(private _service: GlobalService) {}
+
+  isLoading: boolean = false; // Pour afficher le spinner pendant le chargement
+
+  cours: any[] = [];
+  filteredCours: any[] = [];
+  languages: any[] = [];
+  searchTerm: string = '';
+
+  // Champs pour ajout
   nom: string = '';
   description: string = '';
-  language: string = ''; // New attribute for language selection
+  language: number | null = null;
+  tarif: number | null = null;
 
-
- 
-  // Function to handle form submission for adding a new subject
-  onSubmit(form: any) {
-    if (form.valid) {
-      console.log('New Subject Added:', {
-        nom: this.nom,
-        description: this.description,
-        language: this.language
-      });
-
-      // Logic to save the new subject data (e.g., send data to a service)
-    }
-  }
-
-    // Predefined list of languages
-  languages: string[] = [
-    'Français',
-    'Anglais',
-    'Espagnol',
-    'Allemand',
-    'Arabe',
-    'Chinois'
-  ];
-
-  // Sample table data with unique id for each subject
-  tableData = [
-    { id: 1, nom: 'francais pour premiere annee', description: 'Lorem ipsum...', language: 'Français' },
-    { id: 2, nom: 'mathematiques pour seconde', description: 'Lorem ipsum...', language: 'Anglais' },
-  ];
-
-  // Fields for editing
-  editId: number | null = null;  // To store the ID for editing
+  // Champs pour modification
+  editId: number | null = null;
   editNom: string = '';
   editDescription: string = '';
-  editLanguage: string = '';
+  editLanguage: number | null = null;
+  editTarif: number | null = null;
 
-  // Pre-fill edit form when clicking "Edit"
-  onEdit(item: any): void {
-    this.editId = item.id;  // Store the ID of the subject being edited
-    this.editNom = item.nom;
-    this.editDescription = item.description;
-    this.editLanguage = item.language;
+  ngOnInit(): void {
+    this.loadLanguages();
+    this.loadCours();
   }
 
-  // Function to handle form submission for editing a subject
-  onEditSubmit(editForm: any) {
-    if (editForm.valid && this.editId !== null) {
-      const updatedItem = {
-        id: this.editId,  // Ensure you're updating the correct ID
-        nom: this.editNom,
-        description: this.editDescription,
-        language: this.editLanguage
+  // Charger les cours
+  loadCours(): void {
+    this.isLoading = true; // Activer le spinner
+    this._service.getCours().subscribe(
+      (data) => {
+        this.cours = data;
+        this.filteredCours = this.cours; // Filtrage initial
+        this.isLoading = false; // Désactiver le spinner
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des cours:', error);
+        this.isLoading = false; // Désactiver le spinner
+      }
+    );
+  }
+
+  // Charger les langues
+  loadLanguages(): void {
+    this._service.getLangues().subscribe(
+      (data) => {
+        this.languages = data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des langues:', error);
+      }
+    );
+  }
+
+  // Filtrer les cours
+  filterCours(): void {
+    this.filteredCours = this.cours.filter((c) =>
+      c.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
+      c.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      c.langue.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      c.tarif.toString()?.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  // Ajouter un cours
+  onSubmit(form: any): void {
+    if (form.valid) {
+      this.isLoading = true;
+      const newCour = {
+        libelle: this.nom,
+        description: this.description,
+        langueId: this.language,
+        tarif: this.tarif
       };
 
-      // Update the subject in tableData
-      const index = this.tableData.findIndex((item) => item.id === this.editId);
-      if (index !== -1) {
-        this.tableData[index] = updatedItem;
-        console.log('Updated Subject:', updatedItem);
-      }
-
-      // Reset edit fields after submission
-      this.clearEditFields();
+      this._service.createCour(newCour).subscribe(
+        (response) => {
+          console.log('Cours ajouté avec succès:', response);
+          //alert('Cours ajouté avec succès!');
+          form.reset();
+          this.ngOnInit();
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout du cours:', error);
+          alert('Une erreur s\'est produite.');
+          this.isLoading = false;
+        }
+      );
     }
   }
 
-  // Function to clear edit form fields
-  clearEditFields(): void {
-    this.editId = null;
-    this.editNom = '';
-    this.editDescription = '';
-    this.editLanguage = '';
+  // Pré-remplir le formulaire pour modification
+  onEdit(item: any): void {
+    this.editId = item.id;
+    this.editNom = item.libelle;
+    this.editDescription = item.description;
+    this.editLanguage = item.langue?.id;
+    this.editTarif = item.tarif;
   }
+
+  // Soumettre les modifications
+  onEditSubmit(editForm: any): void {
+    if (editForm.valid && this.editId !== null) {
+      this.isLoading = true;
+      const updatedCour = {
+        id: this.editId,
+        libelle: this.editNom,
+        description: this.editDescription,
+        langueId: this.editLanguage,
+        tarif: this.editTarif
+      };
+
+      this._service.updateCour(this.editId, updatedCour).subscribe(
+        (response) => {
+          console.log('Cours mis à jour avec succès:', response);
+          //alert('Cours mis à jour avec succès!');
+          this.ngOnInit();
+          editForm.reset();
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Erreur lors de la mise à jour du cours:', error);
+          alert('Une erreur s\'est produite.');
+          this.isLoading = false;
+        }
+      );
+    }
+  }
+
+  // Supprimer un cours
+  deleteId: number | null = null;
+
+  openDeleteModal(courId: number): void {
+    this.deleteId = courId;
+  }
+
+  confirmDelete(): void {
+    if (this.deleteId !== null) {
+      this.isLoading = true;
+      this._service.deleteCour(this.deleteId).subscribe(
+        () => {
+          console.log('Cours supprimé avec succès');
+          //alert('Cours supprimé avec succès!');
+          this.cours = this.cours.filter((c) => c.id !== this.deleteId);
+          this.ngOnInit();
+          this.closeModal();
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Erreur lors de la suppression du cours:', error);
+          alert('Une erreur s\'est produite.');
+          this.isLoading = false;
+        }
+      );
+    }
+  }
+
+  closeModal(): void {
+    const modalElement = document.getElementById('deleteConfirmationModal');
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      modalInstance?.hide();
+  
+      // Supprimer manuellement les classes ajoutées par Bootstrap
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove(); // Supprime le backdrop (fond gris)
+      }
+    }
+  }
+
 
 // Function to print the list
 printTable(): void {

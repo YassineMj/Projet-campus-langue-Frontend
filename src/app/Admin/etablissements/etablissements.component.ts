@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
+import * as bootstrap from 'bootstrap';
+
 
 @Component({
   selector: 'app-etablissements',
@@ -18,14 +20,19 @@ export class EtablissementsComponent implements OnInit {
     );
   }
 
+  isLoading: boolean = false;
+
   loadEtablissemnts(): void {
+    this.isLoading = true; // Activer le spinner
     this._service.getEtablissements().subscribe(
       (data) => {
         this.etablissements = data;
         this.filteredEtablissements=this.etablissements;
+        this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
         console.error('Erreur lors du chargement des langues', error);
+        this.isLoading = false; // Désactiver le spinner
       }
     );
   }
@@ -51,6 +58,7 @@ export class EtablissementsComponent implements OnInit {
   // Function to handle form submission for adding a new subject
   onSubmit(form: any) {
     if (form.valid) {
+      this.isLoading = true;
       const newSubject = {
         nom: this.nom,
         description: this.description
@@ -62,13 +70,15 @@ export class EtablissementsComponent implements OnInit {
       }).subscribe(
         (response) => {
           console.log('Etablissement ajouté avec succès:', response);
-          alert('Etablissement ajouté avec succès!');
+          //alert('Etablissement ajouté avec succès!');
           form.reset(); // Réinitialiser le formulaire
           this.ngOnInit()
+          this.isLoading = false;
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du Etablissement:', error);
           alert('Une erreur s\'est produite lors de l\'ajout.');
+          this.isLoading = false;
         }
       );
     }
@@ -83,6 +93,7 @@ onEdit(item: any) {
   
  onEditSubmit(editForm: any) {
   if (editForm.valid) {
+    this.isLoading = true;
     // Update the subject in tableData
     const updatedSubject = {
       nom: this.editNom,
@@ -98,13 +109,15 @@ onEdit(item: any) {
         .subscribe(
           (response) => {
             console.log('Etablissement mis à jour avec succès :', response);
-            alert('Etablissement mis à jour avec succès');
+            //alert('Etablissement mis à jour avec succès');
+            this.isLoading = false;
             this.ngOnInit();
             editForm.reset();
           },
           (error) => {
             console.error('Erreur lors de la mise à jour du Etablissement :', error);
             alert('Erreur lors de la mise à jour');
+            this.isLoading = false;
           }
         );
         
@@ -119,23 +132,42 @@ openDeleteModal(etablissementeId: number): void {
 
 confirmDelete(): void {
   if (this.id) {
+    this.isLoading=true
+
     this._service.deleteEtablissement(this.id).subscribe(
       () => {
         console.log('Etablissement supprimé avec succès');
-        alert('Etablissement supprimé avec succès');
+        //alert('Etablissement supprimé avec succès');
         this.etablissements = this.etablissements.filter(p => p.id != this.id);
         this.filterEtablissements(); // Update the list after deletion
         //this.ngOnInit() // Actualiser la liste
+        this.isLoading=false
+          this.closeModal()
       },
       (error) => {
         console.error('Erreur lors de Etablissement:', error);
         alert('Erreur lors de la suppression.');
+        this.isLoading=false
+
       }
     );
   }
 }
 
+closeModal(): void {
+  const modalElement = document.getElementById('deleteConfirmationModal');
+  if (modalElement) {
+    const modalInstance = bootstrap.Modal.getInstance(modalElement);
+    modalInstance?.hide();
 
+    // Supprimer manuellement les classes ajoutées par Bootstrap
+    document.body.classList.remove('modal-open');
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+      backdrop.remove(); // Supprime le backdrop (fond gris)
+    }
+  }
+}
 
 // Function to print the list
 printTable(): void {
