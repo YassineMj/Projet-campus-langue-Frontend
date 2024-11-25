@@ -11,6 +11,8 @@ export class GlobalService {
 
   constructor(private http: HttpClient) {}
 
+    // ----- Professors -----
+
   getProfessors(): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl+"/profs");
   }
@@ -27,10 +29,14 @@ export class GlobalService {
     return this.http.put<any>(`${this.baseUrl}/profs/${id}`, professeur);
   }
 
-  /////////////////////////////////////////
+    // ----- Langues -----
 
   getLangues(): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl+"/langues");
+  }
+
+  getLangueById(idLangue:any): Observable<any[]> {
+    return this.http.get<any[]>(this.baseUrl+"/langues/"+idLangue);
   }
 
   createLangue(data: { libelle: string; description: string }): Observable<any> {
@@ -45,7 +51,7 @@ export class GlobalService {
     return this.http.delete<any>(`${this.baseUrl}/langues/${id}`);
   }
 
-  /////////////////////////////////////////
+    // ----- Etablissements -----
   
   getEtablissements(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/etablissements`);
@@ -67,7 +73,7 @@ export class GlobalService {
     return this.http.delete<any>(`${this.baseUrl}/etablissements/${id}`);
   }
 
-  /////////////////////////////////////////
+    // ----- Niveaux -----
 
    getNiveaux(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/niveaux`);
@@ -88,5 +94,41 @@ export class GlobalService {
   deleteNiveau(id: string): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/niveaux/${id}`);
   }
+
+    // ----- Cours -----
+
+  getCours(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/cours`);
+  }
+
+  createCour(cour: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/cours`, cour);
+  }
+
+  updateCour(id: number, cour: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/cours/${id}`, cour);
+  }
+
+  deleteCour(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/cours/${id}`);
+  }
+
+  // ----- Groupes -----
+getGroupes(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/groupes`);
+}
+
+createGroupe(groupe: any): Observable<any> {
+  return this.http.post<any>(`${this.baseUrl}/groupes`, groupe);
+}
+
+updateGroupe(id: number, groupe: any): Observable<any> {
+  return this.http.put<any>(`${this.baseUrl}/groupes/${id}`, groupe);
+}
+
+deleteGroupe(id: number): Observable<any> {
+  return this.http.delete<any>(`${this.baseUrl}/groupes/${id}`);
+}
+
 
 }

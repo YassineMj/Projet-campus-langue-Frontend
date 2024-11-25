@@ -45,6 +45,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTerm" 
+                (ngModelChange)="filterGroupes()"
               />
             </div>
             <div class="px-2">
@@ -142,7 +144,7 @@
                                   class="form-control"
                                   id="addNom"
                                   name="nom"
-                                  [(ngModel)]="nom"
+                                  [(ngModel)]="nomGroupe"
                                   required
                                   #nomInput="ngModel"
                                   placeholder="Saisir le nom"
@@ -166,7 +168,7 @@
                                   id="addCours"
                                   class="form-control"
                                   name="cours"
-                                  [(ngModel)]="cours"
+                                  [(ngModel)]="coursId"
                                   required
                                   #coursInput="ngModel"
                                 >
@@ -174,10 +176,10 @@
                                     Choisir un cours
                                   </option>
                                   <option
-                                    *ngFor="let course of courses"
-                                    [value]="course"
+                                    *ngFor="let course of coursList"
+                                    [value]="course.id"
                                   >
-                                    {{ course }}
+                                    {{ course.libelle }}
                                   </option>
                                 </select>
                                 <div
@@ -203,7 +205,7 @@
                                   id="addProf"
                                   class="form-control"
                                   name="prof"
-                                  [(ngModel)]="prof"
+                                  [(ngModel)]="profId"
                                   required
                                   #profInput="ngModel"
                                 >
@@ -211,10 +213,10 @@
                                     Choisir un prof
                                   </option>
                                   <option
-                                    *ngFor="let professor of professors"
-                                    [value]="professor"
+                                    *ngFor="let professor of profsList"
+                                    [value]="professor.id"
                                   >
-                                    {{ professor }}
+                                    {{ professor.nom }} {{ professor.prenom }}
                                   </option>
                                 </select>
                                 <div
@@ -235,7 +237,7 @@
                               class="form-control formtexterea"
                               id="addEmploiTemps"
                               name="emploiTemps"
-                              [(ngModel)]="emploiTemps"
+                              [(ngModel)]="emploidutemp"
                               rows="5"
                               placeholder="Saisir l'emploi du temps..."
                             ></textarea>
@@ -253,9 +255,15 @@
                         <button
                           type="submit"
                           class="btn btn-round colormodalmodifier"
-                          [disabled]="addForm.invalid"
+                          [disabled]="addForm.invalid || isLoading"
+                          [disabled]="true"
                         >
+                        <ng-container *ngIf="!isLoading">
                           <i class="fa fa-save text-white"></i> Enregistrer
+                        </ng-container>
+                        <ng-container *ngIf="isLoading">
+                          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
+                        </ng-container>
                         </button>
                       </div>
                     </form>
@@ -266,7 +274,14 @@
           </div>
           <!-- Table for displaying list of matieres -->
           <div class="table-responsive table-container">
-            <table class="table" id="matieresTable">
+            <div *ngIf="isLoading" style="text-align: center;">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+            </div>
+            <table *ngIf="!isLoading" class="table">
               <thead>
                 <tr>
                   <th>Nom de groupe</th>
@@ -277,11 +292,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of tableData">
-                  <td>{{ item.nom }}</td>
-                  <td>{{ item.cours }}</td>
-                  <td>{{ item.prof }}</td>
-                  <td>{{ item.emploiTemps }}</td>
+                <tr *ngFor="let item of filteredGroupes">
+                  <td>{{ item.nomGroupe }}</td>
+                  <td>{{ item.cours.libelle }}</td>
+                  <td>{{ item.prof.nom }} {{ item.prof.prenom }}</td>
+                  <td>{{ item.emploiDuTemps }}</td>
                   <td>
                     <button
                       type="button"
@@ -302,6 +317,8 @@
                       data-bs-toggle="modal"
                       data-bs-target="#deleteConfirmationModal"
                       class="btn btn-danger btn-round btn-just-icon"
+                      (click)="openDeleteModal(item.id)"
+
                     >
                       <i class="fa fa-trash" style="font-size: medium"></i>
                     </button>
@@ -347,7 +364,7 @@
                               class="form-control"
                               id="editNom"
                               name="editNom"
-                              [(ngModel)]="editNom"
+                              [(ngModel)]="editNomGroupe"
                               required
                               #editNomInput="ngModel"
                               placeholder="Saisir le nom"
@@ -373,7 +390,7 @@
                               id="editCours"
                               class="form-control"
                               name="editCours"
-                              [(ngModel)]="editCours"
+                              [(ngModel)]="editCoursId"
                               required
                               #editCoursInput="ngModel"
                             >
@@ -381,10 +398,10 @@
                                 Choisir un cours
                               </option>
                               <option
-                                *ngFor="let course of courses"
-                                [value]="course"
+                                *ngFor="let course of coursList"
+                                [value]="course.id"
                               >
-                                {{ course }}
+                                {{ course.libelle }}
                               </option>
                             </select>
                             <div
@@ -410,7 +427,7 @@
                               id="editProf"
                               class="form-control"
                               name="editProf"
-                              [(ngModel)]="editProf"
+                              [(ngModel)]="editProfId"
                               required
                               #editProfInput="ngModel"
                             >
@@ -418,10 +435,10 @@
                                 Choisir un prof
                               </option>
                               <option
-                                *ngFor="let professor of professors"
-                                [value]="professor"
+                                *ngFor="let professor of profsList"
+                                [value]="professor.id"
                               >
-                                {{ professor }}
+                                {{ professor.nom }} {{ professor.prenom }}
                               </option>
                             </select>
                             <div
@@ -444,7 +461,7 @@
                           class="form-control formtexterea"
                           id="editEmploiTemps"
                           name="editEmploiTemps"
-                          [(ngModel)]="editEmploiTemps"
+                          [(ngModel)]="editEmploidutemp"
                           rows="5"
                           placeholder="Saisir l'emploi du temps..."
                         ></textarea>
@@ -460,12 +477,18 @@
                       <i class="fa fa-close text-white"></i>
                     </button>
                     <button
-                      type="submit"
-                      class="btn btn-round colormodalmodifier"
-                      [disabled]="editForm.invalid"
-                    >
-                      <i class="fa fa-save text-white"></i> Enregistrer
-                    </button>
+                    type="submit"
+                    class="btn btn-round colormodalmodifier"
+                    [disabled]="editForm.invalid || isLoading"
+                    [disabled]="true"
+                  >
+                  <ng-container *ngIf="!isLoading">
+                    <i class="fa fa-save text-white"></i> Enregistrer
+                  </ng-container>
+                  <ng-container *ngIf="isLoading">
+                    <i class="fa fa-spinner fa-spin text-white"></i> En cours...
+                  </ng-container>
+                  </button>
                   </div>
                 </form>
               </div>
@@ -515,13 +538,19 @@
                   </button>
                   <!-- Bouton Supprimer -->
                   <button
-                    type="button"
-                    class="btn btn-danger colormodalsupp"
-                    style="border-radius: 50px"
-                    data-bs-dismiss="modal"
-                  >
+                  type="button"
+                  class="btn btn-danger colormodalsupp"
+                  style="border-radius: 50px; display: flex; align-items: center; justify-content: center;"
+                  [disabled]="isLoading"
+                  (click)="confirmDelete()"
+                >
+                  <ng-container *ngIf="!isLoading">
                     <i class="fa-solid fa-trash-can"></i>
-                  </button>
+                  </ng-container>
+                  <ng-container *ngIf="isLoading">
+                    <i class="fa fa-spinner fa-spin"></i> Suppression...
+                  </ng-container>
+                </button>
                 </div>
               </div>
             </div>

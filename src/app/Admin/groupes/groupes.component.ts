@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { GlobalService } from '../global.service';
+import * as bootstrap from 'bootstrap';
+
 
 @Component({
   selector: 'app-groupes',
@@ -7,77 +10,195 @@ import { Component } from '@angular/core';
 })
 export class GroupesComponent {
  
-  nom: string = '';
-  description: string = '';
-  language: string = ''; // New attribute for language selection
+  groupes: any[] = []; // Stocker les groupes
+  filteredGroupes: any[] = []; // Groupes filtrés pour la recherche
+  searchTerm: string = ''; // Terme de recherche
 
+  // Listes pour les cours et profs
+  coursList: any[] = [];
+  profsList: any[] = [];
 
+  // Champs pour ajouter un groupe
+  nomGroupe: string = '';
+  emploidutemp: string = '';
+  coursId: number | null = null;
+  profId: number | null = null;
 
-  // Predefined list of languages
-  languages: string[] = [
-    'Français',
-    'Anglais',
-    'Espagnol',
-    'Allemand',
-    'Arabe',
-    'Chinois'
-  ];
+  // Champs pour éditer un groupe
+  editId: number | null = null;
+  editNomGroupe: string = '';
+  editEmploidutemp: string = '';
+  editCoursId: number | null = null;
+  editProfId: number | null = null;
 
+  isLoading: boolean = false;
 
-// Sample table data
-tableData = [
-  { id: 1, nom: 'Groupe 1', cours: 'Cours A', prof: 'Prof X', emploiTemps: 'Lundi 10h' },
-  { id: 2, nom: 'Groupe 2', cours: 'Cours B', prof: 'Prof Y', emploiTemps: 'Mardi 14h' },
-];
+  constructor(private _service: GlobalService) {}
 
-// Fields for editing
-editNom: string = '';
-editCours: string = '';
-editProf: string = '';
-editEmploiTemps: string = '';
-
-// Pre-fill edit form when clicking "Edit"
-onEdit(item: any) {
-  this.editNom = item.nom;
-  this.editCours = item.cours;
-  this.editProf = item.prof;
-  this.editEmploiTemps = item.emploiTemps;
-}
-
-// Handle form submission
-onEditSubmit(editForm: any) {
-  if (editForm.valid) {
-    console.log('Updated Values:', {
-      nom: this.editNom,
-      cours: this.editCours,
-      prof: this.editProf,
-      emploiTemps: this.editEmploiTemps,
-    });
-    // Logic to update the table or backend
+  ngOnInit(): void {
+    this.loadGroupes();
+    this.loadCours();
+    this.loadProfs();
   }
-}
 
-  // Dropdown data for Cours and Prof
-courses: string[] = ['Cours A', 'Cours B', 'Cours C'];
-professors: string[] = ['Prof X', 'Prof Y', 'Prof Z'];
-
-// Data-bound properties
-cours: string = '';
-prof: string = '';
-emploiTemps: string = '';
-
-// Handle form submission
-onSubmit(addForm: any) {
-  if (addForm.valid) {
-    console.log('Form Data:', {
-      nom: this.nom,
-      cours: this.cours,
-      prof: this.prof,
-      emploiTemps: this.emploiTemps
-    });
-    // Your logic for saving data
+   // Charger les groupes
+   loadGroupes(): void {
+    this.isLoading = true;
+    this._service.getGroupes().subscribe(
+      (data) => {
+        this.groupes = data;
+        this.filteredGroupes = this.groupes;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des groupes', error);
+        this.isLoading = false;
+      }
+    );
   }
-}
+
+  // Charger les cours
+  loadCours(): void {
+    this._service.getCours().subscribe(
+      (data) => {
+        this.coursList = data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des cours', error);
+      }
+    );
+  }
+
+  // Charger les profs
+  loadProfs(): void {
+    this._service.getProfessors().subscribe(
+      (data) => {
+        this.profsList = data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des profs', error);
+      }
+    );
+  }
+
+  // Ajouter un nouveau groupe
+  onSubmit(form: any): void {
+    if (form.valid) {
+      this.isLoading = true;
+      const newGroupe = {
+        nomGroupe: this.nomGroupe,
+        emploidutemp: this.emploidutemp,
+        coursId: this.coursId,
+        profId: this.profId
+      };
+
+      this._service.createGroupe(newGroupe).subscribe(
+        (response) => {
+          console.log('Groupe ajouté avec succès :', response);
+          //alert('Groupe ajouté avec succès !');
+          form.reset();
+          this.ngOnInit(); // Recharger la liste des groupes
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout du groupe :', error);
+          alert('Une erreur s\'est produite lors de l\'ajout.');
+          this.isLoading = false;
+        }
+      );
+    }
+  }
+
+  // Pré-remplir les champs pour l'édition
+  onEdit(item: any): void {
+    this.editId = item.id;
+    this.editNomGroupe = item.nomGroupe;
+    this.editEmploidutemp = item.emploiDuTemps;
+    this.editCoursId = item.cours.id;
+    this.editProfId = item.prof.id;
+  }
+
+  // Soumettre les modifications d'un groupe
+  onEditSubmit(editForm: any): void {
+    if (editForm.valid && this.editId !== null) {
+      this.isLoading = true;
+      const updatedGroupe = {
+        nomGroupe: this.editNomGroupe,
+        emploidutemp: this.editEmploidutemp,
+        coursId: this.editCoursId,
+        profId: this.editProfId
+      };
+
+      this._service.updateGroupe(this.editId, updatedGroupe).subscribe(
+        (response) => {
+          console.log('Groupe mis à jour avec succès :', response);
+          //alert('Groupe mis à jour avec succès !');
+          this.ngOnInit(); // Recharger la liste des groupes
+          editForm.reset();
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Erreur lors de la mise à jour du groupe :', error);
+          alert('Erreur lors de la mise à jour.');
+          this.isLoading = false;
+        }
+      );
+    }
+  }
+
+  id:any
+  openDeleteModal(niveauId: number): void {
+    this.id = niveauId;
+    console.log(this.id);
+  }
+
+  // Supprimer un groupe
+  confirmDelete(): void {
+    this.isLoading = true;
+    this._service.deleteGroupe(this.id).subscribe(
+      () => {
+        console.log('Groupe supprimé avec succès');
+        //alert('Groupe supprimé avec succès !');
+        this.groupes = this.groupes.filter(g => g.id !== this.id);
+        this.ngOnInit()
+        this.closeModal();
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression du groupe :', error);
+        alert('Erreur lors de la suppression.');
+        this.closeModal();
+        this.isLoading=false
+      }
+    );
+  }
+
+  closeModal(): void {
+    const modalElement = document.getElementById('deleteConfirmationModal');
+    if (modalElement) {
+      const modalInstance = bootstrap.Modal.getInstance(modalElement);
+      modalInstance?.hide();
+  
+      // Supprimer manuellement les classes ajoutées par Bootstrap
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove(); // Supprime le backdrop (fond gris)
+      }
+    }
+  }
+
+  // Filtrer les groupes
+  filterGroupes(): void {
+    this.filteredGroupes = this.groupes.filter(g =>
+      g.nomGroupe?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      g.cours.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      g.emploiDuTemps?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      g.prof.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      g.prof.prenom?.toLowerCase().includes(this.searchTerm.toLowerCase()) 
+    );
+  }
+
 // Function to print the list
 printTable(): void {
   // Get the table element by its ID (adjust the ID as needed)
