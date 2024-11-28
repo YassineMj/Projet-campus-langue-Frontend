@@ -8,6 +8,8 @@ import { MatieresComponent } from './Admin/matieres/matieres.component';
 import { NiveauxComponent } from './Admin/niveaux/niveaux.component';
 import { GroupesComponent } from './Admin/groupes/groupes.component';
 import { CoursComponent } from './Admin/cours/cours.component';
+import { PassagerComponent } from './Admin/passager/passager.component';
+import { InscriptionComponent } from './Admin/inscription/inscription.component';
 
 
 const routes: Routes = [
@@ -23,6 +25,14 @@ const routes: Routes = [
       {
         path: 'dashboard',  // Route pour le dashboard
         component: DashboardComponent,  // Composant du dashboard
+      },
+       {
+        path: 'inscriptions',  // Route pour le dashboard
+        component: InscriptionComponent,  // Composant du dashboard
+      },
+         {
+        path: 'passager',  // Route pour le dashboard
+        component: PassagerComponent,  // Composant du dashboard
       },
        {
         path: 'cours',  // Route pour le dashboard

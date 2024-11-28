@@ -45,7 +45,7 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
-                [(ngModel)]="searchTerm" 
+                [(ngModel)]="searchTerm"
                 (ngModelChange)="filterGroupes()"
               />
             </div>
@@ -157,23 +157,24 @@
                                 </div>
                               </div>
                             </div>
-                            <!-- Cours Dropdown -->
+                            <!-- Cours -->
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label for="addCours" class="form-label">
                                   Cours
-                                  <span class="required"> *</span>
+                                  <span class="text-danger"> *</span>
                                 </label>
                                 <select
                                   id="addCours"
-                                  class="form-control"
+                                  class="form-select"
                                   name="cours"
                                   [(ngModel)]="coursId"
                                   required
                                   #coursInput="ngModel"
                                 >
-                                  <option value="" disabled selected>
-                                    Choisir un cours
+                                  <!-- Placeholder Option -->
+                                  <option value="" disabled [ngValue]="null">
+                                    -- Sélectionnez un cours --
                                   </option>
                                   <option
                                     *ngFor="let course of coursList"
@@ -186,31 +187,32 @@
                                   *ngIf="
                                     coursInput.invalid && coursInput.touched
                                   "
-                                  class="text-danger"
+                                  class="text-danger mt-1"
                                 >
                                   Le cours est obligatoire.
                                 </div>
                               </div>
                             </div>
                           </div>
+                          <!-- Prof -->
                           <div class="row">
-                            <!-- Prof Dropdown -->
                             <div class="col-md-6">
                               <div class="mb-3">
                                 <label for="addProf" class="form-label">
                                   Prof
-                                  <span class="required"> *</span>
+                                  <span class="text-danger"> *</span>
                                 </label>
                                 <select
                                   id="addProf"
-                                  class="form-control"
+                                  class="form-select"
                                   name="prof"
                                   [(ngModel)]="profId"
                                   required
                                   #profInput="ngModel"
                                 >
-                                  <option value="" disabled selected>
-                                    Choisir un prof
+                                  <!-- Placeholder Option -->
+                                  <option value="" disabled [ngValue]="null">
+                                    -- Sélectionnez un professeur --
                                   </option>
                                   <option
                                     *ngFor="let professor of profsList"
@@ -221,13 +223,14 @@
                                 </select>
                                 <div
                                   *ngIf="profInput.invalid && profInput.touched"
-                                  class="text-danger"
+                                  class="text-danger mt-1"
                                 >
                                   Le prof est obligatoire.
                                 </div>
                               </div>
                             </div>
                           </div>
+
                           <!-- Emploi du Temps Textarea -->
                           <div class="mb-3">
                             <label for="addEmploiTemps" class="form-label">
@@ -258,12 +261,13 @@
                           [disabled]="addForm.invalid || isLoading"
                           [disabled]="true"
                         >
-                        <ng-container *ngIf="!isLoading">
-                          <i class="fa fa-save text-white"></i> Enregistrer
-                        </ng-container>
-                        <ng-container *ngIf="isLoading">
-                          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
-                        </ng-container>
+                          <ng-container *ngIf="!isLoading">
+                            <i class="fa fa-save text-white"></i> Enregistrer
+                          </ng-container>
+                          <ng-container *ngIf="isLoading">
+                            <i class="fa fa-spinner fa-spin text-white"></i> En
+                            cours...
+                          </ng-container>
                         </button>
                       </div>
                     </form>
@@ -274,7 +278,7 @@
           </div>
           <!-- Table for displaying list of matieres -->
           <div class="table-responsive table-container">
-            <div *ngIf="isLoading" style="text-align: center;">
+            <div *ngIf="isLoading" style="text-align: center">
               <div>
                 <div class="spinner-border" role="status">
                   <span class="visually-hidden">Chargement...</span>
@@ -318,7 +322,6 @@
                       data-bs-target="#deleteConfirmationModal"
                       class="btn btn-danger btn-round btn-just-icon"
                       (click)="openDeleteModal(item.id)"
-
                     >
                       <i class="fa fa-trash" style="font-size: medium"></i>
                     </button>
@@ -477,18 +480,19 @@
                       <i class="fa fa-close text-white"></i>
                     </button>
                     <button
-                    type="submit"
-                    class="btn btn-round colormodalmodifier"
-                    [disabled]="editForm.invalid || isLoading"
-                    [disabled]="true"
-                  >
-                  <ng-container *ngIf="!isLoading">
-                    <i class="fa fa-save text-white"></i> Enregistrer
-                  </ng-container>
-                  <ng-container *ngIf="isLoading">
-                    <i class="fa fa-spinner fa-spin text-white"></i> En cours...
-                  </ng-container>
-                  </button>
+                      type="submit"
+                      class="btn btn-round colormodalmodifier"
+                      [disabled]="editForm.invalid || isLoading"
+                      [disabled]="true"
+                    >
+                      <ng-container *ngIf="!isLoading">
+                        <i class="fa fa-save text-white"></i> Enregistrer
+                      </ng-container>
+                      <ng-container *ngIf="isLoading">
+                        <i class="fa fa-spinner fa-spin text-white"></i> En
+                        cours...
+                      </ng-container>
+                    </button>
                   </div>
                 </form>
               </div>
@@ -538,19 +542,24 @@
                   </button>
                   <!-- Bouton Supprimer -->
                   <button
-                  type="button"
-                  class="btn btn-danger colormodalsupp"
-                  style="border-radius: 50px; display: flex; align-items: center; justify-content: center;"
-                  [disabled]="isLoading"
-                  (click)="confirmDelete()"
-                >
-                  <ng-container *ngIf="!isLoading">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </ng-container>
-                  <ng-container *ngIf="isLoading">
-                    <i class="fa fa-spinner fa-spin"></i> Suppression...
-                  </ng-container>
-                </button>
+                    type="button"
+                    class="btn btn-danger colormodalsupp"
+                    style="
+                      border-radius: 50px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                    [disabled]="isLoading"
+                    (click)="confirmDelete()"
+                  >
+                    <ng-container *ngIf="!isLoading">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </ng-container>
+                    <ng-container *ngIf="isLoading">
+                      <i class="fa fa-spinner fa-spin"></i> Suppression...
+                    </ng-container>
+                  </button>
                 </div>
               </div>
             </div>

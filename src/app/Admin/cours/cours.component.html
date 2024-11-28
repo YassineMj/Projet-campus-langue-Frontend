@@ -45,7 +45,7 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
-                [(ngModel)]="searchTerm" 
+                [(ngModel)]="searchTerm"
                 (ngModelChange)="filterCours()"
               />
             </div>
@@ -175,10 +175,12 @@
                                   placeholder="tarif"
                                 />
                                 <div
-                                  *ngIf="tarifInput.invalid && tarifInput.touched"
+                                  *ngIf="
+                                    tarifInput.invalid && tarifInput.touched
+                                  "
                                   class="text-danger"
                                 >
-                                  Nom est obligatoire.
+                                  Tarif est obligatoire.
                                 </div>
                               </div>
                             </div>
@@ -187,32 +189,36 @@
                               <div class="mb-3">
                                 <label for="addLanguage" class="form-label">
                                   Matière
-                                  <span class="required"> *</span>
+                                  <span class="text-danger"> *</span>
                                 </label>
                                 <select
-                                    id="addLanguage"
-                                    class="form-control"
-                                    name="language"
-                                    [(ngModel)]="language"
-                                    required
-                                    #languageInput="ngModel"
+                                  id="addLanguage"
+                                  class="form-select"
+                                  name="language"
+                                  [(ngModel)]="language"
+                                  required
+                                  #languageInput="ngModel"
+                                >
+                                  <!-- Placeholder Option -->
+                                  <option value="" disabled [ngValue]="null">
+                                    Choisir une matière
+                                  </option>
+                                  <option
+                                    *ngFor="let lang of languages"
+                                    [value]="lang.id"
                                   >
-                                    <option value="" disabled selected>
-                                      Choisir une matière
-                                    </option>
-                                    <option *ngFor="let lang of languages" [value]="lang.id">
-                                      {{ lang.libelle }}
-                                    </option>
-                                  </select>
+                                    {{ lang.libelle }}
+                                  </option>
+                                </select>
 
                                 <div
                                   *ngIf="
                                     languageInput.invalid &&
                                     languageInput.touched
                                   "
-                                  class="text-danger"
+                                  class="text-danger mt-1"
                                 >
-                                  La langue est obligatoire.
+                                  La matière est obligatoire.
                                 </div>
                               </div>
                             </div>
@@ -220,7 +226,7 @@
                           <!-- Description -->
                           <div class="mb-3">
                             <label for="addDescription" class="form-label">
-                              <b>Description</b>
+                              Description
                             </label>
                             <textarea
                               class="form-control formtexterea"
@@ -242,18 +248,19 @@
                           <i class="fa fa-close text-white"></i>
                         </button>
                         <button
-                        type="submit"
-                        class="btn btn-round colormodalmodifier"
-                        [disabled]="addForm.invalid || isLoading"
-                        [disabled]="true"
-                      >
-                      <ng-container *ngIf="!isLoading">
-                        <i class="fa fa-save text-white"></i> Enregistrer
-                      </ng-container>
-                      <ng-container *ngIf="isLoading">
-                        <i class="fa fa-spinner fa-spin text-white"></i> En cours...
-                      </ng-container>
-                      </button>
+                          type="submit"
+                          class="btn btn-round colormodalmodifier"
+                          [disabled]="addForm.invalid || isLoading"
+                          [disabled]="true"
+                        >
+                          <ng-container *ngIf="!isLoading">
+                            <i class="fa fa-save text-white"></i> Enregistrer
+                          </ng-container>
+                          <ng-container *ngIf="isLoading">
+                            <i class="fa fa-spinner fa-spin text-white"></i> En
+                            cours...
+                          </ng-container>
+                        </button>
                       </div>
                     </form>
                   </div>
@@ -261,195 +268,226 @@
               </div>
             </div>
           </div>
-    <!-- Table for displaying list of matieres -->
-<div class="table-responsive table-container">
-  <div *ngIf="isLoading" style="text-align: center;">
-    <div>
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Chargement...</span>
-      </div>
-    </div>
-  </div>
-  <table *ngIf="!isLoading" class="table">
-    <thead>
-      <tr>
-        <th><b>Nom de cours</b></th>
-        <th><b>Description</b></th>
-        <th><b>Matière</b></th>
-        <th><b>Tarif</b></th>
-
-        <th class="text-right"><b>Actions</b></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of filteredCours">
-        <td>{{ item.libelle }}</td>
-        <td>{{ item.description }}</td>
-        <td>{{ item.langue.libelle }}</td>
-        <td>{{ item.tarif }}</td>
-
-        <td class="td-actions text-right">
-          <!-- Edit Button -->
-          <button
-            type="button"
-            rel="tooltip"
-            class="btn btn-round btn-just-icon"
-            (click)="onEdit(item)"
-            style="margin-right: 5%"
-            data-bs-toggle="modal"
-            data-bs-target="#editModal"
-          >
-            <i class="fa fa-edit" style="font-size: medium"></i>
-          </button>
-
-          <!-- Delete Button -->
-          <button
-            type="button"
-            rel="tooltip"
-            data-bs-toggle="modal"
-            data-bs-target="#deleteConfirmationModal"
-            class="btn btn-danger btn-round btn-just-icon"
-            (click)="openDeleteModal(item.id)"
-          >
-            <i class="fa fa-trash" style="font-size: medium"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<!-- Modal for Editing -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="editModalLabel">
-          <i class="fa fa-pen"></i> Modifier les Informations
-        </h1>
-        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
-        <div class="modal-body">
-          <div class="container-fluid">
-            <div class="row">
-              <!-- Nom de la Matière -->
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="editNom" class="form-label">
-                    Nom de cours <span class="required">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="editNom"
-                    name="editNom"
-                    [(ngModel)]="editNom"
-                    required
-                    #editNomInput="ngModel"
-                    placeholder="Nom de la Matière"
-                  />
-                  <div *ngIf="editNomInput.invalid && editNomInput.touched" class="text-danger">
-                    Nom de la matière est obligatoire.
-                  </div>
-                </div>
-              </div>
-
-              <!-- Tarif -->
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="addNom" class="form-label">
-                    Tarif
-                    <span class="required"> *</span>
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="addNom"
-                    name="nom"
-                    [(ngModel)]="editTarif"
-                    required
-                    #tarifInput="ngModel"
-                    placeholder="tarif"
-                  />
-                  <div
-                    *ngIf="tarifInput.invalid && tarifInput.touched"
-                    class="text-danger"
-                  >
-                    Nom est obligatoire.
-                  </div>
-                </div>
-              </div>
-
-              <!-- Language Dropdown -->
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="editLanguage" class="form-label">
-                    Matière <span class="required">*</span>
-                  </label>
-                  <select
-                    class="form-select"
-                    id="editLanguage"
-                    name="editLanguage"
-                    [(ngModel)]="editLanguage"
-                    required
-                    #editLanguageInput="ngModel"
-                  >
-                    <option value="" disabled selected>
-                      Sélectionner une Matière
-                    </option>
-                    <option *ngFor="let lang of languages" [value]="lang.id">{{ lang.libelle }}</option>
-                  </select>
-                  <div *ngIf="editLanguageInput.invalid && editLanguageInput.touched" class="text-danger">
-                    La langue est obligatoire.
-                  </div>
+          <!-- Table for displaying list of matieres -->
+          <div class="table-responsive table-container">
+            <div *ngIf="isLoading" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
                 </div>
               </div>
             </div>
+            <table *ngIf="!isLoading" class="table">
+              <thead>
+                <tr>
+                  <th><b>Nom de cours</b></th>
+                  <th><b>Description</b></th>
+                  <th><b>Matière</b></th>
+                  <th><b>Tarif</b></th>
 
-            <!-- Description -->
-            <div class="row">
-              <div class="col-md-12">
-                <div class="mb-3">
-                  <label for="editDescription" class="form-label">
-                    Description
-                  </label>
-                  <textarea
-                    class="form-control formtexterea"
-                    id="editDescription"
-                    name="editDescription"
-                    [(ngModel)]="editDescription"
-                    rows="3"
-                    placeholder="Description de la matière..."
-                  ></textarea>
+                  <th class="text-right"><b>Actions</b></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of filteredCours">
+                  <td>{{ item.libelle }}</td>
+                  <td>{{ item.description }}</td>
+                  <td>{{ item.langue.libelle }}</td>
+                  <td>{{ item.tarif }}</td>
+
+                  <td class="td-actions text-right">
+                    <!-- Edit Button -->
+                    <button
+                      type="button"
+                      rel="tooltip"
+                      class="btn btn-round btn-just-icon"
+                      (click)="onEdit(item)"
+                      style="margin-right: 5%"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editModal"
+                    >
+                      <i class="fa fa-edit" style="font-size: medium"></i>
+                    </button>
+
+                    <!-- Delete Button -->
+                    <button
+                      type="button"
+                      rel="tooltip"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteConfirmationModal"
+                      class="btn btn-danger btn-round btn-just-icon"
+                      (click)="openDeleteModal(item.id)"
+                    >
+                      <i class="fa fa-trash" style="font-size: medium"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Modal for Editing -->
+          <div
+            class="modal fade"
+            id="editModal"
+            tabindex="-1"
+            aria-labelledby="editModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="editModalLabel">
+                    <i class="fa fa-pen"></i> Modifier les Informations
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close text-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </div>
+                <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <!-- Nom de la Matière -->
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="editNom" class="form-label">
+                              Nom de cours <span class="required">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="editNom"
+                              name="editNom"
+                              [(ngModel)]="editNom"
+                              required
+                              #editNomInput="ngModel"
+                              placeholder="Nom de la Matière"
+                            />
+                            <div
+                              *ngIf="
+                                editNomInput.invalid && editNomInput.touched
+                              "
+                              class="text-danger"
+                            >
+                              Nom de la matière est obligatoire.
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Tarif -->
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="addNom" class="form-label">
+                              Tarif
+                              <span class="required"> *</span>
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="addNom"
+                              name="nom"
+                              [(ngModel)]="editTarif"
+                              required
+                              #tarifInput="ngModel"
+                              placeholder="tarif"
+                            />
+                            <div
+                              *ngIf="tarifInput.invalid && tarifInput.touched"
+                              class="text-danger"
+                            >
+                              Nom est obligatoire.
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Language Dropdown -->
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="editLanguage" class="form-label">
+                              Matière <span class="required">*</span>
+                            </label>
+                            <select
+                              class="form-select"
+                              id="editLanguage"
+                              name="editLanguage"
+                              [(ngModel)]="editLanguage"
+                              required
+                              #editLanguageInput="ngModel"
+                            >
+                              <option value="" disabled selected>
+                                Sélectionner une Matière
+                              </option>
+                              <option
+                                *ngFor="let lang of languages"
+                                [value]="lang.id"
+                              >
+                                {{ lang.libelle }}
+                              </option>
+                            </select>
+                            <div
+                              *ngIf="
+                                editLanguageInput.invalid &&
+                                editLanguageInput.touched
+                              "
+                              class="text-danger"
+                            >
+                              La langue est obligatoire.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Description -->
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="mb-3">
+                            <label for="editDescription" class="form-label">
+                              Description
+                            </label>
+                            <textarea
+                              class="form-control formtexterea"
+                              id="editDescription"
+                              name="editDescription"
+                              [(ngModel)]="editDescription"
+                              rows="3"
+                              placeholder="Description de la matière..."
+                            ></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer justify-content-center">
+                    <button
+                      type="button"
+                      class="btn btn-round colormodalfermer"
+                      data-bs-dismiss="modal"
+                    >
+                      <i class="fa fa-close text-white"></i>
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-round colormodalmodifier"
+                      [disabled]="editForm.invalid || isLoading"
+                      [disabled]="true"
+                    >
+                      <ng-container *ngIf="!isLoading">
+                        <i class="fa fa-save text-white"></i> Enregistrer
+                      </ng-container>
+                      <ng-container *ngIf="isLoading">
+                        <i class="fa fa-spinner fa-spin text-white"></i> En
+                        cours...
+                      </ng-container>
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-round colormodalfermer" data-bs-dismiss="modal">
-            <i class="fa fa-close text-white"></i>
-          </button>
-          <button
-          type="submit"
-          class="btn btn-round colormodalmodifier"
-          [disabled]="editForm.invalid || isLoading"
-          [disabled]="true"
-        >
-        <ng-container *ngIf="!isLoading">
-          <i class="fa fa-save text-white"></i> Enregistrer
-        </ng-container>
-        <ng-container *ngIf="isLoading">
-          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
-        </ng-container>
-        </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
 
           <!-- Modal de confirmation de suppression -->
           <div
@@ -494,19 +532,24 @@
                   </button>
                   <!-- Bouton Supprimer -->
                   <button
-                  type="button"
-                  class="btn btn-danger colormodalsupp"
-                  style="border-radius: 50px; display: flex; align-items: center; justify-content: center;"
-                  [disabled]="isLoading"
-                  (click)="confirmDelete()"
-                >
-                  <ng-container *ngIf="!isLoading">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </ng-container>
-                  <ng-container *ngIf="isLoading">
-                    <i class="fa fa-spinner fa-spin"></i> Suppression...
-                  </ng-container>
-                </button>
+                    type="button"
+                    class="btn btn-danger colormodalsupp"
+                    style="
+                      border-radius: 50px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                    [disabled]="isLoading"
+                    (click)="confirmDelete()"
+                  >
+                    <ng-container *ngIf="!isLoading">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </ng-container>
+                    <ng-container *ngIf="isLoading">
+                      <i class="fa fa-spinner fa-spin"></i> Suppression...
+                    </ng-container>
+                  </button>
                 </div>
               </div>
             </div>
