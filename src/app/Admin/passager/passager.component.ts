@@ -64,9 +64,9 @@ etablissements: string[] = ['Etablissement 1', 'Etablissement 2', 'Etablissement
 Niveaux: string[] = ['Niveau 1', 'Niveau 2', 'Niveau 3'];
 
  onSubmit(form: NgForm) {
-  if (form.valid) {
+   if (form.valid) {
+    
     console.log('Formulaire soumis avec succès:', form.value);
-
     const editedItem = this.items.find(item => item.nom === this.nom && item.prenom === this.prenom);
 
     if (editedItem) {
@@ -119,6 +119,8 @@ Niveaux: string[] = ['Niveau 1', 'Niveau 2', 'Niveau 3'];
     this.commentaire = '';
   }
 
+
+  
   // Method to open the Edit modal and set fields with item data
   openEditModal(item: any): void {
     this.nom = item.nom;

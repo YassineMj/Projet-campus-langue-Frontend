@@ -374,8 +374,8 @@
                       <div class="modal-footer justify-content-center">
                         <button
                           type="button"
-                          class="btn btn-round colormodalfermer"
                           data-bs-dismiss="modal"
+                          class="btn btn-round colormodalfermer"
                         >
                           <i class="fa fa-close text-white"></i>
                         </button>
@@ -412,7 +412,9 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of items">
-                  <td>{{ item.date }}</td>
+                  <td>
+                    <b style="color: #086081"> {{ item.date }}</b>
+                  </td>
                   <!-- Display the date -->
                   <td>{{ item.nom }}</td>
                   <td>{{ item.prenom }}</td>
@@ -733,7 +735,7 @@
             aria-labelledby="detailsModalLabel"
             aria-hidden="true"
           >
-            <div class="modal-dialog" style="max-width: 45%">
+            <div class="modal-dialog " style="max-width: 45%">
               <!-- Increased width -->
               <div class="modal-content">
                 <div class="modal-header">
@@ -848,10 +850,11 @@
                   <button
                     type="button"
                     class="btn btn-danger"
-                    data-bs-dismiss="modal"
+                    data-bs-toggle="modal"
+                    data-bs-target="#detailsModal"
                     style="border-radius: 50px"
                   >
-                    <i class="fa-solid fa-close"></i> Fermer
+                    <i class="fa-solid fa-close"></i>
                   </button>
                 </div>
               </div>

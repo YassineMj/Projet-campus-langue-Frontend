@@ -9,27 +9,28 @@ import * as bootstrap from 'bootstrap';
   styleUrls: ['./inscription.component.css']
 })
 export class InscriptionComponent {
-  
-selectedOption: string | null = null;
- formData = {
-  nom: '',
-  prenom: '',
-  etablissement: '',
-  niveaux: '',
-  telephone: '',
-  nomMere: '',
-  telephoneMere: '',
-  nomPere: '',
-  telephonePere: '',
-  commentaire: '',
-  cours: '',       // Added cours property
-  test: '',        // Added test property
-  group: '',       // Added group property
-  annee: '',       // Added annee property
-  mois: ''         // Added mois property
-};
 
-years: string[] = [];
+  
+   selectedOption: string | null = null;
+  formData = {
+    nom: '',
+    prenom: '',
+    etablissement: '',
+    niveaux: '',
+    telephone: '',
+    nomMere: '',
+    telephoneMere: '',
+    nomPere: '',
+    telephonePere: '',
+    commentaire: '',
+    cours: '', // Added cours property
+    test: '',  // Added test property
+    group: '', // Added group property
+    annee: '', // Added annee property
+    mois: ''   // Added mois property
+  };
+
+  years: string[] = [];
 
   constructor() {
     this.generateYearRanges();
@@ -43,37 +44,43 @@ years: string[] = [];
       this.years.push(`${year}/${year + 1}`);
     }
   }
+
   showForm(option: string) {
     this.selectedOption = option;
   }
 
-onSubmit() {
-  console.log('Form Data:', this.formData);
-  alert('Inscription enregistrée avec succès !');
-  this.resetForm();
-}
+  onSubmit() {
+    if (this.formData) {
+      console.log('Form Data:', this.formData);
+      alert('Inscription enregistrée avec succès !');
+      this.resetForm();
+    }
+  }
 
+  resetForm() {
+    this.formData = {
+      nom: '',
+      prenom: '',
+      etablissement: '',
+      niveaux: '',
+      telephone: '',
+      nomMere: '',
+      telephoneMere: '',
+      nomPere: '',
+      telephonePere: '',
+      commentaire: '',
+      cours: '',
+      test: '',
+      group: '',
+      annee: '',
+      mois: ''
+    };
+    this.selectedOption = null;
+  }
 
- resetForm() {
-  this.formData = {
-    nom: '',
-    prenom: '',
-    etablissement: '',
-    niveaux: '',
-    telephone: '',
-    nomMere: '',
-    telephoneMere: '',
-    nomPere: '',
-    telephonePere: '',
-    commentaire: '',
-    cours: '',       // Reset cours
-    test: '',        // Reset test
-    group: '',       // Reset group
-    annee: '',       // Reset annee
-    mois: ''         // Reset mois
-  };
-  this.selectedOption = null;
-}
+  ngOnInit(): void {
+    console.log('Items:', this.formData);
+  }
 
 
    items = [
@@ -105,12 +112,6 @@ onSubmit() {
   telephoneMere: string = '';
   commentaire: string = '';
   selectedItem: any;
-
-
-  ngOnInit(): void {
-    // Initialize the items array here if needed
-    console.log('Items:', this.items);
-  }
 
   // Method to open the Add modal and clear fields
   openAddModal(): void {

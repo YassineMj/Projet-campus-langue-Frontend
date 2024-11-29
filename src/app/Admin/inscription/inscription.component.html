@@ -551,300 +551,299 @@
                             aria-label="Close"
                           ></button>
                         </div>
-                        <form
-                          #registrationForm="ngForm"
-                          (ngSubmit)="onSubmit()"
-                        >
-                          <div class="modal-body">
-                            <div class="container-fluid">
-                              <div class="row mb-2 date-highlight">
-                                <div class="col-10">
-                                  <b
-                                    ><i
-                                      class="fa fa-calendar"
-                                      style="margin-right: 5px"
-                                    ></i
-                                    >Date:</b
-                                  >
-                                  {{ selectedItem.date }}
-                                </div>
-                              </div>
 
-                              <!-- Display fields inline -->
-                              <div class="row mb-2">
-                                <div class="col-6">
-                                  <b>Nom:</b> {{ selectedItem.nom }}
-                                </div>
-                                <div class="col-6">
-                                  <b>Prénom:</b> {{ selectedItem.prenom }}
-                                </div>
-                              </div>
-                              <br />
-                              <div class="row mb-2">
-                                <div class="col-6">
-                                  <b>Etablissement:</b>
-                                  {{ selectedItem.etablissement }}
-                                </div>
-                                <div class="col-6">
-                                  <b>Niveaux:</b> {{ selectedItem.niveaux }}
-                                </div>
-                              </div>
-                              <br />
-
-                              <div class="row mb-2">
-                                <div class="col-6">
-                                  <b>Téléphone:</b> {{ selectedItem.telephone }}
-                                </div>
-                                <div class="col-6">
-                                  <b>Nom de Père:</b> {{ selectedItem.nomPere }}
-                                </div>
-                              </div>
-                              <br />
-
-                              <div class="row mb-2">
-                                <div class="col-6">
-                                  <b>Téléphone Père:</b>
-                                  {{ selectedItem.telephonePere }}
-                                </div>
-                                <div class="col-6">
-                                  <b>Nom de Mère:</b> {{ selectedItem.nomMere }}
-                                </div>
-                              </div>
-                              <br />
-
-                              <div class="row mb-2">
-                                <div class="col-6">
-                                  <b>Téléphone Mère:</b>
-                                  {{ selectedItem.telephoneMere }}
-                                </div>
-                                <div class="col-6"></div>
-                              </div>
-                              <br />
-
-                              <!-- Add a row for Commentaire, not inline -->
-                              <div class="mb-3">
-                                <label for="commentaire" class="form-label"
-                                  ><b>Commentaire</b>:</label
+                        <div class="modal-body">
+                          <div class="container-fluid">
+                            <div class="row mb-2 date-highlight">
+                              <div class="col-10">
+                                <b
+                                  ><i
+                                    class="fa fa-calendar"
+                                    style="margin-right: 5px"
+                                  ></i
+                                  >Date:</b
                                 >
-                                <div class="comment-box">
-                                  <p class="comment-text">
-                                    {{ selectedItem.commentaire }}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <!-- Separator for details -->
-                          <div class="hr-container">
-                            <hr
-                              style="
-                                border: 4px double #008cc7;
-                                width: 100%;
-                                margin: auto;
-                                border-radius: 100px;
-                              "
-                            />
-                            <span class="hr-text"
-                              ><i class="fa-solid fa-circle-plus"></i> Détails
-                              d'inscription</span
-                            >
-                          </div>
-                          <br /><br />
-
-                          <div style="margin-left: 3%; margin-right: 3%">
-                            <div class="row mb-3">
-                              <!-- Cours Dropdown -->
-                              <div class="col-md-6">
-                                <label for="cours" class="form-label"
-                                  >Cours <span class="required">*</span></label
-                                >
-                                <select
-                                
-                                  class="form-select"
-                                  id="cours"
-                                  [(ngModel)]="formData.cours"
-                                  name="cours"
-                                  required
-                                  #cours="ngModel"
-                                >
-                                
-                                  <option value="" disabled selected>
-                                    Choisir un cours
-                                  </option>
-                                  <option value="Maths">Maths</option>
-                                  <option value="Sciences">Sciences</option>
-                                  <option value="Histoire">Histoire</option>
-                                  <option value="Langues">Langues</option>
-                                </select>
-                                <div
-                                  *ngIf="cours.invalid && cours.touched"
-                                  class="text-danger"
-                                >
-                                  Le choix du cours est obligatoire.
-                                </div>
-                              </div>
-
-                              <!-- Test Dropdown -->
-                              <div class="col-md-6">
-                                <label for="test" class="form-label"
-                                  >Test <span class="required">*</span></label
-                                >
-                                <select
-                                  class="form-select"
-                                  id="test"
-                                  [(ngModel)]="formData.test"
-                                  name="test"
-                                  required
-                                  #test="ngModel"
-                                >
-                                  <option value="" disabled selected>
-                                    Choisir un test
-                                  </option>
-                                  <option value="Test 1">Test 1</option>
-                                  <option value="Test 2">Test 2</option>
-                                  <option value="Test 3">Test 3</option>
-                                </select>
-                                <div
-                                  *ngIf="test.invalid && test.touched"
-                                  class="text-danger"
-                                >
-                                  Le choix du test est obligatoire.
-                                </div>
+                                {{ selectedItem.date }}
                               </div>
                             </div>
 
-                            <div class="row mb-3">
-                              <!-- Group Dropdown -->
-                              <div class="col-md-6">
-                                <label for="group" class="form-label"
-                                  >Groupe <span class="required">*</span></label
-                                >
-                                <select
-                                  class="form-select"
-                                  id="group"
-                                  [(ngModel)]="formData.group"
-                                  name="group"
-                                  required
-                                  #group="ngModel"
-                                >
-                                  <option value="" disabled selected>
-                                    Choisir un groupe
-                                  </option>
-                                  <option value="Groupe 1">Groupe 1</option>
-                                  <option value="Groupe 2">Groupe 2</option>
-                                  <option value="Groupe 3">Groupe 3</option>
-                                </select>
-                                <div
-                                  *ngIf="group.invalid && group.touched"
-                                  class="text-danger"
-                                >
-                                  Le choix du groupe est obligatoire.
-                                </div>
+                            <!-- Display fields inline -->
+                            <div class="row mb-2">
+                              <div class="col-6">
+                                <b>Nom:</b> {{ selectedItem.nom }}
                               </div>
-
-                              <!-- Année Dropdown -->
-                              <div class="col-md-6">
-                                <label for="annee" class="form-label"
-                                  >Année <span class="required">*</span></label
-                                >
-                                <select
-                                  class="form-select"
-                                  id="annee"
-                                  [(ngModel)]="formData.annee"
-                                  name="annee"
-                                  required
-                                  #annee="ngModel"
-                                >
-                                  <option value="" disabled selected>
-                                    Choisir une année
-                                  </option>
-                                  <option
-                                    *ngFor="let year of years"
-                                    [value]="year"
-                                  >
-                                    {{ year }}
-                                  </option>
-                                </select>
-                                <div
-                                  *ngIf="annee.invalid && annee.touched"
-                                  class="text-danger"
-                                >
-                                  Le choix de l'année est obligatoire.
-                                </div>
+                              <div class="col-6">
+                                <b>Prénom:</b> {{ selectedItem.prenom }}
                               </div>
                             </div>
-
-                            <div class="row mb-3">
-                              <!-- Mois Dropdown -->
-                              <div class="col-md-6">
-                                <label for="mois" class="form-label"
-                                  >Mois <span class="required">*</span></label
-                                >
-                                <select
-                                  class="form-select"
-                                  id="mois"
-                                  [(ngModel)]="formData.mois"
-                                  name="mois"
-                                  required
-                                  #mois="ngModel"
-                                >
-                                  <option value="" disabled selected>
-                                    Choisir un mois
-                                  </option>
-                                  <option value="1">Janvier</option>
-                                  <option value="2">Février</option>
-                                  <option value="3">Mars</option>
-                                  <option value="4">Avril</option>
-                                  <option value="5">Mai</option>
-                                  <option value="6">Juin</option>
-                                  <option value="7">Juillet</option>
-                                  <option value="8">Août</option>
-                                  <option value="9">Septembre</option>
-                                  <option value="10">Octobre</option>
-                                  <option value="11">Novembre</option>
-                                  <option value="12">Décembre</option>
-                                </select>
-                                <div
-                                  *ngIf="mois.invalid && mois.touched"
-                                  class="text-danger"
-                                >
-                                  Le choix du mois est obligatoire.
-                                </div>
+                            <br />
+                            <div class="row mb-2">
+                              <div class="col-6">
+                                <b>Etablissement:</b>
+                                {{ selectedItem.etablissement }}
+                              </div>
+                              <div class="col-6">
+                                <b>Niveaux:</b> {{ selectedItem.niveaux }}
                               </div>
                             </div>
-                          </div>
+                            <br />
 
-                          <div class="modal-footer justify-content-center">
-                            <button
-                              type="button"
-                              class="btn btn-danger"
-                              data-bs-dismiss="modal"
-                              style="border-radius: 50px"
-                            >
-                              <i class="fa-solid fa-close"></i>
-                            </button>
-                            <div class="text-center">
-                              <button
-                                type="submit"
-                                class="btn btn-primary-btn"
-                                style="
-                                  max-width: 300px;
-                                  width: auto;
-                                  font-size: 17px;
-                                  padding: 5px 10px;
-                                  background-color: #e4c218;
-                                  border: 3px solid rgba(255, 242, 0, 0.721);
-                                  color: white;
-                                  font-weight: bolder;
-                                  border-radius: 50px;
-                                "
+                            <div class="row mb-2">
+                              <div class="col-6">
+                                <b>Téléphone:</b> {{ selectedItem.telephone }}
+                              </div>
+                              <div class="col-6">
+                                <b>Nom de Père:</b> {{ selectedItem.nomPere }}
+                              </div>
+                            </div>
+                            <br />
+
+                            <div class="row mb-2">
+                              <div class="col-6">
+                                <b>Téléphone Père:</b>
+                                {{ selectedItem.telephonePere }}
+                              </div>
+                              <div class="col-6">
+                                <b>Nom de Mère:</b> {{ selectedItem.nomMere }}
+                              </div>
+                            </div>
+                            <br />
+
+                            <div class="row mb-2">
+                              <div class="col-6">
+                                <b>Téléphone Mère:</b>
+                                {{ selectedItem.telephoneMere }}
+                              </div>
+                              <div class="col-6"></div>
+                            </div>
+                            <br />
+
+                            <!-- Add a row for Commentaire, not inline -->
+                            <div class="mb-3">
+                              <label for="commentaire" class="form-label"
+                                ><b>Commentaire</b>:</label
                               >
-                                <i class="fa-solid fa-plus"></i> S'inscrire
-                              </button>
+                              <div class="comment-box">
+                                <p class="comment-text">
+                                  {{ selectedItem.commentaire }}
+                                </p>
+                              </div>
                             </div>
                           </div>
-                        </form>
+                        </div>
+                        <!-- Card Container for Registration Form -->
+                        <div
+                          class="card "
+                          style="max-width: 100%; border-radius: 15px"
+                        >
+                          <div class="card-body">
+                            <form
+                              #registrationForm="ngForm"
+                              (ngSubmit)="onSubmit()"
+                              novalidate
+                            >
+                              <!-- Separator for details -->
+                              <div class="hr-container">
+                                <hr
+                                  style="
+                                    border: 4px double #008cc7;
+                                    width: 100%;
+                                    margin: auto;
+                                    border-radius: 100px;
+                                  "
+                                />
+                                <span class="hr-text">
+                                  <i class="fa-solid fa-circle-plus"></i>
+                                  Détails d'inscription
+                                </span>
+                              </div>
+                              <br /><br />
+
+                              <div style="margin-left: 3%; margin-right: 3%">
+                                <!-- Cours Dropdown -->
+                                <div class="row mb-3">
+                                  <div class="col-md-6">
+                                    <label for="cours" class="form-label"
+                                      >Cours
+                                      <span class="required">*</span></label
+                                    >
+                                    <select
+                                      class="form-select"
+                                      id="cours"
+                                      [(ngModel)]="formData.cours"
+                                      name="cours"
+                                      required
+                                      #cours="ngModel"
+                                    >
+                                      <option value="" disabled selected>
+                                        Choisir un cours
+                                      </option>
+                                      <option value="Maths">Maths</option>
+                                      <option value="Sciences">Sciences</option>
+                                      <option value="Histoire">Histoire</option>
+                                      <option value="Langues">Langues</option>
+                                    </select>
+                                    <div
+                                      *ngIf="cours.invalid && cours.touched"
+                                      class="text-danger"
+                                    >
+                                      Le choix du cours est obligatoire.
+                                    </div>
+                                  </div>
+
+                                  <!-- Test Dropdown -->
+                                  <div class="col-md-6">
+                                    <label for="test" class="form-label"
+                                      >Test
+                                      <span class="required">*</span></label
+                                    >
+                                    <select
+                                      class="form-select"
+                                      id="test"
+                                      [(ngModel)]="formData.test"
+                                      name="test"
+                                      required
+                                      #test="ngModel"
+                                    >
+                                      <option value="" disabled selected>
+                                        Choisir un test
+                                      </option>
+                                      <option value="Test 1">Test 1</option>
+                                      <option value="Test 2">Test 2</option>
+                                      <option value="Test 3">Test 3</option>
+                                    </select>
+                                    <div
+                                      *ngIf="test.invalid && test.touched"
+                                      class="text-danger"
+                                    >
+                                      Le choix du test est obligatoire.
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <!-- Group Dropdown -->
+                                <div class="row mb-3">
+                                  <div class="col-md-6">
+                                    <label for="group" class="form-label"
+                                      >Groupe
+                                      <span class="required">*</span></label
+                                    >
+                                    <select
+                                      class="form-select"
+                                      id="group"
+                                      [(ngModel)]="formData.group"
+                                      name="group"
+                                      required
+                                      #group="ngModel"
+                                    >
+                                      <option value="" disabled selected>
+                                        Choisir un groupe
+                                      </option>
+                                      <option value="Groupe 1">Groupe 1</option>
+                                      <option value="Groupe 2">Groupe 2</option>
+                                      <option value="Groupe 3">Groupe 3</option>
+                                    </select>
+                                    <div
+                                      *ngIf="group.invalid && group.touched"
+                                      class="text-danger"
+                                    >
+                                      Le choix du groupe est obligatoire.
+                                    </div>
+                                  </div>
+
+                                  <!-- Année Dropdown -->
+                                  <div class="col-md-6">
+                                    <label for="annee" class="form-label"
+                                      >Année
+                                      <span class="required">*</span></label
+                                    >
+                                    <select
+                                      class="form-select"
+                                      id="annee"
+                                      [(ngModel)]="formData.annee"
+                                      name="annee"
+                                      required
+                                      #annee="ngModel"
+                                    >
+                                      <option value="" disabled selected>
+                                        Choisir une année
+                                      </option>
+                                      <option
+                                        *ngFor="let year of years"
+                                        [value]="year"
+                                      >
+                                        {{ year }}
+                                      </option>
+                                    </select>
+                                    <div
+                                      *ngIf="annee.invalid && annee.touched"
+                                      class="text-danger"
+                                    >
+                                      Le choix de l'année est obligatoire.
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <!-- Mois Dropdown -->
+                                <div class="row mb-3">
+                                  <div class="col-md-6">
+                                    <label for="mois" class="form-label"
+                                      >Mois
+                                      <span class="required">*</span></label
+                                    >
+                                    <select
+                                      class="form-select"
+                                      id="mois"
+                                      [(ngModel)]="formData.mois"
+                                      name="mois"
+                                      required
+                                      #mois="ngModel"
+                                    >
+                                      <option value="" disabled selected>
+                                        Choisir un mois
+                                      </option>
+                                      <option value="1">Janvier</option>
+                                      <option value="2">Février</option>
+                                      <!-- Add other months here -->
+                                    </select>
+                                    <div
+                                      *ngIf="mois.invalid && mois.touched"
+                                      class="text-danger"
+                                    >
+                                      Le choix du mois est obligatoire.
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="modal-footer justify-content-center">
+                                <button
+                                  type="button"
+                                  class="btn btn-danger"
+                                  data-bs-dismiss="modal"
+                                  style="border-radius: 50px"
+                                >
+                                  <i class="fa-solid fa-close"></i>
+                                </button>
+                                <button
+                                  type="submit"
+                                  [disabled]="registrationForm.invalid"
+                                  class="btn btn-primary-btn"
+                                  style="
+                                    background-color: #e4c218;
+                                    border: 3px solid rgba(255, 242, 0, 0.721);
+                                    color: white;
+                                    font-weight: bolder;
+                                    border-radius: 50px;
+                                  "
+                                >
+                                  <i class="fa-solid fa-plus"></i> S'inscrire
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                        <!-- End of Card Container -->
                       </div>
                     </div>
                   </div>
