@@ -114,21 +114,47 @@ export class GlobalService {
   }
 
   // ----- Groupes -----
-getGroupes(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.baseUrl}/groupes`);
-}
+  getGroupes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/groupes`);
+  }
 
-createGroupe(groupe: any): Observable<any> {
-  return this.http.post<any>(`${this.baseUrl}/groupes`, groupe);
-}
+  createGroupe(groupe: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/groupes`, groupe);
+  }
 
-updateGroupe(id: number, groupe: any): Observable<any> {
-  return this.http.put<any>(`${this.baseUrl}/groupes/${id}`, groupe);
-}
+  updateGroupe(id: number, groupe: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/groupes/${id}`, groupe);
+  }
 
-deleteGroupe(id: number): Observable<any> {
-  return this.http.delete<any>(`${this.baseUrl}/groupes/${id}`);
-}
+  deleteGroupe(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/groupes/${id}`);
+  }
+
+  // ----- Passages -----
+  getPassages(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/etudiants/is-passage`);
+  }
+
+  createPassage(passage: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/etudiants`, passage);
+  }
+
+  updatePassage(id: number, passage: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/etudiants/${id}`, passage);
+  }
+
+  deletePassage(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/etudiants/${id}`);
+  }
 
 
+  // ----- Passages -----
+  createInscription(inscription: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/inscriptions`, inscription);
+  }
+
+    // ----- Passages -----
+    getEtudiants(): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/etudiants`);
+    }
 }

@@ -104,7 +104,7 @@
                   class="form-control"
                   id="nom"
                   placeholder="Entrez le nom"
-                  [(ngModel)]="formData.nom"
+                  [(ngModel)]="formDataEtu.nom"
                   name="nom"
                   #nomInput="ngModel"
                   required
@@ -127,7 +127,7 @@
                   class="form-control"
                   id="prenom"
                   placeholder="Entrez le prénom"
-                  [(ngModel)]="formData.prenom"
+                  [(ngModel)]="formDataEtu.prenom"
                   name="prenom"
                   #prenomInput="ngModel"
                   required
@@ -148,19 +148,23 @@
                   >Établissement <span class="required">*</span></label
                 >
                 <select
-                  class="form-select"
-                  id="etablissement"
-                  [(ngModel)]="formData.etablissement"
-                  name="etablissement"
-                  #etablissementInput="ngModel"
-                  required
-                >
-                  <option value="" disabled selected>
-                    Choisissez un établissement
-                  </option>
-                  <option value="Ecole A">École A</option>
-                  <option value="Ecole B">École B</option>
-                </select>
+                                  class="form-select"
+                                  id="addEtablissement"
+                                  name="etablissement"
+                                  [(ngModel)]="formDataEtu.etablissement.id"
+                                  #etablissementInput="ngModel"
+                                  required
+                                >
+                                  <option value="" disabled selected>
+                                    Choisir un établissement
+                                  </option>
+                                  <option
+                                    *ngFor="let et of etablissements"
+                                    [value]="et.id"
+                                  >
+                                    {{et.nom}}
+                                  </option>
+                                </select>
                 <div
                   *ngIf="
                     etablissementInput.invalid && etablissementInput.touched
@@ -175,22 +179,23 @@
                   >Niveaux <span class="required">*</span></label
                 >
                 <select
-                  class="form-select"
-                  id="niveaux"
-                  [(ngModel)]="formData.niveaux"
-                  name="niveaux"
-                  #niveauxInput="ngModel"
-                  required
-                >
-                  <option value="" disabled selected>
-                    Choisissez un niveau
-                  </option>
-                  <option value="Primaire">Primaire</option>
-                  <option value="Secondaire">Secondaire</option>
-                  <option value="Lycée">Lycée</option>
-                </select>
+                                    class="form-select"
+                                    id="addNiveaux"
+                                    name="niveaux"
+                                    [(ngModel)]="formDataEtu.niveau.id"
+                                  >
+                                    <option value="" disabled selected>
+                                      Choisir un niveau
+                                    </option>
+                                    <option
+                                      *ngFor="let niveau of niveaux"
+                                      [value]="niveau.id"
+                                    >
+                                      {{ niveau.nom }}
+                                    </option>
+                                  </select>
                 <div
-                  *ngIf="niveauxInput.invalid && niveauxInput.touched"
+                  
                   class="text-danger"
                 >
                   Niveau est obligatoire.
@@ -206,7 +211,7 @@
                   class="form-control"
                   id="nomMere"
                   placeholder="Entrez le nom de la mère"
-                  [(ngModel)]="formData.nomMere"
+                  [(ngModel)]="formDataEtu.nomMere"
                   name="nomMere"
                 />
               </div>
@@ -219,7 +224,7 @@
                   class="form-control"
                   id="telephoneMere"
                   placeholder="Entrez le téléphone de la mère"
-                  [(ngModel)]="formData.telephoneMere"
+                  [(ngModel)]="formDataEtu.telMere"
                   name="telephoneMere"
                 />
               </div>
@@ -234,7 +239,7 @@
                   class="form-control"
                   id="nomPere"
                   placeholder="Entrez le nom du père"
-                  [(ngModel)]="formData.nomPere"
+                  [(ngModel)]="formDataEtu.nomPere"
                   name="nomPere"
                 />
               </div>
@@ -247,7 +252,7 @@
                   class="form-control"
                   id="telephonePere"
                   placeholder="Entrez le téléphone du père"
-                  [(ngModel)]="formData.telephonePere"
+                  [(ngModel)]="formDataEtu.telPere"
                   name="telephonePere"
                 />
               </div>
@@ -261,7 +266,7 @@
                   class="form-control"
                   id="telephone"
                   placeholder="Entrez le numéro de téléphone"
-                  [(ngModel)]="formData.telephone"
+                  [(ngModel)]="formDataEtu.telephone"
                   name="telephone"
                 />
               </div>
@@ -275,7 +280,7 @@
                   id="commentaire"
                   placeholder="Ajoutez un commentaire ici..."
                   rows="3"
-                  [(ngModel)]="formData.commentaire"
+                  [(ngModel)]="formDataEtu.commentaire"
                   name="commentaire"
                 ></textarea>
               </div>
@@ -303,22 +308,24 @@
                   >Cours <span class="required">*</span></label
                 >
                 <select
-                  class="form-select"
-                  id="cours"
-                  [(ngModel)]="formData.cours"
-                  name="cours"
-                  required
-                  #cours="ngModel"
-                >
-                  <option value="" disabled selected>Choisir un cours</option>
-                  <option value="Maths">Maths</option>
-                  <option value="Sciences">Sciences</option>
-                  <option value="Histoire">Histoire</option>
-                  <option value="Langues">Langues</option>
-                </select>
-                <div *ngIf="cours.invalid && cours.touched" class="text-danger">
-                  Le choix du cours est obligatoire.
-                </div>
+                              id="editCours"
+                              class="form-control"
+                              name="editCours"
+                              [(ngModel)]="formDataIns.coursId"
+                              required
+                              #editCoursInput="ngModel"
+                            >
+                              <option value="" disabled selected>
+                                Choisir un cours
+                              </option>
+                              <option
+                                *ngFor="let course of cours"
+                                [value]="course.id"
+                              >
+                                {{ course.libelle }}
+                              </option>
+                            </select>
+                
               </div>
 
               <!-- Test Dropdown -->
@@ -329,15 +336,15 @@
                 <select
                   class="form-select"
                   id="test"
-                  [(ngModel)]="formData.test"
+                  [(ngModel)]="formDataIns.test"
                   name="test"
                   required
                   #test="ngModel"
                 >
                   <option value="" disabled selected>Choisir un test</option>
-                  <option value="Test 1">Test 1</option>
-                  <option value="Test 2">Test 2</option>
-                  <option value="Test 3">Test 3</option>
+                  <option value="Oui">Oui</option>
+                  <option value="Non">Non</option>
+                  <option value="Sans">Sans</option>
                 </select>
                 <div *ngIf="test.invalid && test.touched" class="text-danger">
                   Le choix du test est obligatoire.
@@ -352,20 +359,74 @@
                 <select
                   class="form-select"
                   id="group"
-                  [(ngModel)]="formData.group"
+                  [(ngModel)]="formDataIns.groupeId"
                   name="group"
                   required
+                  (change)="onGroupChange()"
+
                   #group="ngModel"
                 >
                   <option value="" disabled selected>Choisir un groupe</option>
-                  <option value="Groupe 1">Groupe 1</option>
-                  <option value="Groupe 2">Groupe 2</option>
-                  <option value="Groupe 3">Groupe 3</option>
+                  <option
+                  *ngFor="let gr of groupes"
+                  [value]="gr.id"
+                >
+                  {{ gr.nomGroupe }}
+                </option>                 
                 </select>
                 <div *ngIf="group.invalid && group.touched" class="text-danger">
                   Le choix du groupe est obligatoire.
                 </div>
               </div>
+
+              <!-- profs Dropdown -->
+              <div class="col-md-6">
+                <label for="group" class="form-label"
+                  >Profs <span class="required">*</span></label
+                >
+                <select
+                                            id="editProf"
+                                            class="form-control"
+                                            name="editProf"
+                                            [(ngModel)]="formDataIns.profId"
+                                            required
+                                            #editProfInput="ngModel"
+                                          >
+                                            <option value="" disabled selected>
+                                              Choisir un prof
+                                            </option>
+                                            <option
+                                              *ngFor="let professor of profs"
+                                              [value]="professor.id"
+                                            >
+                                              {{ professor.nom }} {{ professor.prenom }}
+                                            </option>
+                                          </select>
+                                          <div
+                                            *ngIf="
+                                              editProfInput.invalid && editProfInput.touched
+                                            "
+                                            class="text-danger"
+                                          >
+                                            Le prof est obligatoire.
+                                          </div>
+              </div>     
+
+                            <!-- EDT -->
+
+<div class="mb-3">
+  <label for="editEmploiTemps" class="form-label">
+    <b>Emploi du Temps</b>
+  </label>
+  <textarea
+    class="form-control formtexterea"
+    id="editEmploiTemps"
+    name="editEmploiTemps"
+    [(ngModel)]="formDataIns.emploidutemp"
+    rows="5"
+    placeholder="Saisir l'emploi du temps..."
+  ></textarea>
+</div>
 
               <!-- Année Dropdown -->
               <div class="col-md-6">
@@ -375,15 +436,31 @@
                 <select
                   class="form-select"
                   id="annee"
-                  [(ngModel)]="formData.annee"
+                  [(ngModel)]="formDataIns.annee"
                   name="annee"
                   required
                   #annee="ngModel"
                 >
                   <option value="" disabled selected>Choisir une année</option>
-                  <option *ngFor="let year of years" [value]="year">
-                    {{ year }}
-                  </option>
+                  <option value="2024/2025">2024/2025</option>
+                  <option value="2025/2026">2025/2026</option>
+                  <option value="2026/2027">2026/2027</option>
+                  <option value="2027/2028">2027/2028</option>
+                  <option value="2028/2029">2028/2029</option>
+                  <option value="2029/2030">2029/2030</option>
+                  <option value="2030/2031">2030/2031</option>
+                  <option value="2031/2032">2031/2032</option>
+                  <option value="2032/2033">2032/2033</option>
+                  <option value="2033/2034">2033/2034</option>
+                  <option value="2034/2035">2034/2035</option>
+                  <option value="2035/2036">2035/2036</option>
+                  <option value="2036/2037">2036/2037</option>
+                  <option value="2037/2038">2037/2038</option>
+                  <option value="2038/2039">2038/2039</option>
+                  <option value="2039/2040">2039/2040</option>
+                  <option value="2040/2041">2040/2041</option>
+                  
+
                 </select>
                 <div *ngIf="annee.invalid && annee.touched" class="text-danger">
                   Le choix de l'année est obligatoire.
@@ -400,7 +477,7 @@
                 <select
                   class="form-select"
                   id="mois"
-                  [(ngModel)]="formData.mois"
+                  [(ngModel)]="formDataIns.mois"
                   name="mois"
                   required
                   #mois="ngModel"
@@ -423,12 +500,13 @@
                   Le choix du mois est obligatoire.
                 </div>
               </div>
+
             </div>
             <div class="text-center">
               <button
                 type="submit"
                 class="btn btn-primary-btn"
-                [disabled]="registrationForm.invalid"
+                [disabled]="registrationForm.invalid || isLoading"
                 style="
                   max-width: 300px;
                   width: auto;
@@ -440,10 +518,17 @@
                   font-weight: bolder;
                 "
               >
-                <i class="fa-solid fa-plus"></i> S'inscrire
+              <ng-container *ngIf="!isLoading">
+                <i class="fa fa-save text-white"></i> S'inscrire
+              </ng-container>
+              <ng-container *ngIf="isLoading">
+                <i class="fa fa-spinner fa-spin text-white"></i> En
+                cours...
+              </ng-container>
               </button>
             </div>
           </form>
+
 
           <!--autre option-->
           <div *ngIf="selectedOption === 'visitorWithoutRegistration'">
@@ -474,6 +559,8 @@
                       <input
                         class="form-control searchform w-100"
                         placeholder="Rechercher..."
+                        [(ngModel)]="searchTerm"
+                        (ngModelChange)="filterEtudiant()"
                       />
                     </div>
                   </div>
@@ -483,29 +570,33 @@
                     class="table-responsive table-container"
                     id="passagertable"
                   >
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th><b>Date</b></th>
-                          <!-- New Date column -->
-                          <th><b>Nom</b></th>
-                          <th><b>Prénom</b></th>
-                          <th><b>Etablissement</b></th>
-                          <th><b>Niveaux</b></th>
-                          <th><b>Commentaire</b></th>
+                  <div *ngIf="isLoading" style="text-align: center">
+                    <div>
+                      <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                      </div>
+                    </div>
+                  </div>
+                  <table *ngIf="!isLoading" class="table" id="matieresTable">
+                    <thead>
+                      <tr>
+                        <th><b>Date</b></th>
+                        <!-- New Date column -->
+                        <th><b>Nom</b></th>
+                        <th><b>Prénom</b></th>
+                        <th><b>Etablissement</b></th>
+                        <th><b>Niveaux</b></th>
                           <th class="text-right"><b>Actions</b></th>
                           <!-- Align header to right -->
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>item.date</td>
-                          <!-- Display the date -->
-                          <td>item.nom</td>
-                          <td>item.prenom</td>
-                          <td>item.etablissement</td>
-                          <td>item.niveaux</td>
-                          <td>item.commentaire</td>
+                        <tr *ngFor="let item of filteredEtudiant">
+                          <td>{{ item.dateEnregistrement }}</td>
+                          <td>{{ item.nom }}</td>
+                          <td>{{ item.prenom }}</td>
+                          <td>{{ item.etablissement.nom }}</td>
+                          <td>{{ item.niveau.nom }}</td>
                           <td
                             class="td-actions text-right d-flex justify-content-end"
                           >
@@ -515,6 +606,7 @@
                               class="btn btn-info btn-round btn-just-icon"
                               data-bs-toggle="modal"
                               data-bs-target="#detailsModal"
+                              (click)="openDetailsModal(item)"
                             >
                               <i
                                 class="fa-solid fa-hand-pointer"
@@ -544,12 +636,12 @@
                           </h1>
                           <br /><br />
                           <!-- Close button that dismisses the current modal -->
-                          <button
+                          <!-- <button
                             type="button"
                             class="btn-close text-white"
                             data-bs-dismiss="modal"
                             aria-label="Close"
-                          ></button>
+                          ></button> -->
                         </div>
 
                         <div class="modal-body">
@@ -563,7 +655,7 @@
                                   ></i
                                   >Date:</b
                                 >
-                                {{ selectedItem.date }}
+                                {{ selectedItem.dateEnregistrement }}
                               </div>
                             </div>
 
@@ -580,10 +672,10 @@
                             <div class="row mb-2">
                               <div class="col-6">
                                 <b>Etablissement:</b>
-                                {{ selectedItem.etablissement }}
+                                {{ selectedItem.etablissement?.nom }}
                               </div>
                               <div class="col-6">
-                                <b>Niveaux:</b> {{ selectedItem.niveaux }}
+                                <b>Niveaux:</b> {{ selectedItem.niveau?.nom }}
                               </div>
                             </div>
                             <br />
@@ -601,7 +693,7 @@
                             <div class="row mb-2">
                               <div class="col-6">
                                 <b>Téléphone Père:</b>
-                                {{ selectedItem.telephonePere }}
+                                {{ selectedItem.telPere }}
                               </div>
                               <div class="col-6">
                                 <b>Nom de Mère:</b> {{ selectedItem.nomMere }}
@@ -612,7 +704,7 @@
                             <div class="row mb-2">
                               <div class="col-6">
                                 <b>Téléphone Mère:</b>
-                                {{ selectedItem.telephoneMere }}
+                                {{ selectedItem.telMere }}
                               </div>
                               <div class="col-6"></div>
                             </div>
@@ -639,7 +731,7 @@
                           <div class="card-body">
                             <form
                               #registrationForm="ngForm"
-                              (ngSubmit)="onSubmit()"
+                              (ngSubmit)="onSubmitInsc()"
                               novalidate
                             >
                               <!-- Separator for details -->
@@ -661,173 +753,219 @@
 
                               <div style="margin-left: 3%; margin-right: 3%">
                                 <!-- Cours Dropdown -->
-                                <div class="row mb-3">
-                                  <div class="col-md-6">
-                                    <label for="cours" class="form-label"
-                                      >Cours
-                                      <span class="required">*</span></label
-                                    >
-                                    <select
-                                      class="form-select"
-                                      id="cours"
-                                      [(ngModel)]="formData.cours"
-                                      name="cours"
-                                      required
-                                      #cours="ngModel"
-                                    >
-                                      <option value="" disabled selected>
-                                        Choisir un cours
-                                      </option>
-                                      <option value="Maths">Maths</option>
-                                      <option value="Sciences">Sciences</option>
-                                      <option value="Histoire">Histoire</option>
-                                      <option value="Langues">Langues</option>
-                                    </select>
-                                    <div
-                                      *ngIf="cours.invalid && cours.touched"
-                                      class="text-danger"
-                                    >
-                                      Le choix du cours est obligatoire.
-                                    </div>
-                                  </div>
+              <div class="col-md-6">
+                <label for="cours" class="form-label"
+                  >Cours <span class="required">*</span></label
+                >
+                <select
+                              id="editCours"
+                              class="form-control"
+                              name="editCours"
+                              [(ngModel)]="formDataIns.coursId"
+                              required
+                              #editCoursInput="ngModel"
+                            >
+                              <option value="" disabled selected>
+                                Choisir un cours
+                              </option>
+                              <option
+                                *ngFor="let course of cours"
+                                [value]="course.id"
+                              >
+                                {{ course.libelle }}
+                              </option>
+                            </select>
+                
+              </div>
 
-                                  <!-- Test Dropdown -->
-                                  <div class="col-md-6">
-                                    <label for="test" class="form-label"
-                                      >Test
-                                      <span class="required">*</span></label
-                                    >
-                                    <select
-                                      class="form-select"
-                                      id="test"
-                                      [(ngModel)]="formData.test"
-                                      name="test"
-                                      required
-                                      #test="ngModel"
-                                    >
-                                      <option value="" disabled selected>
-                                        Choisir un test
-                                      </option>
-                                      <option value="Test 1">Test 1</option>
-                                      <option value="Test 2">Test 2</option>
-                                      <option value="Test 3">Test 3</option>
-                                    </select>
-                                    <div
-                                      *ngIf="test.invalid && test.touched"
-                                      class="text-danger"
-                                    >
-                                      Le choix du test est obligatoire.
-                                    </div>
-                                  </div>
-                                </div>
+              <!-- Test Dropdown -->
+              <div class="col-md-6">
+                <label for="test" class="form-label"
+                  >Test <span class="required">*</span></label
+                >
+                <select
+                  class="form-select"
+                  id="test"
+                  [(ngModel)]="formDataIns.test"
+                  name="test"
+                  required
+                  #test="ngModel"
+                >
+                  <option value="" disabled selected>Choisir un test</option>
+                  <option value="Oui">Oui</option>
+                  <option value="Non">Non</option>
+                  <option value="Sans">Sans</option>
+                </select>
+                <div *ngIf="test.invalid && test.touched" class="text-danger">
+                  Le choix du test est obligatoire.
+                </div>
+              </div>
 
-                                <!-- Group Dropdown -->
-                                <div class="row mb-3">
-                                  <div class="col-md-6">
-                                    <label for="group" class="form-label"
-                                      >Groupe
-                                      <span class="required">*</span></label
-                                    >
-                                    <select
-                                      class="form-select"
-                                      id="group"
-                                      [(ngModel)]="formData.group"
-                                      name="group"
-                                      required
-                                      #group="ngModel"
-                                    >
-                                      <option value="" disabled selected>
-                                        Choisir un groupe
-                                      </option>
-                                      <option value="Groupe 1">Groupe 1</option>
-                                      <option value="Groupe 2">Groupe 2</option>
-                                      <option value="Groupe 3">Groupe 3</option>
-                                    </select>
-                                    <div
-                                      *ngIf="group.invalid && group.touched"
-                                      class="text-danger"
-                                    >
-                                      Le choix du groupe est obligatoire.
-                                    </div>
-                                  </div>
+              <!-- Group Dropdown -->
+              <div class="col-md-6">
+                <label for="group" class="form-label"
+                  >Groupe <span class="required">*</span></label
+                >
+                <select
+                  class="form-select"
+                  id="group"
+                  [(ngModel)]="formDataIns.groupeId"
+                  name="group"
+                  required
+                  (change)="onGroupChange()"
 
-                                  <!-- Année Dropdown -->
-                                  <div class="col-md-6">
-                                    <label for="annee" class="form-label"
-                                      >Année
-                                      <span class="required">*</span></label
-                                    >
-                                    <select
-                                      class="form-select"
-                                      id="annee"
-                                      [(ngModel)]="formData.annee"
-                                      name="annee"
-                                      required
-                                      #annee="ngModel"
-                                    >
-                                      <option value="" disabled selected>
-                                        Choisir une année
-                                      </option>
-                                      <option
-                                        *ngFor="let year of years"
-                                        [value]="year"
-                                      >
-                                        {{ year }}
-                                      </option>
-                                    </select>
-                                    <div
-                                      *ngIf="annee.invalid && annee.touched"
-                                      class="text-danger"
-                                    >
-                                      Le choix de l'année est obligatoire.
-                                    </div>
-                                  </div>
-                                </div>
+                  #group="ngModel"
+                >
+                  <option value="" disabled selected>Choisir un groupe</option>
+                  <option
+                  *ngFor="let gr of groupes"
+                  [value]="gr.id"
+                >
+                  {{ gr.nomGroupe }}
+                </option>                 
+                </select>
+                <div *ngIf="group.invalid && group.touched" class="text-danger">
+                  Le choix du groupe est obligatoire.
+                </div>
+              </div>
 
-                                <!-- Mois Dropdown -->
-                                <div class="row mb-3">
-                                  <div class="col-md-6">
-                                    <label for="mois" class="form-label"
-                                      >Mois
-                                      <span class="required">*</span></label
-                                    >
-                                    <select
-                                      class="form-select"
-                                      id="mois"
-                                      [(ngModel)]="formData.mois"
-                                      name="mois"
-                                      required
-                                      #mois="ngModel"
-                                    >
-                                      <option value="" disabled selected>
-                                        Choisir un mois
-                                      </option>
-                                      <option value="1">Janvier</option>
-                                      <option value="2">Février</option>
-                                      <!-- Add other months here -->
-                                    </select>
-                                    <div
-                                      *ngIf="mois.invalid && mois.touched"
-                                      class="text-danger"
-                                    >
-                                      Le choix du mois est obligatoire.
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+              <!-- profs Dropdown -->
+              <div class="col-md-6">
+                <label for="group" class="form-label"
+                  >Profs <span class="required">*</span></label
+                >
+                <select
+                                            id="editProf"
+                                            class="form-control"
+                                            name="editProf"
+                                            [(ngModel)]="formDataIns.profId"
+                                            required
+                                            #editProfInput="ngModel"
+                                          >
+                                            <option value="" disabled selected>
+                                              Choisir un prof
+                                            </option>
+                                            <option
+                                              *ngFor="let professor of profs"
+                                              [value]="professor.id"
+                                            >
+                                              {{ professor.nom }} {{ professor.prenom }}
+                                            </option>
+                                          </select>
+                                          <div
+                                            *ngIf="
+                                              editProfInput.invalid && editProfInput.touched
+                                            "
+                                            class="text-danger"
+                                          >
+                                            Le prof est obligatoire.
+                                          </div>
+              </div> 
+              
+                                          <!-- EDT -->
+
+<div class="mb-3">
+  <label for="editEmploiTemps" class="form-label">
+    <b>Emploi du Temps</b>
+  </label>
+  <textarea
+    class="form-control formtexterea"
+    id="editEmploiTemps"
+    name="editEmploiTemps"
+    [(ngModel)]="formDataIns.emploidutemp"
+    rows="5"
+    placeholder="Saisir l'emploi du temps..."
+  ></textarea>
+</div>
+
+              <!-- Année Dropdown -->
+              <div class="col-md-6">
+                <label for="annee" class="form-label"
+                  >Année <span class="required">*</span></label
+                >
+                <select
+                  class="form-select"
+                  id="annee"
+                  [(ngModel)]="formDataIns.annee"
+                  name="annee"
+                  required
+                  #annee="ngModel"
+                >
+                  <option value="" disabled selected>Choisir une année</option>
+                  <option value="2024/2025">2024/2025</option>
+                  <option value="2025/2026">2025/2026</option>
+                  <option value="2026/2027">2026/2027</option>
+                  <option value="2027/2028">2027/2028</option>
+                  <option value="2028/2029">2028/2029</option>
+                  <option value="2029/2030">2029/2030</option>
+                  <option value="2030/2031">2030/2031</option>
+                  <option value="2031/2032">2031/2032</option>
+                  <option value="2032/2033">2032/2033</option>
+                  <option value="2033/2034">2033/2034</option>
+                  <option value="2034/2035">2034/2035</option>
+                  <option value="2035/2036">2035/2036</option>
+                  <option value="2036/2037">2036/2037</option>
+                  <option value="2037/2038">2037/2038</option>
+                  <option value="2038/2039">2038/2039</option>
+                  <option value="2039/2040">2039/2040</option>
+                  <option value="2040/2041">2040/2041</option>
+                  
+
+                </select>
+                <div *ngIf="annee.invalid && annee.touched" class="text-danger">
+                  Le choix de l'année est obligatoire.
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <!-- Mois Dropdown -->
+              <div class="col-md-6">
+                <label for="mois" class="form-label"
+                  >Mois <span class="required">*</span></label
+                >
+                <select
+                  class="form-select"
+                  id="mois"
+                  [(ngModel)]="formDataIns.mois"
+                  name="mois"
+                  required
+                  #mois="ngModel"
+                >
+                  <option value="" disabled selected>Choisir un mois</option>
+                  <option value="1">Janvier</option>
+                  <option value="2">Février</option>
+                  <option value="3">Mars</option>
+                  <option value="4">Avril</option>
+                  <option value="5">Mai</option>
+                  <option value="6">Juin</option>
+                  <option value="7">Juillet</option>
+                  <option value="8">Août</option>
+                  <option value="9">Septembre</option>
+                  <option value="10">Octobre</option>
+                  <option value="11">Novembre</option>
+                  <option value="12">Décembre</option>
+                </select>
+                <div *ngIf="mois.invalid && mois.touched" class="text-danger">
+                  Le choix du mois est obligatoire.
+                </div>
+              </div>
+              
+            </div>
+
 
                               <div class="modal-footer justify-content-center">
-                                <button
+                                <!-- <button
                                   type="button"
                                   class="btn btn-danger"
                                   data-bs-dismiss="modal"
                                   style="border-radius: 50px"
                                 >
                                   <i class="fa-solid fa-close"></i>
-                                </button>
+                                </button> -->
                                 <button
                                   type="submit"
-                                  [disabled]="registrationForm.invalid"
+                                  [disabled]="registrationForm.invalid || isLoading"
                                   class="btn btn-primary-btn"
                                   style="
                                     background-color: #e4c218;
@@ -837,7 +975,13 @@
                                     border-radius: 50px;
                                   "
                                 >
+                                <ng-container *ngIf="!isLoading">
                                   <i class="fa-solid fa-plus"></i> S'inscrire
+                                </ng-container>
+                                <ng-container *ngIf="isLoading">
+                                  <i class="fa fa-spinner fa-spin text-white"></i> En
+                                  cours...
+                                </ng-container>
                                 </button>
                               </div>
                             </form>
@@ -852,6 +996,7 @@
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

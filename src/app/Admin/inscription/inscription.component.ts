@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
+import { GlobalService } from '../global.service';
 
 
 @Component({
@@ -8,177 +9,245 @@ import * as bootstrap from 'bootstrap';
   templateUrl: './inscription.component.html',
   styleUrls: ['./inscription.component.css']
 })
-export class InscriptionComponent {
+export class InscriptionComponent implements OnInit {
+
+  constructor(private _service: GlobalService) {}
+
+
+  ngOnInit(): void {
+    this.loadCours()
+    this.loadEtablissements();
+    this.loadGroupes();
+    this.loadNiveaux();
+    this.loadProfs();
+    this.loadEtudiants();
+  }
 
   
-   selectedOption: string | null = null;
-  formData = {
-    nom: '',
-    prenom: '',
-    etablissement: '',
-    niveaux: '',
-    telephone: '',
-    nomMere: '',
-    telephoneMere: '',
-    nomPere: '',
-    telephonePere: '',
-    commentaire: '',
-    cours: '', // Added cours property
-    test: '',  // Added test property
-    group: '', // Added group property
-    annee: '', // Added annee property
-    mois: ''   // Added mois property
-  };
 
-  years: string[] = [];
+  isLoading: boolean = false;
 
-  constructor() {
-    this.generateYearRanges();
+  etablissements: any[] = [];
+  niveaux: any[] = [];
+  cours:any[]=[];
+  profs:any[]=[];
+  groupes:any[]=[];
+
+  etudiants: any[] = [];
+  filteredEtudiant: any[] = [];
+  searchTerm: string = '';
+  selectedItem: any = {};
+
+
+
+  loadEtudiants(): void {
+    this.isLoading = true;
+    this._service.getEtudiants().subscribe(
+      (data) => {
+        // Convertir et formater les dates
+        this.etudiants = data.map(e => ({
+          ...e,
+          dateEnregistrement: this.formatDate(new Date(e.dateEnregistrement))
+        }));
+  
+        this.filteredEtudiant= this.etudiants;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des passages', error);
+        this.isLoading = false;
+      }
+    );
   }
 
-  generateYearRanges() {
-    const startYear = new Date().getFullYear();
-    const endYear = startYear + 10; // You can adjust this to how far you want to generate the years.
+  filterEtudiant(): void {
+    this.filteredEtudiant = this.etudiants.filter(p => 
+      p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.telephone.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.etablissement.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.niveau.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.nomMere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.nomPere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      p.dateEnregistrement.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+      
+  }
 
-    for (let year = startYear; year <= endYear; year++) {
-      this.years.push(`${year}/${year + 1}`);
+  formatDate(date: Date): string {
+    const jour = date.getDate().toString().padStart(2, '0');
+    const mois = (date.getMonth() + 1).toString().padStart(2, '0'); // Les mois commencent à 0
+    const annee = date.getFullYear().toString().slice(-4); // Année sur 4 chiffres
+    const heures = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+  
+    return `${jour}-${mois}-${annee} | ${heures}:${minutes}`;
+  }
+
+  openDetailsModal(item: any): void {
+    this.selectedItem = item;
+    const modalElement = document.getElementById('detailsModal');
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
     }
   }
+  selectedOption: string | null = null;
+  formDataEtu = {
+    nom: "",
+    prenom: "",
+    etablissement: { id: null },
+    niveau: { id: null },
+    telephone: "",
+    commentaire: "",
+    nomMere: "",
+    telMere: "",
+    nomPere: "",
+    telPere: "",
+    passage: false
+  };
+
+  formDataIns={
+  etudiantId: null,
+  coursId: null,
+  groupeId: null,
+  profId:null ,
+  mois: null,
+  annee: null,
+	emploidutemp: null,
+	test:null
+  }
+
+
+  loadEtablissements(): void {
+    this.isLoading = true;
+    this._service.getEtablissements().subscribe(
+      (data) => {
+        this.etablissements = data;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des établissements', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  loadNiveaux(): void {
+    this.isLoading = true;
+    this._service.getNiveaux().subscribe(
+      (data) => {
+        this.niveaux = data;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des niveaux', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  loadCours(): void {
+    this._service.getCours().subscribe(
+      (data) => {
+        this.cours = data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des cours', error);
+      }
+    );
+  }
+
+  loadProfs(): void {
+    this._service.getProfessors().subscribe(
+      (data) => {
+        this.profs = data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des profs', error);
+      }
+    );
+  }
+
+  loadGroupes(): void {
+    this._service.getGroupes().subscribe(
+      (data) => {
+        this.groupes = data;
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des groupes', error);
+      }
+    );
+  }
+
+  onGroupChange(){
+    this.groupes.forEach(element => {
+
+      if(element.id==this.formDataIns.groupeId){
+        this.formDataIns.emploidutemp=element.emploiDuTemps
+        return;
+      }
+    });
+  }
+ 
 
   showForm(option: string) {
     this.selectedOption = option;
   }
 
-  onSubmit() {
-    if (this.formData) {
-      console.log('Form Data:', this.formData);
-      alert('Inscription enregistrée avec succès !');
-      this.resetForm();
-    }
-  }
-
-  resetForm() {
-    this.formData = {
-      nom: '',
-      prenom: '',
-      etablissement: '',
-      niveaux: '',
-      telephone: '',
-      nomMere: '',
-      telephoneMere: '',
-      nomPere: '',
-      telephonePere: '',
-      commentaire: '',
-      cours: '',
-      test: '',
-      group: '',
-      annee: '',
-      mois: ''
-    };
-    this.selectedOption = null;
-  }
-
-  ngOnInit(): void {
-    console.log('Items:', this.formData);
-  }
-
-
-   items = [
-  { 
-    nom: 'hajji', 
-    prenom: 'oumaima', 
-    etablissement: 'masira', 
-    niveaux: '6primaire', 
-    telephone: '07000000', 
-    nomPere: 'ahmad', 
-    telephonePere: '0762030877', 
-    nomMere: 'LAYLA', 
-    telephoneMere: '0000000', 
-    commentaire: 'Sample commentaire', 
-    date: new Date().toLocaleDateString() // Auto-generate current date
-  }
-];
-
-
-  // Modal data
-  nom: string = '';
-  prenom: string = '';
-  etablissement: string = '';
-  niveaux: string = '';
-  telephone: string = '';
-  nomPere: string = '';
-  telephonePere: string = '';
-  nomMere: string = '';
-  telephoneMere: string = '';
-  commentaire: string = '';
-  selectedItem: any;
-
-  // Method to open the Add modal and clear fields
-  openAddModal(): void {
-    this.nom = '';
-    this.prenom = '';
-    this.etablissement = '';
-    this.niveaux = '';
-    this.telephone = '';
-    this.nomPere = '';
-    this.telephonePere = '';
-    this.nomMere = '';
-    this.telephoneMere = '';
-    this.commentaire = '';
-  }
-
-etablissements: string[] = ['Etablissement 1', 'Etablissement 2', 'Etablissement 3'];
-Niveaux: string[] = ['Niveau 1', 'Niveau 2', 'Niveau 3'];
-
-
-
-  // Method to clear form fields after submission
-  clearFormFields(): void {
-    this.nom = '';
-    this.prenom = '';
-    this.etablissement = '';
-    this.niveaux = '';
-    this.telephone = '';
-    this.nomPere = '';
-    this.telephonePere = '';
-    this.nomMere = '';
-    this.telephoneMere = '';
-    this.commentaire = '';
-  }
-
-  // Method to open the Edit modal and set fields with item data
-  openEditModal(item: any): void {
-    this.nom = item.nom;
-    this.prenom = item.prenom;
-    this.etablissement = item.etablissement;
-    this.niveaux = item.niveaux;
-    this.telephone = item.telephone;
-    this.nomPere = item.nomPere;
-    this.telephonePere = item.telephonePere;
-    this.nomMere = item.nomMere;
-    this.telephoneMere = item.telephoneMere;
-    this.commentaire = item.commentaire;
-  }
-
-  // Method to open the Delete modal (if necessary)
-  openDeleteModal(item: any) {
-    const modalElement = document.getElementById('deleteConfirmationModal');
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show(); // Show the modal
+  onSubmit(): void {
+    if (this.formDataEtu && this.formDataIns) {
+      this.isLoading = true; // Indicateur de chargement
+      this._service.createPassage(this.formDataEtu).subscribe({
+        next: (etuData) => {
+          this.formDataIns.etudiantId = etuData.id;
+          console.log('ID de l’étudiant créé:', this.formDataIns.etudiantId);
+          
+          this._service.createInscription(this.formDataIns).subscribe({
+            next: (inscriptionData) => {
+              console.log('Inscription créée:', inscriptionData);
+              alert('Inscription enregistrée avec succès !');
+            },
+            error: (error) => {
+              console.error('Erreur lors de la création de l’inscription:', error);
+              alert('Une erreur est survenue lors de la création de l’inscription.');
+            },
+            complete: () => this.isLoading = false
+          });
+        },
+        error: (error) => {
+          console.error('Erreur lors de la création du passage:', error);
+          alert('Une erreur est survenue lors de la création du passage.');
+          this.isLoading = false;
+        }
+      });
     } else {
-      console.error('Modal element not found!');
+      alert('Veuillez remplir tous les champs requis.');
+    }
+  }
+  
+  onSubmitInsc(): void {
+    if (this.formDataIns) {
+      this.isLoading = true; 
+          this.formDataIns.etudiantId=this.selectedItem.id
+          this._service.createInscription(this.formDataIns).subscribe({
+            next: (inscriptionData) => {
+              console.log('Inscription créée:', inscriptionData);
+              //alert('Inscription enregistrée avec succès !');
+              this.isLoading = false
+            },
+            error: (error) => {
+              console.error('Erreur lors de la création de l’inscription:', error);
+              alert('Une erreur est survenue lors de la création de l’inscription.');
+              this.isLoading = false
+            },
+          });    
+        
+      }
+    else {
+      alert('Veuillez remplir tous les champs requis.');
     }
   }
 
-  // Method to open the Details modal and set the selected item
-  openDetailsModal(item: any): void {
-    this.selectedItem = item;  // Set the selected item to display in the modal
-    const modalElement = document.getElementById('detailsModal');
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();  // Show the modal programmatically
-    }
-  }
 
 }

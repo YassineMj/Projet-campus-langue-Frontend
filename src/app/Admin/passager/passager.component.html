@@ -46,6 +46,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="filterPassages()"
               />
             </div>
             <div class="px-2">
@@ -144,7 +146,7 @@
                                   class="form-control"
                                   id="addNom"
                                   name="nom"
-                                  [(ngModel)]="nom"
+                                  [(ngModel)]="data.nom"
                                   #nomInput="ngModel"
                                   required
                                   placeholder="Nom"
@@ -169,7 +171,7 @@
                                   class="form-control"
                                   id="addPrenom"
                                   name="prenom"
-                                  [(ngModel)]="prenom"
+                                  [(ngModel)]="data.prenom"
                                   #prenomInput="ngModel"
                                   required
                                   placeholder="Prénom"
@@ -198,7 +200,7 @@
                                   class="form-select"
                                   id="addEtablissement"
                                   name="etablissement"
-                                  [(ngModel)]="etablissement"
+                                  [(ngModel)]="data.etablissement.id"
                                   #etablissementInput="ngModel"
                                   required
                                 >
@@ -206,10 +208,10 @@
                                     Choisir un établissement
                                   </option>
                                   <option
-                                    *ngFor="let etab of etablissements"
-                                    [value]="etab"
+                                    *ngFor="let et of etablissements"
+                                    [value]="et.id"
                                   >
-                                    {{ etab }}
+                                    {{et.nom}}
                                   </option>
                                 </select>
                                 <div
@@ -237,16 +239,16 @@
                                     class="form-select"
                                     id="addNiveaux"
                                     name="niveaux"
-                                    [(ngModel)]="niveaux"
+                                    [(ngModel)]="data.niveau.id"
                                   >
                                     <option value="" disabled selected>
                                       Choisir un niveau
                                     </option>
                                     <option
                                       *ngFor="let niveau of niveaux"
-                                      [value]="niveau"
+                                      [value]="niveau.id"
                                     >
-                                      {{ niveau }}
+                                      {{ niveau.nom }}
                                     </option>
                                   </select>
                                 </div>
@@ -263,7 +265,7 @@
                                     class="form-control"
                                     id="addTelephone"
                                     name="telephone"
-                                    [(ngModel)]="telephone"
+                                    [(ngModel)]="data.telephone"
                                     placeholder="Téléphone"
                                   />
                                 </div>
@@ -279,7 +281,7 @@
                                     class="form-control"
                                     id="addNomPere"
                                     name="nomPere"
-                                    [(ngModel)]="nomPere"
+                                    [(ngModel)]="data.nomPere"
                                     placeholder="Nom de Père"
                                   />
                                 </div>
@@ -309,7 +311,7 @@
                                   class="form-control"
                                   id="addTelephonePere"
                                   name="telephonePere"
-                                  [(ngModel)]="telephonePere"
+                                  [(ngModel)]="data.telPere"
                                   placeholder="Téléphone Père"
                                 />
                               </div>
@@ -326,7 +328,7 @@
                                   class="form-control"
                                   id="addNomMere"
                                   name="nomMere"
-                                  [(ngModel)]="nomMere"
+                                  [(ngModel)]="data.nomMere"
                                   placeholder="Nom de Mère"
                                 />
                               </div>
@@ -343,7 +345,7 @@
                                   class="form-control"
                                   id="addTelephoneMere"
                                   name="telephoneMere"
-                                  [(ngModel)]="telephoneMere"
+                                  [(ngModel)]="data.telMere"
                                   placeholder="Téléphone Mère"
                                 />
                               </div>
@@ -361,7 +363,7 @@
                                   class="form-control"
                                   id="addCommentaire"
                                   name="commentaire"
-                                  [(ngModel)]="commentaire"
+                                  [(ngModel)]="data.commentaire"
                                   placeholder="Commentaire"
                                 ></textarea>
                               </div>
@@ -382,12 +384,20 @@
                         <button
                           type="submit"
                           class="btn btn-round colormodalmodifier"
-                          [disabled]="addForm.invalid"
+                          [disabled]="addForm.invalid || isLoading"
+                          [disabled]="true"
                         >
-                          <i class="fa fa-add text-white"></i> Ajouter
+                          <ng-container *ngIf="!isLoading">
+                            <i class="fa fa-save text-white"></i> Enregistrer
+                          </ng-container>
+                          <ng-container *ngIf="isLoading">
+                            <i class="fa fa-spinner fa-spin text-white"></i> En
+                            cours...
+                          </ng-container>
                         </button>
                       </div>
                     </form>
+
                   </div>
                 </div>
               </div>
@@ -396,7 +406,14 @@
 
           <!-- Table for displaying list of items with only the required attributes -->
           <div class="table-responsive table-container" id="passagertable">
-            <table class="table">
+            <div *ngIf="isLoading" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+            </div>
+            <table *ngIf="!isLoading" class="table" id="matieresTable">
               <thead>
                 <tr>
                   <th><b>Date</b></th>
@@ -405,22 +422,22 @@
                   <th><b>Prénom</b></th>
                   <th><b>Etablissement</b></th>
                   <th><b>Niveaux</b></th>
-                  <th><b>Commentaire</b></th>
+                  <!-- <th><b>Commentaire</b></th> -->
                   <th class="text-right"><b>Actions</b></th>
                   <!-- Align header to right -->
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of items">
+                <tr *ngFor="let item of filteredPassages">
                   <td>
-                    <b style="color: #086081"> {{ item.date }}</b>
+                    <b style="color: #086081"> {{ item.dateEnregistrement }}</b>
                   </td>
                   <!-- Display the date -->
                   <td>{{ item.nom }}</td>
                   <td>{{ item.prenom }}</td>
-                  <td>{{ item.etablissement }}</td>
-                  <td>{{ item.niveaux }}</td>
-                  <td>{{ item.commentaire }}</td>
+                  <td>{{ item.etablissement.nom }}</td>
+                  <td>{{ item.niveau.nom }}</td>
+                  <!-- <td>{{ item.commentaire }}</td> -->
                   <td class="td-actions text-right d-flex justify-content-end">
                     <!-- Edit Button -->
                     <button
@@ -437,7 +454,9 @@
                     <button
                       type="button"
                       class="btn btn-danger btn-round btn-just-icon"
-                      (click)="openDeleteModal(item)"
+                      (click)="openDeleteModal(item.id)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteConfirmationModal"
                       style="margin-right: 5px"
                     >
                       <i class="fa fa-trash" style="font-size: medium"></i>
@@ -461,467 +480,505 @@
             </table>
           </div>
 
-          <!-- Modal for Editing -->
-          <div
-            class="modal fade"
-            id="editModal"
-            tabindex="-1"
-            aria-labelledby="editModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog modal-lg" style="max-width: 80%">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="editModalLabel">
-                    <i class="fa fa-pen"></i> Modifier les Informations
-                  </h1>
-                  <button
-                    type="button"
-                    class="btn-close text-white"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
 
-                <!-- Form for Editing -->
-                <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
-                  <div class="modal-body">
-                    <div class="container-fluid">
-                      <!-- First Row: Nom, Prénom, Etablissement -->
-                      <div class="row">
-                        <!-- Nom -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editNom" class="form-label"
-                              >Nom <span class="required">*</span></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editNom"
-                              name="nom"
-                              [(ngModel)]="nom"
-                              #nomInput="ngModel"
-                              required
-                              placeholder="Nom"
-                            />
-                            <div
-                              *ngIf="nomInput.invalid && nomInput.touched"
-                              class="text-danger"
-                            >
-                              Nom est obligatoire.
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Prénom -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editPrenom" class="form-label"
-                              >Prénom <span class="required">*</span></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editPrenom"
-                              name="prenom"
-                              [(ngModel)]="prenom"
-                              #prenomInput="ngModel"
-                              required
-                              placeholder="Prénom"
-                            />
-                            <div
-                              *ngIf="prenomInput.invalid && prenomInput.touched"
-                              class="text-danger"
-                            >
-                              Prénom est obligatoire.
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Etablissement -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editEtablissement" class="form-label"
-                              >Etablissement
-                              <span class="required">*</span></label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editEtablissement"
-                              name="etablissement"
-                              [(ngModel)]="etablissement"
-                              #etablissementInput="ngModel"
-                              required
-                              placeholder="Etablissement"
-                            />
-                            <div
-                              *ngIf="
-                                etablissementInput.invalid &&
-                                etablissementInput.touched
-                              "
-                              class="text-danger"
-                            >
-                              Etablissement est obligatoire.
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <br />
-
-                      <!-- Second Row: Niveaux, Téléphone, Nom de Père -->
-                      <div class="row">
-                        <!-- Niveaux -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editNiveaux" class="form-label"
-                              >Niveaux</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editNiveaux"
-                              name="niveaux"
-                              [(ngModel)]="niveaux"
-                              placeholder="Niveaux"
-                            />
-                          </div>
-                        </div>
-
-                        <!-- Téléphone -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editTelephone" class="form-label"
-                              >Téléphone</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editTelephone"
-                              name="telephone"
-                              [(ngModel)]="telephone"
-                              placeholder="Téléphone"
-                            />
-                          </div>
-                        </div>
-
-                        <!-- Nom de Père -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editNomPere" class="form-label"
-                              >Nom de Père</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editNomPere"
-                              name="nomPere"
-                              [(ngModel)]="nomPere"
-                              placeholder="Nom de Père"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <hr
-                        style="
-                          border: none;
-                          border-top: 6px solid rgb(255, 213, 0);
-                          border-radius: 100px;
-                          width: 44%;
-                          margin: 20px auto; /* Adds space above and below the hr */
-                        "
-                      />
-                      <!-- Third Row: Téléphone Père, Nom de Mère, Téléphone Mère -->
-                      <div class="row">
-                        <!-- Téléphone Père -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editTelephonePere" class="form-label"
-                              >Téléphone Père</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editTelephonePere"
-                              name="telephonePere"
-                              [(ngModel)]="telephonePere"
-                              placeholder="Téléphone Père"
-                            />
-                          </div>
-                        </div>
-
-                        <!-- Nom de Mère -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editNomMere" class="form-label"
-                              >Nom de Mère</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editNomMere"
-                              name="nomMere"
-                              [(ngModel)]="nomMere"
-                              placeholder="Nom de Mère"
-                            />
-                          </div>
-                        </div>
-
-                        <!-- Téléphone Mère -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editTelephoneMere" class="form-label"
-                              >Téléphone Mère</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editTelephoneMere"
-                              name="telephoneMere"
-                              [(ngModel)]="telephoneMere"
-                              placeholder="Téléphone Mère"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <br />
-                      <!-- Fourth Row: Commentaire -->
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="mb-3">
-                            <label for="editCommentaire" class="form-label"
-                              >Commentaire</label
-                            >
-                            <textarea
-                              class="form-control"
-                              id="editCommentaire"
-                              name="commentaire"
-                              [(ngModel)]="commentaire"
-                              placeholder="Commentaire"
-                            ></textarea>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Modal footer with buttons -->
-                  <div class="modal-footer justify-content-center">
-                    <button
-                      type="button"
-                      class="btn btn-round colormodalfermer"
-                      data-bs-dismiss="modal"
-                    >
-                      <i class="fa fa-close text-white"></i>
-                    </button>
-                    <button
-                      type="submit"
-                      class="btn btn-round colormodalmodifier"
-                      [disabled]="editForm.invalid"
-                    >
-                      <i class="fa fa-save text-white"></i> Enregistrer
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
           <!-- Modal for Viewing Details -->
           <div
-            class="modal fade"
-            id="detailsModal"
-            tabindex="-1"
-            aria-labelledby="detailsModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog " style="max-width: 45%">
-              <!-- Increased width -->
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="detailsModalLabel">
-                    <i class="fa fa-eye"></i> Détails de l'élément
-                  </h1>
-                  <!-- Close button that dismisses the current modal -->
-                  <button
-                    type="button"
-                    class="btn-close text-white"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="modal-body">
-                  <div class="container-fluid">
-                    <div class="row mb-2 date-highlight">
-                      <div class="col-6">
-                        <b>
-                          <i
-                            class="fa fa-calendar"
-                            style="margin-right: 5px"
-                          ></i>
-                          Date:
-                        </b>
-                        {{ selectedItem.date }}
-                      </div>
-                    </div>
-                    <hr
-                      style="
-                        border: 5px double #0d98bb;
-                        width: 100%;
-                        margin: 10px 0;
-                      "
-                    />
-                    <!-- Display fields inline -->
-                    <div class="row mb-2">
-                      <div class="col-6">
-                        <b>Nom:</b> {{ selectedItem.nom }}
-                      </div>
-                      <div class="col-6">
-                        <b>Prénom:</b> {{ selectedItem.prenom }}
-                      </div>
-                    </div>
-                    <br />
-                    <div class="row mb-2">
-                      <div class="col-6">
-                        <b>Etablissement:</b> {{ selectedItem.etablissement }}
-                      </div>
-                      <div class="col-6">
-                        <b>Niveaux:</b> {{ selectedItem.niveaux }}
-                      </div>
-                    </div>
-                    <br />
-                    <hr
-                      style="
-                        border: 5px double #0d98bb;
-                        width: 100%;
-                        margin: 10px 0;
-                      "
-                    />
-                    <br />
-                    <div class="row mb-2">
-                      <div class="col-6">
-                        <b>Téléphone:</b> {{ selectedItem.telephone }}
-                      </div>
-                      <div class="col-6">
-                        <b>Nom de Père:</b> {{ selectedItem.nomPere }}
-                      </div>
-                    </div>
-                    <br />
-
-                    <div class="row mb-2">
-                      <div class="col-6">
-                        <b>Téléphone Père:</b> {{ selectedItem.telephonePere }}
-                      </div>
-                      <div class="col-6">
-                        <b>Nom de Mère:</b> {{ selectedItem.nomMere }}
-                      </div>
-                    </div>
-                    <br />
-                    <hr
-                      style="
-                        border: 5px double #0d98bb;
-                        width: 100%;
-                        margin: 10px 0;
-                      "
-                    />
-
-                    <div class="row mb-2">
-                      <div class="col-6">
-                        <b>Téléphone Mère:</b> {{ selectedItem.telephoneMere }}
-                      </div>
-                      <div class="col-6"></div>
-                    </div>
-                    <br />
-                    <!-- Add a row for Commentaire, not inline -->
-                    <div class="mb-3">
-                      <label for="commentaire" class="form-label"
-                        ><b>Commentaire</b>:</label
-                      >
-                      <div class="comment-box">
-                        <p class="comment-text">
-                          {{ selectedItem.commentaire }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                  <!-- Close button that dismisses the modal -->
-                  <button
-                    type="button"
-                    class="btn btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#detailsModal"
-                    style="border-radius: 50px"
-                  >
-                    <i class="fa-solid fa-close"></i>
-                  </button>
-                </div>
+          class="modal fade"
+          id="detailsModal"
+          tabindex="-1"
+          aria-labelledby="detailsModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog " style="max-width: 45%">
+            <!-- Increased width -->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="detailsModalLabel">
+                  <i class="fa fa-eye"></i> Détails de l'élément
+                </h1>
+                <!-- Close button that dismisses the current modal -->
+                <!-- <button
+                type="button"
+                class="btn-close text-white"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                ></button> -->
               </div>
-            </div>
-          </div>
-
-          <!-- Modal de confirmation de suppression -->
-          <div
-            class="modal fade"
-            id="deleteConfirmationModal"
-            tabindex="-1"
-            aria-labelledby="deleteConfirmationModalLabel"
-            aria-hidden="true"
-          >
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header MODAL" style="height: 60px">
-                  <h4
-                    class="modal-title"
-                    style="color: rgb(255, 255, 255); font-size: 22px"
-                    id="deleteConfirmationModalLabel"
-                  >
-                    <b>Confirmation de Suppression</b>
-                  </h4>
-                  <button
-                    type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
-                </div>
-                <div class="modal-body text-danger">
-                  <div class="alert alert-danger" role="alert">
-                    <i class="fa-solid fa-triangle-exclamation"></i> Est-ce que
-                    vous voulez supprimer ces passager ?
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row mb-2 date-highlight">
+                    <div class="col-6">
+                      <b>
+                        <i
+                          class="fa fa-calendar"
+                          style="margin-right: 5px"
+                        ></i>
+                        Date:
+                      </b>
+                      {{ selectedItem.dateEnregistrement }}
+                    </div>
                   </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                  <!-- Bouton Annuler (Cancel) -->
-                  <button
-                    type="button"
-                    class="btn colormodalfermer"
-                    data-bs-dismiss="modal"
-                    style="border-radius: 50px"
-                  >
-                    <i class="fa-solid fa-close"></i>
-                  </button>
-                  <!-- Bouton Supprimer (Delete) -->
-                  <button
-                    type="button"
-                    class="btn btn-danger colormodalsupp"
+                  <hr
                     style="
-                      border-radius: 50px;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
+                      border: 5px double #0d98bb;
+                      width: 100%;
+                      margin: 10px 0;
                     "
-                    data-bs-dismiss="modal"
+                  />
+                  <!-- Display fields inline -->
+                  <div class="row mb-2">
+                    <div class="col-6">
+                      <b>Nom:</b> {{ selectedItem.nom }}
+                    </div>
+                    <div class="col-6">
+                      <b>Prénom:</b> {{ selectedItem.prenom }}
+                    </div>
+                  </div>
+                  <br />
+                  <div class="row mb-2">
+                    <div class="col-6">
+                      <b>Etablissement:</b> {{ selectedItem.etablissement?.nom }}
+                    </div>
+                    <div class="col-6">
+                      <b>Niveaux:</b> {{ selectedItem.niveau?.nom }}
+                    </div>
+                    <div class="col-6">
+                      <b>Téléphone:</b> {{ selectedItem.telephone }}
+                    </div>
+                  </div>
+                  <br />
+                  <hr
+                    style="
+                      border: 5px double #0d98bb;
+                      width: 100%;
+                      margin: 10px 0;
+                    "
+                  />
+                  <br />
+                  <div class="row mb-2">
+                    <div class="col-6">
+                      <b>Nom de Père:</b> {{ selectedItem.nomPere }}
+                    </div>
+                  </div>
+                  <br />
+
+                  <div class="row mb-2">
+                    <div class="col-6">
+                      <b>Téléphone Père:</b> {{ selectedItem.telPere }}
+                    </div>
+                    <div class="col-6">
+                      <b>Nom de Mère:</b> {{ selectedItem.nomMere }}
+                    </div>
+                    <div class="col-6">
+                      <b>Téléphone Mère:</b> {{ selectedItem.telMere }}
+                    </div>
+                  </div>
+                  <br />
+                  <hr
+                    style="
+                      border: 5px double #0d98bb;
+                      width: 100%;
+                      margin: 10px 0;
+                    "
+                  />
+
+                  <div class="row mb-2">
+                    <div class="col-6"></div>
+                  </div>
+                  <br />
+                  <!-- Add a row for Commentaire, not inline -->
+                  <div class="mb-3">
+                    <label for="commentaire" class="form-label"
+                      ><b>Commentaire</b>:</label
+                    >
+                    <div class="comment-box">
+                      <p class="comment-text">
+                        {{ selectedItem.commentaire }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer justify-content-center">
+                <!-- Close button that dismisses the modal -->
+                <!-- <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  style="border-radius: 50px"
+                  (click)="closeDetailsModal()"
+                >
+                  <i class="fa-solid fa-close"></i>
+                </button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+                  <!-- Modal de confirmation de suppression -->
+                  <div
+                  class="modal fade"
+                  id="deleteConfirmationModal"
+                  tabindex="-1"
+                  aria-labelledby="deleteConfirmationModalLabel"
+                  aria-hidden="true"
+                >
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header MODAL" style="height: 60px">
+                        <h4
+                          class="modal-title"
+                          style="color: rgb(255, 255, 255); font-size: 22px"
+                          id="deleteConfirmationModalLabel"
+                        >
+                          <b>Confirmation de Suppression</b>
+                        </h4>
+                        <button
+                          type="button"
+                          class="btn-close btn-close-white"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="modal-body text-danger">
+                        <div class="alert alert-danger" role="alert">
+                          <i class="fa-solid fa-triangle-exclamation"></i> Est-ce que
+                          vous voulez supprimer ces passager ?
+                        </div>
+                      </div>
+                      <div class="modal-footer justify-content-center">
+                        <!-- Bouton Annuler (Cancel) -->
+                        <button
+                          type="button"
+                          class="btn colormodalfermer"
+                          data-bs-dismiss="modal"
+                          style="border-radius: 50px"
+                        >
+                          <i class="fa-solid fa-close"></i>
+                        </button>
+                        <!-- Bouton Supprimer (Delete) -->
+                        <button
+                      type="button"
+                      class="btn btn-danger colormodalsupp"
+                      style="
+                        border-radius: 50px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                      [disabled]="isLoading"
+                      (click)="confirmDelete()"
+                    >
+                      <ng-container *ngIf="!isLoading">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </ng-container>
+                      <ng-container *ngIf="isLoading">
+                        <i class="fa fa-spinner fa-spin"></i> Suppression...
+                      </ng-container>
+                    </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+  <!-- Modal for Editing -->
+  <div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" style="max-width: 80%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editModalLabel">
+          <i class="fa fa-pen"></i> Modifier les Informations
+        </h1>
+        <button
+          type="button"
+          class="btn-close text-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Form for Editing -->
+      <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
+        <div class="modal-body">
+          <div class="container-fluid">
+            <!-- First Row: Nom, Prénom, Etablissement -->
+            <div class="row">
+              <!-- Nom -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="editNom" class="form-label"
+                    >Nom <span class="required">*</span></label
                   >
-                    <ng-container>
-                      <i class="fa-solid fa-trash-can"></i>
-                    </ng-container>
-                  </button>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editNom"
+                    name="nom"
+                    [(ngModel)]="data.nom"
+                    #nomInput="ngModel"
+                    required
+                    placeholder="Nom"
+                  />
+                  <div
+                    *ngIf="nomInput.invalid && nomInput.touched"
+                    class="text-danger"
+                  >
+                    Nom est obligatoire.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Prénom -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="editPrenom" class="form-label"
+                    >Prénom <span class="required">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editPrenom"
+                    name="prenom"
+                    [(ngModel)]="data.prenom"
+                    #prenomInput="ngModel"
+                    required
+                    placeholder="Prénom"
+                  />
+                  <div
+                    *ngIf="prenomInput.invalid && prenomInput.touched"
+                    class="text-danger"
+                  >
+                    Prénom est obligatoire.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Etablissement -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                 
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <label
+                        for="addEtablissement"
+                        class="form-label"
+                      >
+                        Etablissement <span class="required">*</span>
+                      </label>
+                      <select
+                        class="form-select"
+                        id="addEtablissement"
+                        name="etablissement"
+                        [(ngModel)]="data.etablissement.id"
+                        #etablissementInput="ngModel"
+                        required
+                      >
+                        <option value="" disabled selected>
+                          Choisir un établissement
+                        </option>
+                        <option
+                          *ngFor="let etab of etablissements"
+                          [value]="etab.id"
+                        >
+                          {{ etab.nom }}
+                        </option>
+                      </select>
+                      <div
+                        *ngIf="
+                          etablissementInput.invalid &&
+                          etablissementInput.touched
+                        "
+                        class="text-danger"
+                      >
+                        Etablissement est obligatoire.
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <br />
+
+            <!-- Second Row: Niveaux, Téléphone, Nom de Père -->
+            <div class="row">
+              <!-- Niveaux -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="addNiveaux" class="form-label"
+                    >Niveaux</label
+                  >
+                  <select
+                    class="form-select"
+                    id="addNiveaux"
+                    name="niveaux"
+                    [(ngModel)]="data.niveau.id"
+                  >
+                    <option value="" disabled selected>
+                      Choisir un niveau
+                    </option>
+                    <option
+                      *ngFor="let niveau of niveaux"
+                      [value]="niveau.id"
+                    >
+                      {{ niveau.nom }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Téléphone -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="editTelephone" class="form-label"
+                    >Téléphone</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editTelephone"
+                    name="telephone"
+                    [(ngModel)]="data.telephone"
+                    placeholder="Téléphone"
+                  />
+                </div>
+              </div>
+
+              <!-- Nom de Père -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="editNomPere" class="form-label"
+                    >Nom de Père</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editNomPere"
+                    name="nomPere"
+                    [(ngModel)]="data.nomPere"
+                    placeholder="Nom de Père"
+                  />
+                </div>
+              </div>
+            </div>
+            <hr
+              style="
+                border: none;
+                border-top: 6px solid rgb(255, 213, 0);
+                border-radius: 100px;
+                width: 44%;
+                margin: 20px auto; /* Adds space above and below the hr */
+              "
+            />
+            <!-- Third Row: Téléphone Père, Nom de Mère, Téléphone Mère -->
+            <div class="row">
+              <!-- Téléphone Père -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="editTelephonePere" class="form-label"
+                    >Téléphone Père</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editTelephonePere"
+                    name="telephonePere"
+                    [(ngModel)]="data.telPere"
+                    placeholder="Téléphone Père"
+                  />
+                </div>
+              </div>
+
+              <!-- Nom de Mère -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="editNomMere" class="form-label"
+                    >Nom de Mère</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editNomMere"
+                    name="nomMere"
+                    [(ngModel)]="data.nomMere"
+                    placeholder="Nom de Mère"
+                  />
+                </div>
+              </div>
+
+              <!-- Téléphone Mère -->
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label for="editTelephoneMere" class="form-label"
+                    >Téléphone Mère</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="editTelephoneMere"
+                    name="telephoneMere"
+                    [(ngModel)]="data.telMere"
+                    placeholder="Téléphone Mère"
+                  />
+                </div>
+              </div>
+            </div>
+            <br />
+            <!-- Fourth Row: Commentaire -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="editCommentaire" class="form-label"
+                    >Commentaire</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="editCommentaire"
+                    name="commentaire"
+                    [(ngModel)]="data.commentaire"
+                    placeholder="Commentaire"
+                  ></textarea>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Modal footer with buttons -->
+        <div class="modal-footer justify-content-center">
+          <button
+            type="button"
+            class="btn btn-round colormodalfermer"
+            data-bs-dismiss="modal"
+          >
+            <i class="fa fa-close text-white"></i>
+          </button>
+           <button
+                      type="submit"
+                      class="btn btn-round colormodalmodifier"
+                      [disabled]="editForm.invalid || isLoading"
+                      [disabled]="true"
+                    >
+                      <ng-container *ngIf="!isLoading">
+                        <i class="fa fa-save text-white"></i> Enregistrer
+                      </ng-container>
+                      <ng-container *ngIf="isLoading">
+                        <i class="fa fa-spinner fa-spin text-white"></i> En
+                        cours...
+                      </ng-container>
+                    </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
           <!-- End of Modal -->
         </div>
