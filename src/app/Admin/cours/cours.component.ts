@@ -76,6 +76,14 @@ export class CoursComponent implements OnInit {
     );
   }
 
+  
+  deleteMessage: string = ''; // This will hold the success message
+  successMessage: string = ''; // This will hold the success message
+  modifysuccess: string = '';
+  hideSuccessMessage(): void {
+    this.successMessage = ''; // Clear the message, hiding the alert
+  }
+
   // Ajouter un cours
   onSubmit(form: any): void {
     if (form.valid) {
@@ -89,11 +97,14 @@ export class CoursComponent implements OnInit {
 
       this._service.createCour(newCour).subscribe(
         (response) => {
-          console.log('Cours ajouté avec succès:', response);
+          this.successMessage = 'Cours ajouté avec succès!'; // Set success message
           //alert('Cours ajouté avec succès!');
           form.reset();
           this.ngOnInit();
           this.isLoading = false;
+          setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du cours:', error);
@@ -127,11 +138,14 @@ export class CoursComponent implements OnInit {
 
       this._service.updateCour(this.editId, updatedCour).subscribe(
         (response) => {
-          console.log('Cours mis à jour avec succès:', response);
+          this.modifysuccess = 'Cours modifier avec succès!';
           //alert('Cours mis à jour avec succès!');
           this.ngOnInit();
           editForm.reset();
           this.isLoading = false;
+          setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
         },
         (error) => {
           console.error('Erreur lors de la mise à jour du cours:', error);
@@ -154,12 +168,15 @@ export class CoursComponent implements OnInit {
       this.isLoading = true;
       this._service.deleteCour(this.deleteId).subscribe(
         () => {
-          console.log('Cours supprimé avec succès');
+          this.deleteMessage = 'Cours supprimé avec succès!';
           //alert('Cours supprimé avec succès!');
           this.cours = this.cours.filter((c) => c.id !== this.deleteId);
           this.ngOnInit();
           this.closeModal();
           this.isLoading = false;
+          setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
         },
         (error) => {
           console.error('Erreur lors de la suppression du cours:', error);

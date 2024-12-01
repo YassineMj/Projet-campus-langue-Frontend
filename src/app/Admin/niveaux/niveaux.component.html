@@ -12,6 +12,63 @@
   rel="stylesheet"
 />
 
+<!-- Success delete container -->
+<div
+  *ngIf="deleteMessage"
+  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+  role="alert"
+>
+  <strong>
+    <i class="fa-solid fa-delete-left"></i> {{deleteMessage}}
+  </strong>
+  <button
+    type="button"
+    class="btn-close"
+    (click)="hideSuccessMessage()"
+    style="color: white"
+    aria-label="Close"
+  ></button>
+</div>
+
+
+<!-- Success modify container -->
+<div
+  *ngIf="modifysuccess"
+  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+  role="alert"
+>
+  <strong>
+    <i class="fa-solid fa-pen"></i> {{modifysuccess}}
+  </strong>
+  <button
+    type="button"
+    class="btn-close"
+    (click)="hideSuccessMessage()"
+    style="color: white"
+    aria-label="Close"
+  ></button>
+</div>
+
+
+<!-- Success message container -->
+<div
+  *ngIf="successMessage"
+  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+  role="alert"
+>
+  <strong>
+    <i class="fa-solid fa-user-plus"></i> {{successMessage}}
+  </strong>
+  <button
+    type="button"
+    class="btn-close"
+    (click)="hideSuccessMessage()"
+    style="color: white"
+    aria-label="Close"
+  ></button>
+</div>
+
+
 <br />
 <div class="container" style="margin-top: 0%">
   <div class="row justify-content-center">

@@ -37,7 +37,10 @@ export class InscriptionComponent implements OnInit {
   filteredEtudiant: any[] = [];
   searchTerm: string = '';
   selectedItem: any = {};
-
+  successMessage: string = ''; // This will hold the success message
+  hideSuccessMessage(): void {
+    this.successMessage = ''; // Clear the message, hiding the alert
+  }
 
 
   loadEtudiants(): void {
@@ -205,8 +208,11 @@ export class InscriptionComponent implements OnInit {
           
           this._service.createInscription(this.formDataIns).subscribe({
             next: (inscriptionData) => {
-              console.log('Inscription créée:', inscriptionData);
-              alert('Inscription enregistrée avec succès !');
+              this.successMessage = 'Linscription effectuée avec succès!'; // Set success message
+              
+                setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
             },
             error: (error) => {
               console.error('Erreur lors de la création de l’inscription:', error);
@@ -219,6 +225,7 @@ export class InscriptionComponent implements OnInit {
           console.error('Erreur lors de la création du passage:', error);
           alert('Une erreur est survenue lors de la création du passage.');
           this.isLoading = false;
+          
         }
       });
     } else {
@@ -233,8 +240,11 @@ export class InscriptionComponent implements OnInit {
           this._service.createInscription(this.formDataIns).subscribe({
             next: (inscriptionData) => {
               console.log('Inscription créée:', inscriptionData);
-              //alert('Inscription enregistrée avec succès !');
+              this.successMessage = 'Linscription effectuée avec succès!'; // Set success message
               this.isLoading = false
+              setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
             },
             error: (error) => {
               console.error('Erreur lors de la création de l’inscription:', error);

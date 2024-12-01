@@ -176,6 +176,11 @@ export class PassagerComponent implements OnInit {
     }
   }
 
+   deleteMessage: string = ''; // This will hold the success message
+   successMessage: string = ''; // This will hold the success message
+   modifysuccess: string = '';
+   errorMessage: string = '';
+  
   onSubmitMis(form: NgForm): void {
     if (form.valid) {
       this.isLoading = true;
@@ -186,11 +191,13 @@ export class PassagerComponent implements OnInit {
         
         this._service.updatePassage(this.id, this.data2).subscribe(
           () => {
-            //alert('Passage mis à jour avec succès!');
+             this.modifysuccess = 'Passage modifier avec succès!';
             this.loadPassages();
             
             this.isLoading = false;
-          },
+            setTimeout(() => {
+            this.modifysuccess = ''; // Clear the message after 2 seconds
+          }, 2000);  },
           (error) => {
             alert('Erreur lors de la mise à jour du passage.');
             this.isLoading = false;
@@ -200,49 +207,63 @@ export class PassagerComponent implements OnInit {
     }
   }
 
+  // Method to hide the success message when the close button is clicked
+  hideSuccessMessage(): void {
+    this.successMessage = '';
+    this.deleteMessage = '';
+    this.modifysuccess='';// Clear the message, hiding the alert
+  }
+
   onSubmitAjou(form: NgForm): void {
     if (form.valid) {
       this.isLoading = true;
-        this._service.createPassage(this.data1).subscribe(
-          () => {
-            //alert('Passage ajouté avec succès!');
-            this.loadPassages();
-            //form.resetForm();
-            this.data1 = {
-              nom: "",
-              prenom: "",
-              etablissement: { id: null },
-              niveau: { id: null },
-              telephone: "",
-              commentaire: "",
-              nomMere: "",
-              telMere: "",
-              nomPere: "",
-              telPere: "",
-              passage: true
-            };
-            this.isLoading = false;
+      this._service.createPassage(this.data1).subscribe(
+        () => {
+          this.successMessage = 'Passage ajouté avec succès!'; // Set success message
+          this.loadPassages();
+          this.data1 = {
+            nom: "",
+            prenom: "",
+            etablissement: { id: null },
+            niveau: { id: null },
+            telephone: "",
+            commentaire: "",
+            nomMere: "",
+            telMere: "",
+            nomPere: "",
+            telPere: "",
+            passage: true
+          };
+          setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
           },
-          (error) => {
-            alert('Erreur lors de l\'ajout du passage.');
-            this.isLoading = false;
-          }
-        );
-      }
-    
+        (error) => {
+          alert('Erreur lors de l\'ajout du passage.');
+          this.isLoading = false;
+        }
+      );
+    }
   }
+
+
 
   confirmDelete(): void {
     if (this.id) {
       this.isLoading = true;
       this._service.deletePassage(this.id).subscribe(
         () => {
-          //alert('Passage supprimé avec succès');
-          this.passages = this.passages.filter(p => p.id !== this.id);
+ this.deleteMessage = 'Passage supprimé avec succès!';
+
+          // Automatically hide the success message after 2 seconds
+               this.passages = this.passages.filter(p => p.id !== this.id);
           this.filterPassages();
           this.id = null;
           this.isLoading = false;
           this.closeModal()
+            setTimeout(() => {
+            this.deleteMessage = ''; // Clear the message after 2 seconds
+          }, 2000);   
         },
         (error) => {
           alert('Erreur lors de la suppression du passage.');
