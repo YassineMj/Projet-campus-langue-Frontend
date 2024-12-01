@@ -13,6 +13,7 @@
     /* Smooth transition */
 }
 
+
 button.btn-round.colormodalmodifier:disabled {
     background-color: rgba(141, 111, 36, 0.468) !important;
     color: white !important;
@@ -95,15 +96,16 @@ input[type="text"] {
 
 
 }
-
+.foot{
+    border-top: 6px double rgba(0, 162, 255, 0.26);
+}
 /* Custom styles when textarea is focused */
 textarea.formtexterea:focus {
     border-color: #c1dfff;
-    /* Yellow border color */
+        /* Change border color on focus */
+    outline: 0;
+        /* Remove default focus outline */
     box-shadow: 0 0 0 0.2rem rgba(130, 210, 233, 0.534);
-    /* Glowing effect */
-    outline: none;
-    /* Remove the default outline */
 }
 
 /* Style the asterisk as red */
@@ -698,15 +700,25 @@ small {
 
 /* Style for Modal Header */
 .modal-header {
-    background-color: #ffffff68;
     /* Blue header */
     color: rgb(0, 0, 0);
     /* White text */
     /* No border */
 }
+.tophed{
+    background-color: #0a9dd2;
+    color: rgb(255, 255, 255);
+    font-weight: bolder;
+    border-bottom: 10px double #c2efff;
 
-.hed {
-    border-bottom: 5px solid rgb(0, 0, 0);
+}
+
+.hedtopedit{
+    
+    color: rgb(6, 158, 213);
+    font-weight: bolder;
+    background-color: #f9feff;
+    border-bottom: 10px double #a4e7ff;
 }
 
 /* Custom CSS to make the close button white */

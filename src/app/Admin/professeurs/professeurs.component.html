@@ -45,7 +45,7 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
-                [(ngModel)]="searchTerm" 
+                [(ngModel)]="searchTerm"
                 (ngModelChange)="filterProfessors()"
               />
             </div>
@@ -107,7 +107,7 @@
                 <i class="fa fa-download" style="color: #0a9dd2"></i>
               </button>
 
-              <!--modal-->
+              <!--modal add-->
               <div
                 class="modal fade"
                 id="addModal"
@@ -117,7 +117,7 @@
               >
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
-                    <div class="modal-header hed">
+                    <div class="modal-header tophed">
                       <h1 class="modal-title fs-5" id="addModalLabel">
                         <i class="fa fa-plus"></i> Ajouter des Informations
                       </h1>
@@ -271,7 +271,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="modal-footer justify-content-center">
+                      <div class="modal-footer justify-content-center foot">
                         <button
                           type="button"
                           class="btn btn-round colormodalfermer"
@@ -280,22 +280,20 @@
                           <i class="fa fa-close text-white"></i>
                         </button>
 
-
                         <button
                           type="submit"
                           class="btn btn-round colormodalmodifier"
                           [disabled]="addForm.invalid || isLoading"
                           [disabled]="true"
                         >
-                        <ng-container *ngIf="!isLoading">
-                          <i class="fa fa-save text-white"></i> Enregistrer
-                        </ng-container>
-                        <ng-container *ngIf="isLoading">
-                          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
-                        </ng-container>
+                          <ng-container *ngIf="!isLoading">
+                            <i class="fa fa-save text-white"></i> Enregistrer
+                          </ng-container>
+                          <ng-container *ngIf="isLoading">
+                            <i class="fa fa-spinner fa-spin text-white"></i> En
+                            cours...
+                          </ng-container>
                         </button>
-                        
-
                       </div>
                     </form>
                   </div>
@@ -305,14 +303,13 @@
           </div>
           <div class="table-responsive table-container">
             <!-- Modal d'affichage' -->
-            <div *ngIf="isLoading" style="text-align: center;">
+            <div *ngIf="isLoading" style="text-align: center">
               <div>
                 <div class="spinner-border" role="status">
                   <span class="visually-hidden">Chargement...</span>
                 </div>
               </div>
             </div>
-            
 
             <table *ngIf="!isLoading" class="table" id="professorsTable">
               <thead>
@@ -335,9 +332,7 @@
                   <td>{{ professor.tel }}</td>
                   <td>{{ professor.description }}</td>
 
-                  <td
-                   
-                  >
+                  <td>
                     <!-- Edit Button -->
                     <button
                       type="button"
@@ -366,7 +361,6 @@
                     </button>
                   </td>
                 </tr>
-                
               </tbody>
             </table>
             <!-- Modal de confirmation de suppression -->
@@ -393,7 +387,6 @@
                       class="btn-close btn-close-white"
                       data-bs-dismiss="modal"
                       aria-label="Close"
-
                     ></button>
                   </div>
 
@@ -414,23 +407,26 @@
                       <i class="fa-solid fa-close"></i>
                     </button>
                     <!-- Bouton Supprimer -->
-                    
+
                     <button
-          type="button"
-          class="btn btn-danger colormodalsupp"
-          style="border-radius: 50px; display: flex; align-items: center; justify-content: center;"
-          [disabled]="isLoading"
-          (click)="confirmDelete()"
-        >
-          <ng-container *ngIf="!isLoading">
-            <i class="fa-solid fa-trash-can"></i>
-          </ng-container>
-          <ng-container *ngIf="isLoading">
-            <i class="fa fa-spinner fa-spin"></i> Suppression...
-          </ng-container>
-        </button>
-
-
+                      type="button"
+                      class="btn btn-danger colormodalsupp"
+                      style="
+                        border-radius: 50px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                      [disabled]="isLoading"
+                      (click)="confirmDelete()"
+                    >
+                      <ng-container *ngIf="!isLoading">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </ng-container>
+                      <ng-container *ngIf="isLoading">
+                        <i class="fa fa-spinner fa-spin"></i> Suppression...
+                      </ng-container>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -439,7 +435,7 @@
             <div class="modal fade" id="editModal">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                  <div class="modal-header hed">
+                  <div class="modal-header hedtopedit">
                     <h1 class="modal-title fs-5" id="editModalLabel">
                       <i class="fa fa-pen"></i> Modifier les Informations
                     </h1>
@@ -591,7 +587,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="modal-footer justify-content-center">
+                    <div class="modal-footer justify-content-center ">
                       <button
                         type="button"
                         class="btn btn-round colormodalfermer"
@@ -601,19 +597,19 @@
                       </button>
 
                       <button
-                          type="submit"
-                          class="btn btn-round colormodalmodifier"
-                          [disabled]="editForm.invalid || isLoading"
-                          [disabled]="true"
-                        >
+                        type="submit"
+                        class="btn btn-round colormodalmodifier"
+                        [disabled]="editForm.invalid || isLoading"
+                        [disabled]="true"
+                      >
                         <ng-container *ngIf="!isLoading">
                           <i class="fa fa-save text-white"></i> Enregistrer
                         </ng-container>
                         <ng-container *ngIf="isLoading">
-                          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
+                          <i class="fa fa-spinner fa-spin text-white"></i> En
+                          cours...
                         </ng-container>
-                        </button>
-
+                      </button>
                     </div>
                   </form>
                 </div>
