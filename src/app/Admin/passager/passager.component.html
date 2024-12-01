@@ -132,7 +132,7 @@
                     </div>
 
                     <!-- Form for Adding -->
-                    <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
+                    <form #addForm="ngForm" (ngSubmit)="onSubmitAjou(addForm)">
                       <div class="modal-body">
                         <div class="container-fluid">
                           <div class="row">
@@ -147,7 +147,7 @@
                                   class="form-control"
                                   id="addNom"
                                   name="nom"
-                                  [(ngModel)]="data.nom"
+                                  [(ngModel)]="data1.nom"
                                   #nomInput="ngModel"
                                   required
                                   placeholder="Nom"
@@ -172,7 +172,7 @@
                                   class="form-control"
                                   id="addPrenom"
                                   name="prenom"
-                                  [(ngModel)]="data.prenom"
+                                  [(ngModel)]="data1.prenom"
                                   #prenomInput="ngModel"
                                   required
                                   placeholder="Prénom"
@@ -201,7 +201,7 @@
                                   class="form-select"
                                   id="addEtablissement"
                                   name="etablissement"
-                                  [(ngModel)]="data.etablissement.id"
+                                  [(ngModel)]="data1.etablissement.id"
                                   #etablissementInput="ngModel"
                                   required
                                 >
@@ -234,13 +234,16 @@
                               <div class="col-md-4">
                                 <div class="mb-3">
                                   <label for="addNiveaux" class="form-label"
-                                    >Niveaux</label
+                                    >Niveaux <span class="required">*</span>
+                                    </label
                                   >
                                   <select
                                     class="form-select"
                                     id="addNiveaux"
                                     name="niveaux"
-                                    [(ngModel)]="data.niveau.id"
+                                    [(ngModel)]="data1.niveau.id"
+                                    #niveauInput="ngModel"
+                                    required
                                   >
                                     <option value="" disabled selected>
                                       Choisir un niveau
@@ -252,6 +255,15 @@
                                       {{ niveau.nom }}
                                     </option>
                                   </select>
+                                  <div
+                                  *ngIf="
+                                    niveauInput.invalid &&
+                                    niveauInput.touched
+                                  "
+                                  class="text-danger"
+                                >
+                                Niveau est obligatoire.
+                                </div>
                                 </div>
                               </div>
 
@@ -266,27 +278,12 @@
                                     class="form-control"
                                     id="addTelephone"
                                     name="telephone"
-                                    [(ngModel)]="data.telephone"
+                                    [(ngModel)]="data1.telephone"
                                     placeholder="Téléphone"
                                   />
                                 </div>
                               </div>
-                              <!-- Nom de Père -->
-                              <div class="col-md-4">
-                                <div class="mb-3">
-                                  <label for="addNomPere" class="form-label"
-                                    >Nom de Père</label
-                                  >
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    id="addNomPere"
-                                    name="nomPere"
-                                    [(ngModel)]="data.nomPere"
-                                    placeholder="Nom de Père"
-                                  />
-                                </div>
-                              </div>
+                              
                             </div>
                           </div>
 
@@ -301,6 +298,22 @@
                           />
 
                           <div class="row">
+                            <!-- Nom de Père -->
+                            <div class="col-md-4">
+                              <div class="mb-3">
+                                <label for="addNomPere" class="form-label"
+                                  >Nom de Père</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="addNomPere"
+                                  name="nomPere"
+                                  [(ngModel)]="data1.nomPere"
+                                  placeholder="Nom de Père"
+                                />
+                              </div>
+                            </div>
                             <!-- Téléphone Père -->
                             <div class="col-md-4">
                               <div class="mb-3">
@@ -312,7 +325,7 @@
                                   class="form-control"
                                   id="addTelephonePere"
                                   name="telephonePere"
-                                  [(ngModel)]="data.telPere"
+                                  [(ngModel)]="data1.telPere"
                                   placeholder="Téléphone Père"
                                 />
                               </div>
@@ -329,7 +342,7 @@
                                   class="form-control"
                                   id="addNomMere"
                                   name="nomMere"
-                                  [(ngModel)]="data.nomMere"
+                                  [(ngModel)]="data1.nomMere"
                                   placeholder="Nom de Mère"
                                 />
                               </div>
@@ -346,7 +359,7 @@
                                   class="form-control"
                                   id="addTelephoneMere"
                                   name="telephoneMere"
-                                  [(ngModel)]="data.telMere"
+                                  [(ngModel)]="data1.telMere"
                                   placeholder="Téléphone Mère"
                                 />
                               </div>
@@ -364,7 +377,7 @@
                                   class="form-control"
                                   id="addCommentaire"
                                   name="commentaire"
-                                  [(ngModel)]="data.commentaire"
+                                  [(ngModel)]="data1.commentaire"
                                   placeholder="Commentaire"
                                 ></textarea>
                               </div>
@@ -708,7 +721,7 @@
                 </div>
 
                 <!-- Form for Editing -->
-                <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
+                <form #editForm="ngForm" (ngSubmit)="onSubmitMis(editForm)">
                   <div class="modal-body">
                     <div class="container-fluid">
                       <!-- First Row: Nom, Prénom, Etablissement -->
@@ -724,7 +737,7 @@
                               class="form-control"
                               id="editNom"
                               name="nom"
-                              [(ngModel)]="data.nom"
+                              [(ngModel)]="data2.nom"
                               #nomInput="ngModel"
                               required
                               placeholder="Nom"
@@ -749,7 +762,7 @@
                               class="form-control"
                               id="editPrenom"
                               name="prenom"
-                              [(ngModel)]="data.prenom"
+                              [(ngModel)]="data2.prenom"
                               #prenomInput="ngModel"
                               required
                               placeholder="Prénom"
@@ -772,7 +785,7 @@
                               class="form-select"
                               id="addEtablissement"
                               name="etablissement"
-                              [(ngModel)]="data.etablissement.id"
+                              [(ngModel)]="data2.etablissement.id"
                               #etablissementInput="ngModel"
                               required
                             >
@@ -812,7 +825,7 @@
                               class="form-select"
                               id="addNiveaux"
                               name="niveaux"
-                              [(ngModel)]="data.niveau.id"
+                              [(ngModel)]="data2.niveau.id"
                             >
                               <option value="" disabled selected>
                                 Choisir un niveau
@@ -838,7 +851,7 @@
                               class="form-control"
                               id="editTelephone"
                               name="telephone"
-                              [(ngModel)]="data.telephone"
+                              [(ngModel)]="data2.telephone"
                               placeholder="Téléphone"
                             />
                           </div>
@@ -855,7 +868,7 @@
                               class="form-control"
                               id="editNomPere"
                               name="nomPere"
-                              [(ngModel)]="data.nomPere"
+                              [(ngModel)]="data2.nomPere"
                               placeholder="Nom de Père"
                             />
                           </div>
@@ -885,7 +898,7 @@
                               class="form-control"
                               id="editTelephonePere"
                               name="telephonePere"
-                              [(ngModel)]="data.telPere"
+                              [(ngModel)]="data2.telPere"
                               placeholder="Téléphone Père"
                             />
                           </div>
@@ -902,7 +915,7 @@
                               class="form-control"
                               id="editNomMere"
                               name="nomMere"
-                              [(ngModel)]="data.nomMere"
+                              [(ngModel)]="data2.nomMere"
                               placeholder="Nom de Mère"
                             />
                           </div>
@@ -919,7 +932,7 @@
                               class="form-control"
                               id="editTelephoneMere"
                               name="telephoneMere"
-                              [(ngModel)]="data.telMere"
+                              [(ngModel)]="data2.telMere"
                               placeholder="Téléphone Mère"
                             />
                           </div>
@@ -937,7 +950,7 @@
                               class="form-control"
                               id="editCommentaire"
                               name="commentaire"
-                              [(ngModel)]="data.commentaire"
+                              [(ngModel)]="data2.commentaire"
                               placeholder="Commentaire"
                             ></textarea>
                           </div>
