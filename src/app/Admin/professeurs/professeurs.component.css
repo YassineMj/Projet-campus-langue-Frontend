@@ -19,7 +19,20 @@ button.btn-round.colormodalmodifier:disabled {
     opacity: 1 !important;
 
 }
+.hedtopedit{
+    
+    color: rgb(6, 158, 213);
+    font-weight: bolder;
+    background-color: #f9feff;
+    border-bottom: 10px double #a4e7ff;
+}
+.tophed {
+    background-color: #0a9dd2;
+    color: rgb(255, 255, 255);
+    font-weight: bolder;
+    border-bottom: 10px double #c2efff;
 
+}
 .table-responsive {
     max-height: 500px;
 }
@@ -678,12 +691,12 @@ small {
     
     color:green;
 }
-
+.foot {
+    border-top: 6px double rgba(0, 162, 255, 0.26);
+}
 /* Style for Modal Header */
 .modal-header {
-    background-color: #ffffff68;
     /* Blue header */
-    color: rgb(0, 0, 0);
     /* White text */
     /* No border */
 }

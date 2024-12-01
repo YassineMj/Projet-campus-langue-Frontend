@@ -46,7 +46,7 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
-                [(ngModel)]="searchTerm" 
+                [(ngModel)]="searchTerm"
                 (ngModelChange)="filterNiveaux()"
               />
             </div>
@@ -118,7 +118,7 @@
               >
                 <div class="modal-dialog modal-lg">
                   <div class="modal-content">
-                    <div class="modal-header hed">
+                    <div class="modal-header tophed">
                       <h1 class="modal-title fs-5" id="addModalLabel">
                         <i class="fa fa-plus"></i> Ajouter des Informations
                       </h1>
@@ -161,7 +161,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="modal-footer justify-content-center">
+                      <div class="modal-footer justify-content-center foot">
                         <button
                           type="button"
                           class="btn btn-round colormodalfermer"
@@ -175,12 +175,13 @@
                           [disabled]="addForm.invalid || isLoading"
                           [disabled]="true"
                         >
-                        <ng-container *ngIf="!isLoading">
-                          <i class="fa fa-save text-white"></i> Enregistrer
-                        </ng-container>
-                        <ng-container *ngIf="isLoading">
-                          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
-                        </ng-container>
+                          <ng-container *ngIf="!isLoading">
+                            <i class="fa fa-save text-white"></i> Enregistrer
+                          </ng-container>
+                          <ng-container *ngIf="isLoading">
+                            <i class="fa fa-spinner fa-spin text-white"></i> En
+                            cours...
+                          </ng-container>
                         </button>
                       </div>
                     </form>
@@ -191,7 +192,7 @@
           </div>
           <!-- Table for displaying list of matieres -->
           <div class="table-responsive table-container">
-            <div *ngIf="isLoading" style="text-align: center;">
+            <div *ngIf="isLoading" style="text-align: center">
               <div>
                 <div class="spinner-border" role="status">
                   <span class="visually-hidden">Chargement...</span>
@@ -231,7 +232,6 @@
                       data-bs-target="#deleteConfirmationModal"
                       class="btn btn-danger btn-round btn-just-icon"
                       (click)="openDeleteModal(item.id)"
-
                     >
                       <i class="fa fa-trash" style="font-size: medium"></i>
                     </button>
@@ -251,7 +251,7 @@
           >
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header hedtopedit">
                   <h1 class="modal-title fs-5" id="editModalLabel">
                     <i class="fa fa-pen"></i> Modifier les Informations
                   </h1>
@@ -295,7 +295,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="modal-footer justify-content-center">
+                  <div class="modal-footer justify-content-center ">
                     <button
                       type="button"
                       class="btn btn-round colormodalfermer"
@@ -304,18 +304,19 @@
                       <i class="fa fa-close text-white"></i>
                     </button>
                     <button
-                          type="submit"
-                          class="btn btn-round colormodalmodifier"
-                          [disabled]="editForm.invalid || isLoading"
-                          [disabled]="true"
-                        >
-                        <ng-container *ngIf="!isLoading">
-                          <i class="fa fa-save text-white"></i> Enregistrer
-                        </ng-container>
-                        <ng-container *ngIf="isLoading">
-                          <i class="fa fa-spinner fa-spin text-white"></i> En cours...
-                        </ng-container>
-                        </button>
+                      type="submit"
+                      class="btn btn-round colormodalmodifier"
+                      [disabled]="editForm.invalid || isLoading"
+                      [disabled]="true"
+                    >
+                      <ng-container *ngIf="!isLoading">
+                        <i class="fa fa-save text-white"></i> Enregistrer
+                      </ng-container>
+                      <ng-container *ngIf="isLoading">
+                        <i class="fa fa-spinner fa-spin text-white"></i> En
+                        cours...
+                      </ng-container>
+                    </button>
                   </div>
                 </form>
               </div>
@@ -365,19 +366,24 @@
                   </button>
                   <!-- Bouton Supprimer -->
                   <button
-          type="button"
-          class="btn btn-danger colormodalsupp"
-          style="border-radius: 50px; display: flex; align-items: center; justify-content: center;"
-          [disabled]="isLoading"
-          (click)="confirmDelete()"
-        >
-          <ng-container *ngIf="!isLoading">
-            <i class="fa-solid fa-trash-can"></i>
-          </ng-container>
-          <ng-container *ngIf="isLoading">
-            <i class="fa fa-spinner fa-spin"></i> Suppression...
-          </ng-container>
-        </button>
+                    type="button"
+                    class="btn btn-danger colormodalsupp"
+                    style="
+                      border-radius: 50px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                    [disabled]="isLoading"
+                    (click)="confirmDelete()"
+                  >
+                    <ng-container *ngIf="!isLoading">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </ng-container>
+                    <ng-container *ngIf="isLoading">
+                      <i class="fa fa-spinner fa-spin"></i> Suppression...
+                    </ng-container>
+                  </button>
                 </div>
               </div>
             </div>

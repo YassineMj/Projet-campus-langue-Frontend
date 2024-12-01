@@ -1,3 +1,15 @@
+.foot {
+    border-top: 6px double rgba(0, 162, 255, 0.26);
+}
+
+.tophed {
+    background-color: #0a9dd2;
+    color: rgb(255, 255, 255);
+    font-weight: bolder;
+    border-bottom: 10px double #c2efff;
+
+}
+
 .print-btn {
     height: 30px;
     color: white;
@@ -685,16 +697,13 @@ small {
 
     color: green;
 }
+.hedtopedit {
 
-/* Style for Modal Header */
-.modal-header {
-    background-color: #ffffff68;
-    /* Blue header */
-    color: rgb(0, 0, 0);
-    /* White text */
-    /* No border */
+    color: rgb(6, 158, 213);
+    font-weight: bolder;
+    background-color: #f9feff;
+    border-bottom: 10px double #a4e7ff;
 }
-
 .hed {
     border-bottom: 5px solid rgb(0, 0, 0);
 }
