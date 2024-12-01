@@ -21,7 +21,21 @@ export class PassagerComponent implements OnInit {
   searchTerm: string = '';
   isLoading: boolean = false;
 
-  data = {
+  data1 = {
+    nom: "",
+    prenom: "",
+    etablissement: { id: null },
+    niveau: { id: null },
+    telephone: "",
+    commentaire: "",
+    nomMere: "",
+    telMere: "",
+    nomPere: "",
+    telPere: "",
+    passage: true
+  };
+
+  data2 = {
     nom: "",
     prenom: "",
     etablissement: { id: null },
@@ -117,7 +131,7 @@ export class PassagerComponent implements OnInit {
   }
 
   openAddModal(): void {
-    this.data = {
+    this.data1 = {
       nom: "",
       prenom: "",
       etablissement: { id: null },
@@ -134,7 +148,18 @@ export class PassagerComponent implements OnInit {
   }
 
   openEditModal(item: any): void {
-    this.data = { ...item };
+    this.data2.nom=item.nom
+    this.data2.prenom=item.prenom
+    this.data2.etablissement.id=item.etablissement.id
+    this.data2.niveau.id=item.niveau.id
+    this.data2.telephone=item.telephone
+    this.data2.commentaire=item.commentaire
+    this.data2.nomMere=item.nomMere
+    this.data2.telMere=item.telMere
+    this.data2.nomPere=item.nomPere
+    this.data2.telPere=item.telPere
+    this.data2.passage=true
+
     this.id = item.id;
   }
 
@@ -151,19 +176,19 @@ export class PassagerComponent implements OnInit {
     }
   }
 
-  onSubmit(form: NgForm): void {
+  onSubmitMis(form: NgForm): void {
     if (form.valid) {
       this.isLoading = true;
       if (this.id) {
-        if ('dateEnregistrement' in this.data) {
-          delete this.data.dateEnregistrement;
+        if ('dateEnregistrement' in this.data2) {
+          delete this.data2.dateEnregistrement;
         }        
         
-        this._service.updatePassage(this.id, this.data).subscribe(
+        this._service.updatePassage(this.id, this.data2).subscribe(
           () => {
             //alert('Passage mis à jour avec succès!');
             this.loadPassages();
-            form.resetForm();
+            
             this.isLoading = false;
           },
           (error) => {
@@ -171,12 +196,31 @@ export class PassagerComponent implements OnInit {
             this.isLoading = false;
           }
         );
-      } else {
-        this._service.createPassage(this.data).subscribe(
+      }
+    }
+  }
+
+  onSubmitAjou(form: NgForm): void {
+    if (form.valid) {
+      this.isLoading = true;
+        this._service.createPassage(this.data1).subscribe(
           () => {
             //alert('Passage ajouté avec succès!');
             this.loadPassages();
-            form.resetForm();
+            //form.resetForm();
+            this.data1 = {
+              nom: "",
+              prenom: "",
+              etablissement: { id: null },
+              niveau: { id: null },
+              telephone: "",
+              commentaire: "",
+              nomMere: "",
+              telMere: "",
+              nomPere: "",
+              telPere: "",
+              passage: true
+            };
             this.isLoading = false;
           },
           (error) => {
@@ -185,7 +229,7 @@ export class PassagerComponent implements OnInit {
           }
         );
       }
-    }
+    
   }
 
   confirmDelete(): void {
