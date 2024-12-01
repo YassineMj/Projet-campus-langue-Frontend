@@ -209,7 +209,7 @@ export class InscriptionComponent implements OnInit {
           this._service.createInscription(this.formDataIns).subscribe({
             next: (inscriptionData) => {
               this.successMessage = 'Linscription effectuée avec succès!'; // Set success message
-              
+                this.loadEtudiants();
                 setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
         }, 3000);
@@ -242,6 +242,7 @@ export class InscriptionComponent implements OnInit {
               console.log('Inscription créée:', inscriptionData);
               this.successMessage = 'Linscription effectuée avec succès!'; // Set success message
               this.isLoading = false
+              this.loadEtudiants();
               setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
         }, 3000);
