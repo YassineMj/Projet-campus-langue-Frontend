@@ -55,6 +55,12 @@ export class EtablissementsComponent implements OnInit {
   filteredEtablissements:any[]=[]
   searchTerm: string = '';
 
+  deleteMessage: string = ''; // This will hold the success message
+  successMessage: string = ''; // This will hold the success message
+  modifysuccess: string = '';
+  hideSuccessMessage(): void {
+    this.successMessage = ''; // Clear the message, hiding the alert
+  }
   // Function to handle form submission for adding a new subject
   onSubmit(form: any) {
     if (form.valid) {
@@ -69,11 +75,14 @@ export class EtablissementsComponent implements OnInit {
         description: this.description
       }).subscribe(
         (response) => {
-          console.log('Etablissement ajouté avec succès:', response);
+          this.successMessage = 'Etablissement ajouté avec succès!'; // Set success message
           //alert('Etablissement ajouté avec succès!');
           form.reset(); // Réinitialiser le formulaire
           this.ngOnInit()
           this.isLoading = false;
+            setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du Etablissement:', error);
@@ -108,7 +117,8 @@ onEdit(item: any) {
         })
         .subscribe(
           (response) => {
-            console.log('Etablissement mis à jour avec succès :', response);
+            
+            this.modifysuccess = 'Etablissement modifier avec succès!';
             //alert('Etablissement mis à jour avec succès');
             this.isLoading = false;
             this.ngOnInit();
@@ -136,13 +146,16 @@ confirmDelete(): void {
 
     this._service.deleteEtablissement(this.id).subscribe(
       () => {
-        console.log('Etablissement supprimé avec succès');
+        this.deleteMessage = 'Etablissement supprimé avec succès!';
         //alert('Etablissement supprimé avec succès');
         this.etablissements = this.etablissements.filter(p => p.id != this.id);
         this.filterEtablissements(); // Update the list after deletion
         //this.ngOnInit() // Actualiser la liste
         this.isLoading=false
-          this.closeModal()
+        this.closeModal()
+        setTimeout(() => {
+            this.deleteMessage = ''; // Clear the message after 2 seconds
+          }, 2000); 
       },
       (error) => {
         console.error('Erreur lors de Etablissement:', error);

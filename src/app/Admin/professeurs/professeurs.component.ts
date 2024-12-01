@@ -57,6 +57,13 @@ loadProfessors(): void {
   adresse = '';
   description = '';
 
+  selectedProfessorId: number = 0;
+
+  deleteMessage: string = ''; // This will hold the success message
+  successMessage: string = ''; // This will hold the success message
+  modifysuccess: string = '';
+
+
   onSubmit(form: any) {
     if (form.valid) {
       this.isLoading = true; // Activer le mode de chargement
@@ -79,12 +86,14 @@ loadProfessors(): void {
         description: this.description,
       }).subscribe(
         (response) => {
-          console.log('Professeur ajouté avec succès:', response);
+          this.successMessage = 'Professeur ajouté avec succès!'; // Set success message
          // alert('Professeur ajouté avec succès!');
           form.reset(); // Réinitialiser le formulaire
           this.ngOnInit()
           this.isLoading = false; // Désactiver le mode de chargement
-
+          setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du professeur:', error);
@@ -98,8 +107,10 @@ loadProfessors(): void {
     }
   }
 
-  selectedProfessorId: number = 0;
 
+  hideSuccessMessage(): void {
+    this.successMessage = ''; // Clear the message, hiding the alert
+  }
 
    // Pre-filled values
   id:any
@@ -109,6 +120,7 @@ loadProfessors(): void {
   editTelephone = '';
   editAdresse = '';
   editDescription = '';
+
 
   openEditModal(professeur: any) {
     this.id = professeur.id;
@@ -136,6 +148,7 @@ loadProfessors(): void {
         if (this.id) {
           this._service
             .updateProfesseur(this.id, {
+              
               nom: this.editNom,
               prenom: this.editPrenom,
               cin: this.editCIN,
@@ -145,11 +158,13 @@ loadProfessors(): void {
             })
             .subscribe(
               (response) => {
-                console.log('Professeur mis à jour avec succès :', response);
+             this.modifysuccess = 'Professeur modifier avec succès!';
                 //alert('Professeur mis à jour avec succès');
                 this.ngOnInit();
                 this.isLoading = false;
-
+                setTimeout(() => {
+                            this.modifysuccess = ''; // Clear the message after 2 seconds
+                          }, 2000);
               },
               (error) => {
                 console.error('Erreur lors de la mise à jour du professeur :', error);
@@ -174,12 +189,15 @@ loadProfessors(): void {
       this.isLoading=true
       this._service.deleteProfessor(this.selectedProfessorId).subscribe(
         () => {
-          console.log('Professeur supprimé avec succès');
+          this.deleteMessage = 'Professeur supprimé avec succès!';
           //alert('Professeur supprimé avec succès');
           this.professors = this.professors.filter(p => p.id != this.selectedProfessorId);
           this.filterProfessors(); // Update the list after deletion
           this.isLoading=false
           this.closeModal()
+          setTimeout(() => {
+            this.deleteMessage = ''; // Clear the message after 2 seconds
+          }, 2000);  
           //this.ngOnInit() // Actualiser la liste
         },
         (error) => {
@@ -327,7 +345,8 @@ printTable(): void {
   // Close the document and trigger the print dialog
   printWindow.document.close();
   printWindow.print();
-}
+  }
+  
 downloadAsExcel(): void {
   const tableElement = document.getElementById('professorsTable') as HTMLTableElement;
 

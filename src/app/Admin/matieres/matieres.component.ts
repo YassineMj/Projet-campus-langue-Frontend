@@ -48,6 +48,15 @@ export class MatieresComponent implements OnInit {
    // For adding a new subject
   libelle: string = '';
   description: string = '';
+  selectedProfessorId: number = 0;
+
+  deleteMessage: string = ''; // This will hold the success message
+  successMessage: string = ''; // This will hold the success message
+  modifysuccess: string = '';
+  hideSuccessMessage(): void {
+    this.successMessage = ''; // Clear the message, hiding the alert
+  }
+
 
   // Handle form submission
   onSubmit(form: any) {
@@ -63,11 +72,15 @@ export class MatieresComponent implements OnInit {
         description: this.description
       }).subscribe(
         (response) => {
-          console.log('Matiere ajouté avec succès:', response);
+          
+          this.successMessage = 'Matiere ajouté avec succès!'; // Set success message
           //alert('Matiere ajouté avec succès!');
           form.reset(); // Réinitialiser le formulaire
           this.ngOnInit()
           this.isLoading = false;
+          setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du Matiere:', error);
@@ -104,10 +117,13 @@ export class MatieresComponent implements OnInit {
         })
         .subscribe(
           (response) => {
-            console.log('Matiere mis à jour avec succès :', response);
+            this.modifysuccess = 'Matiere modifier avec succès!';
             //alert('Matiere mis à jour avec succès');
             this.ngOnInit();
             this.isLoading = false;
+            setTimeout(() => {
+                            this.modifysuccess = ''; // Clear the message after 2 seconds
+                          }, 2000);
           },
           (error) => {
             console.error('Erreur lors de la mise à jour du Matiere :', error);
@@ -134,13 +150,16 @@ export class MatieresComponent implements OnInit {
 
       this._service.deleteLangue(this.selectedMatiereId).subscribe(
         () => {
-          console.log('Matiere supprimé avec succès');
+          this.deleteMessage = 'Matiere supprimé avec succès!';
           //alert('Matiere supprimé avec succès');
           this.matieres = this.matieres.filter(p => p.id != this.selectedMatiereId);
           this.filterMatieres(); // Update the list after deletion
           //this.ngOnInit() // Actualiser la liste
           this.isLoading=false
           this.closeModal()
+          setTimeout(() => {
+            this.deleteMessage = ''; // Clear the message after 2 seconds
+          }, 2000); 
         },
         (error) => {
           console.error('Erreur lors de la suppression:', error);

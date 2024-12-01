@@ -51,6 +51,15 @@ export class NiveauxComponent implements OnInit {
   filteredNiveaux: any[] = [];
   searchTerm: string = '';
 
+  
+  deleteMessage: string = ''; // This will hold the success message
+  successMessage: string = ''; // This will hold the success message
+  modifysuccess: string = '';
+
+  hideSuccessMessage(): void {
+    this.successMessage = ''; // Clear the message, hiding the alert
+  }
+
   // Function to handle form submission for adding a new level
   onSubmit(form: any) {
     if (form.valid) {
@@ -60,11 +69,14 @@ export class NiveauxComponent implements OnInit {
       };      
       this._service.createNiveau(newLevel).subscribe(
         (response) => {
-          console.log('Niveau ajouté avec succès:', response);
+          this.successMessage = 'Niveau ajouté avec succès!'; // Set success message
           //alert('Niveau ajouté avec succès!');
           form.reset();
           this.ngOnInit();
           this.isLoading = false;
+          setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du niveau:', error);
@@ -92,11 +104,14 @@ export class NiveauxComponent implements OnInit {
       
       this._service.updateNiveau(this.id, updatedLevel).subscribe(
         (response) => {
-          console.log('Niveau mis à jour avec succès :', response);
+             this.modifysuccess = 'Niveau modifié avec succès !';
           //alert('Niveau mis à jour avec succès');
           this.ngOnInit();
           editForm.reset();
           this.isLoading = false;
+          setTimeout(() => {
+            this.modifysuccess = ''; // Clear the message after 2 seconds
+          }, 2000);
 
         },
         (error) => {
@@ -120,13 +135,15 @@ export class NiveauxComponent implements OnInit {
 
       this._service.deleteNiveau(this.id).subscribe(
         () => {
-          console.log('Niveau supprimé avec succès');
+          this.deleteMessage = 'Niveau supprimé avec succès!';
           //alert('Niveau supprimé avec succès');
           this.niveaux = this.niveaux.filter(n => n.id != this.id);
           this.ngOnInit()
           this.isLoading = false;
           this.closeModal();
-
+          setTimeout(() => {
+                      this.deleteMessage = ''; // Clear the message after 2 seconds
+                    }, 2000);   
         },
         (error) => {
           console.error('Erreur lors de la suppression du niveau:', error);

@@ -81,6 +81,13 @@ export class GroupesComponent {
     );
   }
 
+  deleteMessage: string = ''; // This will hold the success message
+  successMessage: string = ''; // This will hold the success message
+  modifysuccess: string = '';
+  hideSuccessMessage(): void {
+    this.successMessage = ''; // Clear the message, hiding the alert
+  }
+
   // Ajouter un nouveau groupe
   onSubmit(form: any): void {
     if (form.valid) {
@@ -94,11 +101,15 @@ export class GroupesComponent {
 
       this._service.createGroupe(newGroupe).subscribe(
         (response) => {
-          console.log('Groupe ajouté avec succès :', response);
+          
+         this.successMessage = 'Groupe ajouté avec succès!'; // Set success message
           //alert('Groupe ajouté avec succès !');
           form.reset();
           this.ngOnInit(); // Recharger la liste des groupes
           this.isLoading = false;
+               setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du groupe :', error);
@@ -131,11 +142,15 @@ export class GroupesComponent {
 
       this._service.updateGroupe(this.editId, updatedGroupe).subscribe(
         (response) => {
-          console.log('Groupe mis à jour avec succès :', response);
+          
+          this.modifysuccess = 'Groupe modifier avec succès!';
           //alert('Groupe mis à jour avec succès !');
           this.ngOnInit(); // Recharger la liste des groupes
           editForm.reset();
           this.isLoading = false;
+               setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
         },
         (error) => {
           console.error('Erreur lors de la mise à jour du groupe :', error);
@@ -157,12 +172,15 @@ export class GroupesComponent {
     this.isLoading = true;
     this._service.deleteGroupe(this.id).subscribe(
       () => {
-        console.log('Groupe supprimé avec succès');
+        this.deleteMessage = 'Groupe supprimé avec succès!';
         //alert('Groupe supprimé avec succès !');
         this.groupes = this.groupes.filter(g => g.id !== this.id);
         this.ngOnInit()
         this.closeModal();
         this.isLoading = false;
+        setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
       },
       (error) => {
         console.error('Erreur lors de la suppression du groupe :', error);
