@@ -236,7 +236,7 @@ export class PassagerComponent implements OnInit {
           };
           setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
+        }, 2000);
           },
         (error) => {
           alert('Erreur lors de l\'ajout du passage.');

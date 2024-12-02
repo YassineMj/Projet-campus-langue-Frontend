@@ -104,7 +104,7 @@ export class CoursComponent implements OnInit {
           this.isLoading = false;
           setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
+        }, 2000);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du cours:', error);
@@ -145,7 +145,7 @@ export class CoursComponent implements OnInit {
           this.isLoading = false;
           setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
+        }, 2000);
         },
         (error) => {
           console.error('Erreur lors de la mise à jour du cours:', error);
@@ -176,7 +176,7 @@ export class CoursComponent implements OnInit {
           this.isLoading = false;
           setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
+        }, 2000);
         },
         (error) => {
           console.error('Erreur lors de la suppression du cours:', error);

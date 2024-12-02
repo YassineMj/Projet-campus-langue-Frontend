@@ -82,7 +82,7 @@ export class EtablissementsComponent implements OnInit {
           this.isLoading = false;
             setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
+        }, 2000);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du Etablissement:', error);
@@ -123,6 +123,11 @@ onEdit(item: any) {
             this.isLoading = false;
             this.ngOnInit();
             editForm.reset();
+              setTimeout(() => {
+  this.modifysuccess = '';
+  console.log('After timeout: modifysuccess =', this.modifysuccess);
+}, 2000);
+
           },
           (error) => {
             console.error('Erreur lors de la mise à jour du Etablissement :', error);
