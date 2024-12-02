@@ -443,6 +443,16 @@ header {
     /* Force active icon color */
 }
 
+/* Cible l'élément avec l'id "sidebar" */
+#sidebar {
+  overflow-y: auto; /* Assure que la barre de défilement apparaît si nécessaire */
+  scrollbar-width: thin; /* Pour Firefox : définit une barre de défilement fine */
+  scrollbar-color: #00000096 #f0f0f0; /* Couleurs pour Firefox : pouce et piste */
+}
+
+
+
+
 /* Active State Styling */
 .sidebar-nav .nav-link.active {
   background-color: #000000;
