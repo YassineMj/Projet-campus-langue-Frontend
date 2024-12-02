@@ -212,7 +212,7 @@ export class InscriptionComponent implements OnInit {
                 this.loadEtudiants();
                 setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
+        }, 2000);
             },
             error: (error) => {
               console.error('Erreur lors de la création de l’inscription:', error);
@@ -245,7 +245,7 @@ export class InscriptionComponent implements OnInit {
               this.loadEtudiants();
               setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
+        }, 2000);
             },
             error: (error) => {
               console.error('Erreur lors de la création de l’inscription:', error);

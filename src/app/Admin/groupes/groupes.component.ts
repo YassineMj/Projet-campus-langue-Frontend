@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { GlobalService } from '../global.service';
 import * as bootstrap from 'bootstrap';
 
@@ -33,7 +33,7 @@ export class GroupesComponent {
 
   isLoading: boolean = false;
 
-  constructor(private _service: GlobalService) {}
+  constructor(private _service: GlobalService,private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadGroupes();
@@ -109,7 +109,7 @@ export class GroupesComponent {
           this.isLoading = false;
                setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
+        }, 2000);
         },
         (error) => {
           console.error('Erreur lors de l\'ajout du groupe :', error);
@@ -140,22 +140,24 @@ export class GroupesComponent {
         profId: this.editProfId
       };
 
-      this._service.updateGroupe(this.editId, updatedGroupe).subscribe(
-        (response) => {
-          
+          this._service.updateGroupe(this.editId, updatedGroupe).subscribe(
+         (response) => {
+          console.log('Update response:', response); // Debugging
           this.modifysuccess = 'Groupe modifier avec succès!';
-          //alert('Groupe mis à jour avec succès !');
-          this.ngOnInit(); // Recharger la liste des groupes
-          editForm.reset();
           this.isLoading = false;
-               setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
-        },
+          this.ngOnInit(); 
+          editForm.reset();
+              setTimeout(() => {
+          this.modifysuccess = '';
+          console.log('After timeout: modifysuccess =', this.modifysuccess);
+        }, 2000);
+          },
+          
         (error) => {
           console.error('Erreur lors de la mise à jour du groupe :', error);
           alert('Erreur lors de la mise à jour.');
           this.isLoading = false;
+          
         }
       );
     }
@@ -179,8 +181,8 @@ export class GroupesComponent {
         this.closeModal();
         this.isLoading = false;
         setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
+          this.deleteMessage = ''; // Hide the success message after 5 seconds
+        }, 2000);
       },
       (error) => {
         console.error('Erreur lors de la suppression du groupe :', error);
