@@ -209,6 +209,30 @@ export class InscriptionComponent implements OnInit {
           this._service.createInscription(this.formDataIns).subscribe({
             next: (inscriptionData) => {
               this.successMessage = 'Linscription effectuée avec succès!'; // Set success message
+              this.formDataEtu = {
+                nom: "",
+                prenom: "",
+                etablissement: { id: null },
+                niveau: { id: null },
+                telephone: "",
+                commentaire: "",
+                nomMere: "",
+                telMere: "",
+                nomPere: "",
+                telPere: "",
+                passage: false
+              };
+            
+              this.formDataIns={
+              etudiantId: null,
+              coursId: null,
+              groupeId: null,
+              profId:null ,
+              mois: null,
+              annee: null,
+              emploidutemp: null,
+              test:null
+              }
                 this.loadEtudiants();
                 setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
