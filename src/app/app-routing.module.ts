@@ -10,6 +10,8 @@ import { GroupesComponent } from './Admin/groupes/groupes.component';
 import { CoursComponent } from './Admin/cours/cours.component';
 import { PassagerComponent } from './Admin/passager/passager.component';
 import { InscriptionComponent } from './Admin/inscription/inscription.component';
+import { ListEtudiantComponent } from './Admin/list-etudiant/list-etudiant.component';
+import { DetailEtudiantComponent } from './Admin/detail-etudiant/detail-etudiant.component';
 
 
 const routes: Routes = [
@@ -57,6 +59,14 @@ const routes: Routes = [
       {
         path: 'groupes',  // Route pour les groupes
         component: GroupesComponent,  // Composant des groupes
+      },
+         {
+        path: 'etudiant',  // Route pour les groupes
+        component: ListEtudiantComponent,  // Composant des groupes
+      },
+       {
+        path: 'detail-etudaint',  // Route pour les groupes
+        component: DetailEtudiantComponent,  // Composant des groupes
       },
     ],
   },
