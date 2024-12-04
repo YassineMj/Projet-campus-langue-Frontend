@@ -67,16 +67,36 @@
           >
         </a>
       </li>
-      <hr
-        style="
-          border: none;
-          border-top: 6px solid rgb(255, 213, 0);
-          border-radius: 100px;
-          width: 74%;
-          margin: 20px auto; /* Adds space above and below the hr */
-        "
-      />
+      <br />
+      <div class="hr-container">
+        <hr
+          style="
+            border: 4px double #008cc7;
+            width: 100%;
+            margin: auto;
+            border-radius: 100px;
+          "
+        />
+        <span class="hr-text">
+          <img src="assets/images/add.png" alt="Logo" style="max-width: 50%" />
+        </span>
+      </div>
+      <br />
+      <!-- passager -->
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          routerLink="/menu-admin/etudiant"
+          routerLinkActive="active"
+        >
+          <i
+            class="fa-solid fa-users-rectangle iconmenu"
+            style="margin-right: 10px; color: #000000"
+          ></i>
 
+          <span>Etudiants</span>
+        </a>
+      </li>
       <!-- Professeurs -->
       <li class="nav-item">
         <a

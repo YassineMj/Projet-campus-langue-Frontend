@@ -15,6 +15,8 @@ import { CoursComponent } from './Admin/cours/cours.component';
 import { HttpClientModule } from '@angular/common/http';
 import { PassagerComponent } from './Admin/passager/passager.component';
 import { InscriptionComponent } from './Admin/inscription/inscription.component';
+import { ListEtudiantComponent } from './Admin/list-etudiant/list-etudiant.component';
+import { DetailEtudiantComponent } from './Admin/detail-etudiant/detail-etudiant.component';
 
 
 
@@ -31,7 +33,9 @@ import { InscriptionComponent } from './Admin/inscription/inscription.component'
     EtablissementsComponent,
     CoursComponent,
     PassagerComponent,
-    InscriptionComponent
+    InscriptionComponent,
+    ListEtudiantComponent,
+    DetailEtudiantComponent
     
     
   ],

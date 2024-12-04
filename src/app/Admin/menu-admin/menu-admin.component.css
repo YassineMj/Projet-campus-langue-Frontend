@@ -442,7 +442,36 @@ header {
     color: #ffd900 !important;
     /* Force active icon color */
 }
+.hr-container {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    /* Center text horizontally */
+}
 
+.hr-container hr {
+    border: 4px double #008cc7;
+    width: 80%;
+    /* You can adjust the width of the <hr> */
+    margin: 10px auto;
+    border-radius: 100px;
+    position: relative;
+}
+
+.hr-text {
+    position: absolute;
+    top: -1.55em;
+    /* Adjust text vertical position */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    /* White background to cover the <hr> line */
+    padding: 0 9px;
+    /* Smaller padding left and right */
+    font-weight: bold;
+    font-size: small;
+    /* Optional: adjust font size */
+}
 /* Cible l'élément avec l'id "sidebar" */
 #sidebar {
   overflow-y: auto; /* Assure que la barre de défilement apparaît si nécessaire */
