@@ -144,7 +144,7 @@ export class CoursComponent implements OnInit {
           editForm.reset();
           this.isLoading = false;
           setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
+          this.modifysuccess = ''; // Hide the success message after 5 seconds
         }, 2000);
         },
         (error) => {
@@ -157,25 +157,18 @@ export class CoursComponent implements OnInit {
   }
 
   // Supprimer un cours
-  deleteId: number | null = null;
 
-  openDeleteModal(courId: number): void {
-    this.deleteId = courId;
-  }
-
-  confirmDelete(): void {
-    if (this.deleteId !== null) {
+  confirmDelete(idC:any): void {
+    if (idC !== null) {
       this.isLoading = true;
-      this._service.deleteCour(this.deleteId).subscribe(
+      this._service.deleteCour(idC).subscribe(
         () => {
           this.deleteMessage = 'Cours supprimé avec succès!';
           //alert('Cours supprimé avec succès!');
-          this.cours = this.cours.filter((c) => c.id !== this.deleteId);
-          this.ngOnInit();
-          this.closeModal();
+          this.loadCours();
           this.isLoading = false;
           setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
+          this.deleteMessage = ''; // Hide the success message after 5 seconds
         }, 2000);
         },
         (error) => {
@@ -187,20 +180,6 @@ export class CoursComponent implements OnInit {
     }
   }
 
-  closeModal(): void {
-    const modalElement = document.getElementById('deleteConfirmationModal');
-    if (modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      modalInstance?.hide();
-  
-      // Supprimer manuellement les classes ajoutées par Bootstrap
-      document.body.classList.remove('modal-open');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove(); // Supprime le backdrop (fond gris)
-      }
-    }
-  }
 
 
 // Function to print the list

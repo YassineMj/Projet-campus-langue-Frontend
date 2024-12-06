@@ -65,7 +65,7 @@ const routes: Routes = [
         component: ListEtudiantComponent,  // Composant des groupes
       },
        {
-        path: 'detail-etudaint',  // Route pour les groupes
+        path: 'detail-etudiant/:idEtu',  // Route pour les groupes
         component: DetailEtudiantComponent,  // Composant des groupes
       },
     ],

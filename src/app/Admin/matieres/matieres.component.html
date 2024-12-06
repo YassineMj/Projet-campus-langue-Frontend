@@ -297,86 +297,20 @@
 
                     <!-- Delete Button -->
                     <button
-                      type="button"
-                      rel="tooltip"
-                      data-bs-toggle="modal"
-                      data-bs-target="#deleteConfirmationModal"
-                      class="btn btn-danger btn-round btn-just-icon"
-                      (click)="openDeleteModal(item.id)"
-                    >
-                      <i class="fa fa-trash" style="font-size: medium"></i>
-                    </button>
+                    type="button"
+                    class="btn btn-danger btn-round btn-just-icon"
+                    (click)="confirmDelete(item.id)"
+                    style="margin-right: 5px"
+                  >
+                  <i class="fa fa-trash" style="font-size: medium"></i>
+
+                  </button>
                   </td>
                 </tr>
               </tbody>
             </table>
 
-            <div
-              class="modal fade"
-              id="deleteConfirmationModal"
-              tabindex="-1"
-              aria-labelledby="deleteConfirmationModalLabel"
-              aria-hidden="true"
-            >
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header MODAL" style="height: 60px">
-                    <h4
-                      class="modal-title"
-                      style="color: rgb(255, 255, 255); font-size: 22px"
-                      id="deleteConfirmationModalLabel"
-                    >
-                      <b> Confirmation de Suppression</b>
-                    </h4>
-                    <button
-                      type="button"
-                      style="color: rgb(255, 255, 255)"
-                      class="btn-close btn-close-white"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
 
-                  <div class="modal-body text-danger">
-                    <div class="alert alert-danger" role="alert">
-                      <i class="fa-solid fa-triangle-exclamation"></i>
-                      Est-ce que vous voulez supprimer matiere ?
-                    </div>
-                  </div>
-                  <div class="modal-footer justify-content-center">
-                    <!-- Bouton Annuler -->
-                    <button
-                      type="button"
-                      class="btn colormodalfermer"
-                      data-bs-dismiss="modal"
-                      style="border-radius: 50px"
-                    >
-                      <i class="fa-solid fa-close"></i>
-                    </button>
-                    <!-- Bouton Supprimer -->
-                    <button
-                      type="button"
-                      class="btn btn-danger colormodalsupp"
-                      style="
-                        border-radius: 50px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                      "
-                      [disabled]="isLoading"
-                      (click)="confirmDelete()"
-                    >
-                      <ng-container *ngIf="!isLoading">
-                        <i class="fa-solid fa-trash-can"></i>
-                      </ng-container>
-                      <ng-container *ngIf="isLoading">
-                        <i class="fa fa-spinner fa-spin"></i> Suppression...
-                      </ng-container>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- Modal for Editing -->

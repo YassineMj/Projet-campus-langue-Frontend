@@ -138,25 +138,19 @@ export class MatieresComponent implements OnInit {
 
   selectedMatiereId:any
 
-  openDeleteModal(matiereId: number): void {
-    this.selectedMatiereId = matiereId;
-    console.log(this.selectedMatiereId);
-    
-  }
 
-  confirmDelete(): void {
-    if (this.selectedMatiereId) {
+
+  confirmDelete(idM:any): void {
+    if (idM) {
       this.isLoading=true
 
-      this._service.deleteLangue(this.selectedMatiereId).subscribe(
+      this._service.deleteLangue(idM).subscribe(
         () => {
           this.deleteMessage = 'Matiere supprimé avec succès!';
           //alert('Matiere supprimé avec succès');
-          this.matieres = this.matieres.filter(p => p.id != this.selectedMatiereId);
-          this.filterMatieres(); // Update the list after deletion
+          this.loadMatiers();
           //this.ngOnInit() // Actualiser la liste
           this.isLoading=false
-          this.closeModal()
           setTimeout(() => {
             this.deleteMessage = ''; // Clear the message after 2 seconds
           }, 2000); 
@@ -168,21 +162,6 @@ export class MatieresComponent implements OnInit {
 
         }
       );
-    }
-  }
-
-  closeModal(): void {
-    const modalElement = document.getElementById('deleteConfirmationModal');
-    if (modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      modalInstance?.hide();
-  
-      // Supprimer manuellement les classes ajoutées par Bootstrap
-      document.body.classList.remove('modal-open');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove(); // Supprime le backdrop (fond gris)
-      }
     }
   }
 

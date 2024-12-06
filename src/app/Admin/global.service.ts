@@ -12,7 +12,6 @@ export class GlobalService {
   constructor(private http: HttpClient) {}
 
     // ----- Professors -----
-
   getProfessors(): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl+"/profs");
   }
@@ -30,7 +29,6 @@ export class GlobalService {
   }
 
     // ----- Langues -----
-
   getLangues(): Observable<any[]> {
     return this.http.get<any[]>(this.baseUrl+"/langues");
   }
@@ -52,7 +50,6 @@ export class GlobalService {
   }
 
     // ----- Etablissements -----
-  
   getEtablissements(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/etablissements`);
   }
@@ -74,7 +71,6 @@ export class GlobalService {
   }
 
     // ----- Niveaux -----
-
    getNiveaux(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/niveaux`);
   }
@@ -96,7 +92,6 @@ export class GlobalService {
   }
 
     // ----- Cours -----
-
   getCours(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/cours`);
   }
@@ -148,13 +143,30 @@ export class GlobalService {
   }
 
 
-  // ----- Passages -----
+  // ----- Inscriptions -----
   createInscription(inscription: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/inscriptions`, inscription);
   }
 
-    // ----- Passages -----
+    // ----- Etudiants -----
     getEtudiants(): Observable<any[]> {
       return this.http.get<any[]>(`${this.baseUrl}/etudiants`);
+    }
+    updateEtudiant(id: number, etudiant: any): Observable<any> {
+      return this.http.put<any>(`${this.baseUrl}/etudiants/${id}`, etudiant);
+    }
+    getEtudiantById(id:any){
+      return this.http.get<any>(`${this.baseUrl}/etudiants/${id}`);
+    }
+
+    // ----- Inscriptions -----
+    getInscriptions(mois:string,annee:string): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/inscriptions?mois=${mois}&annee=${annee}`);
+    }
+    getInscriptionsByIdEtudiant(idEtu:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/etudiants/${idEtu}/inscriptions`);
+    }
+    deleteInscriptions(id:any): Observable<any[]> {
+      return this.http.delete<any[]>(`${this.baseUrl}/inscriptions/${id}`);
     }
 }

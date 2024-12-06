@@ -163,22 +163,16 @@ export class GroupesComponent {
     }
   }
 
-  id:any
-  openDeleteModal(niveauId: number): void {
-    this.id = niveauId;
-    console.log(this.id);
-  }
+  
 
   // Supprimer un groupe
-  confirmDelete(): void {
+  confirmDelete(idG:any): void {
     this.isLoading = true;
-    this._service.deleteGroupe(this.id).subscribe(
+    this._service.deleteGroupe(idG).subscribe(
       () => {
         this.deleteMessage = 'Groupe supprimé avec succès!';
         //alert('Groupe supprimé avec succès !');
-        this.groupes = this.groupes.filter(g => g.id !== this.id);
-        this.ngOnInit()
-        this.closeModal();
+        this.loadGroupes()
         this.isLoading = false;
         setTimeout(() => {
           this.deleteMessage = ''; // Hide the success message after 5 seconds
@@ -187,25 +181,9 @@ export class GroupesComponent {
       (error) => {
         console.error('Erreur lors de la suppression du groupe :', error);
         alert('Erreur lors de la suppression.');
-        this.closeModal();
         this.isLoading=false
       }
     );
-  }
-
-  closeModal(): void {
-    const modalElement = document.getElementById('deleteConfirmationModal');
-    if (modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      modalInstance?.hide();
-  
-      // Supprimer manuellement les classes ajoutées par Bootstrap
-      document.body.classList.remove('modal-open');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove(); // Supprime le backdrop (fond gris)
-      }
-    }
   }
 
   // Filtrer les groupes
