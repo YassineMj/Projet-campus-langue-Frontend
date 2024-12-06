@@ -1,25 +1,146 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { GlobalService } from '../global.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-detail-etudiant',
   templateUrl: './detail-etudiant.component.html',
   styleUrls: ['./detail-etudiant.component.css']
 })
+
+
 export class DetailEtudiantComponent {
 
-  constructor(private _service: GlobalService) { }
+  @Input() idEtu!: any;
+
+  isLoading: boolean = false;
+
+
+  constructor(private activeRoute: ActivatedRoute,private _service: GlobalService) {
+    this.activeRoute.params.subscribe((params) => {
+      this.idEtu = params['idEtu'];
+    });
+  }
+
+  etudiant:any
+  inscriptions:any
+  inscriptions2:any[]=[]
+
+  filteredInscriptions:any[]=[]
+  searchTerm: string = '';
+  
+
+
+    getMois(mois: number): string {
+    const moisNoms = [
+      'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
+      'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+    ];
+    return moisNoms[mois - 1] || 'Inconnu';
+  }
+
+  formatEdt(edt: string): string {
+    return edt.replace(/\n/g, ' | ');
+  }
+
+  ngOnInit(): void {
+    // this.loadCours();
+    // this.loadProfs();
+    // this.loadGroupes();
+    this.loadDetails();
+    
+  }
+
+  loadDetails(){
+    this.isLoading = true;
+
+    this._service.getEtudiantById(this.idEtu).subscribe(
+      (data) => {
+        this.etudiant=data
+        
+        this._service.getInscriptionsByIdEtudiant(this.idEtu).subscribe(
+          (data) => {
+            this.inscriptions=data
+            this.inscriptions2=this.inscriptions.inscriptions;
+
+            this.inscriptions2 = this.inscriptions2.map(i => ({
+              ...i,
+              mois: this.getMois(i.mois)
+            }));
+
+            this.filteredInscriptions=this.inscriptions2;
+
+           },
+          (error) => {
+            alert('Erreur lors de chargement des inscriptions.');
+          })
+          this.isLoading = false;
+       },
+    
+      (error) => {
+        alert('Erreur lors de la mise à jour du Etudiant.');
+        this.isLoading = false;
+      }
+    );
+  }
+
+  filterInscription(): void {
+    this.filteredInscriptions = this.inscriptions2.filter(i => 
+      i.annee.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      i.dateInscription.toString().includes(this.searchTerm.toLowerCase()) ||
+      i.mois.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      i.prof.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      i.langue.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      i.groupe.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      i.cours.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+      
+  }
+
+  confirmDelete(idInsc:any): void {
+    this.isLoading = true;
+
+      this._service.deleteInscriptions(idInsc).subscribe(
+        () => {
+          this.loadDetails();
+        },
+        (error) => {
+          this.isLoading = false;
+
+          if(error.status==200){
+            this.ngOnInit();
+            return
+          }
+          alert('Erreur lors de la suppression d\'inscription.');
+
+        }
+      );
+  }
+
   data = {
-    matieres: '',
-    mois: '',
-    groupe: '',
-    annee: '',
-    professeur: '',
-    edt: '',
-    test: ''
+    
+      etudiantId: null,
+      coursId: null,
+      groupeId: null,
+      profId: null,
+      mois: null,
+      annee: null,
+      emploidutemp: null,
+      test:null
+    
   };
+
+  onGroupChange(){
+    this.groupes.forEach(element => {
+
+      if(element.id==this.data.groupeId){
+        this.data.emploidutemp=element.emploiDuTemps
+        return;
+      }
+    });
+  }
 
   onSubmit(form: NgForm) {
     if (form.valid) {
@@ -30,20 +151,45 @@ export class DetailEtudiantComponent {
     }
   }
 
-  closeModal(): void {
-    const modalElement = document.getElementById('deleteConfirmationModal');
-    if (modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      modalInstance?.hide();
+  // idInscription:any
+
+  cours:any[]=[];
+  profs:any[]=[];
+  groupes:any[]=[];
+
+  // loadCours(): void {
+  //   this._service.getCours().subscribe(
+  //     (data) => {
+  //       this.cours = data;
+  //     },
+  //     (error) => {
+  //       console.error('Erreur lors du chargement des cours', error);
+  //     }
+  //   );
+  // }
+
+  // loadProfs(): void {
+  //   this._service.getProfessors().subscribe(
+  //     (data) => {
+  //       this.profs = data;
+  //     },
+  //     (error) => {
+  //       console.error('Erreur lors du chargement des profs', error);
+  //     }
+  //   );
+  // }
+
+  // loadGroupes(): void {
+  //   this._service.getGroupes().subscribe(
+  //     (data) => {
+  //       this.groupes = data;
+  //     },
+  //     (error) => {
+  //       console.error('Erreur lors du chargement des groupes', error);
+  //     }
+  //   );
+  // }
   
-      // Supprimer manuellement les classes ajoutées par Bootstrap
-      document.body.classList.remove('modal-open');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove(); // Supprime le backdrop (fond gris)
-      }
-    }
-  }
   
   printTable(): void {
   const tableElement = document.getElementById('etudianttable');

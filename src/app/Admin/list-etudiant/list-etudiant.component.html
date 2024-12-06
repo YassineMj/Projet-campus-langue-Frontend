@@ -17,21 +17,6 @@
   rel="stylesheet"
 />
 
-<!-- Success delete container -->
-<div
-  *ngIf="deleteMessage"
-  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
-  role="alert"
->
-  <strong> <i class="fa-solid fa-delete-left"></i> {{ deleteMessage }} </strong>
-  <button
-    type="button"
-    class="btn-close"
-    (click)="hideSuccessMessage()"
-    style="color: white"
-    aria-label="Close"
-  ></button>
-</div>
 
 <!-- Success modify container -->
 <div
@@ -49,21 +34,6 @@
   ></button>
 </div>
 
-<!-- Success message container -->
-<div
-  *ngIf="successMessage"
-  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
-  role="alert"
->
-  <strong> <i class="fa-solid fa-user-plus"></i> {{ successMessage }} </strong>
-  <button
-    type="button"
-    class="btn-close"
-    (click)="hideSuccessMessage()"
-    style="color: white"
-    aria-label="Close"
-  ></button>
-</div>
 
 <br />
 <div class="container" style="margin-top: 0%">
@@ -100,7 +70,7 @@
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
                 [(ngModel)]="searchTerm"
-                (ngModelChange)="filterPassages()"
+                (ngModelChange)="filterInscriptions()"
               />
             </div>
             <div
@@ -116,13 +86,28 @@
                   height: 32px;
                   font-size: 16px;
                 "
+                [(ngModel)]="annee"
+                (change)="onDateChange()"
+
               >
-                <option value="" disabled selected>Année</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
+                <option value="" disabled>Année</option>
+                <option value="2024/2025">2024/2025</option>
+                                      <option value="2025/2026">2025/2026</option>
+                                      <option value="2026/2027">2026/2027</option>
+                                      <option value="2027/2028">2027/2028</option>
+                                      <option value="2028/2029">2028/2029</option>
+                                      <option value="2029/2030">2029/2030</option>
+                                      <option value="2030/2031">2030/2031</option>
+                                      <option value="2031/2032">2031/2032</option>
+                                      <option value="2032/2033">2032/2033</option>
+                                      <option value="2033/2034">2033/2034</option>
+                                      <option value="2034/2035">2034/2035</option>
+                                      <option value="2035/2036">2035/2036</option>
+                                      <option value="2036/2037">2036/2037</option>
+                                      <option value="2037/2038">2037/2038</option>
+                                      <option value="2038/2039">2038/2039</option>
+                                      <option value="2039/2040">2039/2040</option>
+                                      <option value="2040/2041">2040/2041</option>
               </select>
 
               <!-- Dropdown for Month -->
@@ -134,8 +119,11 @@
                   font-size: 16px;
                   margin-right: 1px;
                 "
+                 [(ngModel)]="mois"
+                 (change)="onDateChange()"
+
               >
-                <option value="" disabled selected>Mois</option>
+                <option value="" disabled>Mois</option>
                 <option value="01">Janvier</option>
                 <option value="02">Février</option>
                 <option value="03">Mars</option>
@@ -205,10 +193,19 @@
           <br />
           <!-- Table for displaying list of items with only the required attributes -->
           <div class="table-responsive table-container" id="etudianttable">
-            <table class="table" id="etudianttable">
+            <div *ngIf="isLoading" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+            </div>
+
+            <table  *ngIf="!isLoading" class="table" id="etudianttable">
               <thead>
                 <tr>
                   <!-- New Date column -->
+                  <th><b>ID</b></th>
                   <th><b>Nom</b></th>
                   <th><b>Prénom</b></th>
                   <th><b>Inscription</b></th>
@@ -219,27 +216,30 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+
+                <tr *ngFor="let item of filteredInscriptions">
+                  <td>{{item.id}}</td>
+
                   <!-- Display the name and surname -->
-                  <td>Oumaima</td>
-                  <td>Hajji</td>
+                  <td>{{item.nom}}</td>
+                  <td>{{item.prenom}}</td>
                   <!-- Dropdown for Inscription -->
 
-                  <td>
-                    <span class="badge badge-warning">Inscript1</span>
-                    <span class="badge badge-success" style="margin-left: 8px"
-                      >Inscript1</span
-                    >
+                  <td >
+                    <ng-container *ngFor="let l of item.lesLangues">
+                      <span class="badge badge-warning" *ngIf="!l.active">{{l.langue}}</span>
+                    <span class="badge badge-success" *ngIf="l.active" style="margin-left: 8px"
+                      >{{l.langue}}</span>
+                    </ng-container>
+                    
                   </td>
 
                   <td>
-                    <span class="badge badge-warning">GA</span>
-                    <span class="badge badge-success" style="margin-left: 8px"
-                      >GB</span
-                    >
-                    <span class="badge badge-success" style="margin-left: 8px"
-                      >GB</span
-                    >
+                    <ng-container *ngFor="let g of item.groupes">
+                      <span class="badge badge-warning" *ngIf="!g.active">{{g.groupe}}</span>
+                    <span class="badge badge-success" *ngIf="g.active" style="margin-left: 8px"
+                      >{{g.groupe}}</span>
+                    </ng-container>
                   </td>
 
                   <td class="td-actions text-right d-flex justify-content-end">
@@ -250,6 +250,7 @@
                       style="margin-right: 5px"
                       data-bs-toggle="modal"
                       data-bs-target="#editModal"
+                      (click)="openEditModal(item.id)"
                     >
                       <i class="fa fa-edit" style="font-size: medium"></i>
                     </button>
@@ -257,7 +258,7 @@
                     <button
                       type="button"
                       class="btn btn-warning btn-round btn-just-icon"
-                      [routerLink]="'/menu-admin/detail-etudaint'"
+                      [routerLink]="['/menu-admin/detail-etudiant',item.id]"
                     >
                       <i
                         class="fa-solid fa-info"
@@ -266,9 +267,15 @@
                     </button>
                   </td>
                 </tr>
+
               </tbody>
             </table>
           </div>
+
+
+
+
+
 
           <!-- Modal for Editing -->
           <div
@@ -456,7 +463,6 @@
                         "
                       />
 
-                      <!--test-->
 
                       <!-- Third Row: Téléphone Père, Nom de Mère, Téléphone Mère -->
                       <div class="row">
@@ -510,6 +516,22 @@
                             />
                           </div>
                         </div>
+
+                        <div class="col-md-12">
+                          <!-- Commentaire -->
+                        <div class="col-md-12">
+                          <label for="commentaire" class="form-label">Commentaire</label>
+                          <textarea
+                            class="form-control"
+                            id="commentaire"
+                            placeholder="Ajoutez un commentaire ici..."
+                            rows="3"
+                            [(ngModel)]="data2.commentaire"
+                            name="commentaire"
+                          ></textarea>
+                        </div>
+                        </div>
+
                       </div>
                       <br />
                     </div>

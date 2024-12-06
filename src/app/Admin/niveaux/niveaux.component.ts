@@ -124,23 +124,17 @@ export class NiveauxComponent implements OnInit {
     }
   }
 
-  openDeleteModal(niveauId: number): void {
-    this.id = niveauId;
-    console.log(this.id);
-  }
 
-  confirmDelete(): void {
-    if (this.id) {
+  confirmDelete(idN:any): void {
+    if (idN) {
       this.isLoading = true;
 
-      this._service.deleteNiveau(this.id).subscribe(
+      this._service.deleteNiveau(idN).subscribe(
         () => {
           this.deleteMessage = 'Niveau supprimé avec succès!';
           //alert('Niveau supprimé avec succès');
-          this.niveaux = this.niveaux.filter(n => n.id != this.id);
-          this.ngOnInit()
+          this.loadNiveaux();
           this.isLoading = false;
-          this.closeModal();
           setTimeout(() => {
                       this.deleteMessage = ''; // Clear the message after 2 seconds
                     }, 2000);   
@@ -149,24 +143,8 @@ export class NiveauxComponent implements OnInit {
           console.error('Erreur lors de la suppression du niveau:', error);
           alert('Erreur lors de la suppression.');
           this.isLoading = false;
-          this.closeModal();
         }
       );
-    }
-  }
-
-  closeModal(): void {
-    const modalElement = document.getElementById('deleteConfirmationModal');
-    if (modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      modalInstance?.hide();
-  
-      // Supprimer manuellement les classes ajoutées par Bootstrap
-      document.body.classList.remove('modal-open');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove(); // Supprime le backdrop (fond gris)
-      }
     }
   }
  

@@ -139,25 +139,19 @@ onEdit(item: any) {
   }
 }
 
-openDeleteModal(etablissementeId: number): void {
-  this.id = etablissementeId;
-  console.log(this.id);
-  
-}
 
-confirmDelete(): void {
-  if (this.id) {
+
+confirmDelete(idE:any): void {
+  if (idE) {
     this.isLoading=true
 
-    this._service.deleteEtablissement(this.id).subscribe(
+    this._service.deleteEtablissement(idE).subscribe(
       () => {
         this.deleteMessage = 'Etablissement supprimé avec succès!';
         //alert('Etablissement supprimé avec succès');
-        this.etablissements = this.etablissements.filter(p => p.id != this.id);
-        this.filterEtablissements(); // Update the list after deletion
+        this.loadEtablissemnts();
         //this.ngOnInit() // Actualiser la liste
         this.isLoading=false
-        this.closeModal()
         setTimeout(() => {
             this.deleteMessage = ''; // Clear the message after 2 seconds
           }, 2000); 
@@ -172,20 +166,6 @@ confirmDelete(): void {
   }
 }
 
-closeModal(): void {
-  const modalElement = document.getElementById('deleteConfirmationModal');
-  if (modalElement) {
-    const modalInstance = bootstrap.Modal.getInstance(modalElement);
-    modalInstance?.hide();
-
-    // Supprimer manuellement les classes ajoutées par Bootstrap
-    document.body.classList.remove('modal-open');
-    const backdrop = document.querySelector('.modal-backdrop');
-    if (backdrop) {
-      backdrop.remove(); // Supprime le backdrop (fond gris)
-    }
-  }
-}
 
 // Function to print the list
 printTable(): void {

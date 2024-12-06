@@ -163,9 +163,6 @@ export class PassagerComponent implements OnInit {
     this.id = item.id;
   }
 
-  openDeleteModal(id: number): void {
-    this.id = id;
-  }
 
   openDetailsModal(item: any): void {
     this.selectedItem = item;
@@ -248,22 +245,22 @@ export class PassagerComponent implements OnInit {
 
 
 
-  confirmDelete(): void {
-    if (this.id) {
+  confirmDelete(idP:any): void {
+    console.log(idP);
+    
+    if (idP) {
       this.isLoading = true;
-      this._service.deletePassage(this.id).subscribe(
+      this._service.deletePassage(idP).subscribe(
         () => {
- this.deleteMessage = 'Passage supprimé avec succès!';
+        this.deleteMessage = 'Passage supprimé avec succès!';
 
-          // Automatically hide the success message after 2 seconds
-               this.passages = this.passages.filter(p => p.id !== this.id);
-          this.filterPassages();
+          this.loadPassages();
           this.id = null;
           this.isLoading = false;
-          this.closeModal()
-            setTimeout(() => {
+          setTimeout(() => {
             this.deleteMessage = ''; // Clear the message after 2 seconds
-          }, 2000);   
+          }, 2000);  
+            
         },
         (error) => {
           alert('Erreur lors de la suppression du passage.');
@@ -272,48 +269,6 @@ export class PassagerComponent implements OnInit {
       );
     }
   }
-
-  closeModal(): void {
-    const modalElement = document.getElementById('deleteConfirmationModal');
-    if (modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      modalInstance?.hide();
-  
-      // Supprimer manuellement les classes ajoutées par Bootstrap
-      document.body.classList.remove('modal-open');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove(); // Supprime le backdrop (fond gris)
-      }
-    }
-  }
-
-  // closeDetailsModal(): void {
-  //   const modalElement = document.getElementById('detailsModal');
-    
-  //   if (modalElement) {
-  //     try {
-  //       // Récupération de l'instance existante ou création d'une nouvelle
-  //       let modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-        
-  //       // Fermeture correcte
-  //       modalInstance.hide();
-  
-  //       // Suppression des classes ajoutées par Bootstrap
-  //       modalElement.classList.remove('show');
-  //       modalElement.setAttribute('aria-hidden', 'true');
-  //       document.body.classList.remove('modal-open');
-  
-  //       // Suppression sécurisée du backdrop
-  //       const backdrop = document.querySelector('.modal-backdrop');
-  //       if (backdrop) {
-  //         backdrop.parentNode?.removeChild(backdrop);
-  //       }
-  //     } catch (error) {
-  //       console.error('Erreur lors de la fermeture du modal :', error);
-  //     }
-  //   }
-  // }
   
 
 printTable(): void {

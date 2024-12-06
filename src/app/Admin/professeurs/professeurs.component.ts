@@ -178,23 +178,16 @@ loadProfessors(): void {
     }
   }
 
-  openDeleteModal(professorId: number): void {
-    this.selectedProfessorId = professorId;
-    console.log(this.selectedProfessorId);
-    
-  }
   
-  confirmDelete(): void {
-    if (this.selectedProfessorId) {
+  confirmDelete(idP:any): void {
+    if (idP) {
       this.isLoading=true
-      this._service.deleteProfessor(this.selectedProfessorId).subscribe(
+      this._service.deleteProfessor(idP).subscribe(
         () => {
           this.deleteMessage = 'Professeur supprimé avec succès!';
           //alert('Professeur supprimé avec succès');
-          this.professors = this.professors.filter(p => p.id != this.selectedProfessorId);
-          this.filterProfessors(); // Update the list after deletion
+          this.loadProfessors();
           this.isLoading=false
-          this.closeModal()
           setTimeout(() => {
             this.deleteMessage = ''; // Clear the message after 2 seconds
           }, 2000);  
@@ -203,27 +196,13 @@ loadProfessors(): void {
         (error) => {
           console.error('Erreur lors de la suppression:', error);
           alert('Erreur lors de la suppression.');
-          this.closeModal();
           this.isLoading=false
         }
       );
     }
   }
   
-  closeModal(): void {
-    const modalElement = document.getElementById('deleteConfirmationModal');
-    if (modalElement) {
-      const modalInstance = bootstrap.Modal.getInstance(modalElement);
-      modalInstance?.hide();
-  
-      // Supprimer manuellement les classes ajoutées par Bootstrap
-      document.body.classList.remove('modal-open');
-      const backdrop = document.querySelector('.modal-backdrop');
-      if (backdrop) {
-        backdrop.remove(); // Supprime le backdrop (fond gris)
-      }
-    }
-  }
+
   
 printTable(): void {
   // Get the table element
