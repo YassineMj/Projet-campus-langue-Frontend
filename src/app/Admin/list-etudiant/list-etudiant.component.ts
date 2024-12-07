@@ -129,13 +129,22 @@ export class ListEtudiantComponent {
   }
 
   filterInscriptions(): void {
-    this.filteredInscriptions = this.inscriptions.filter(e => 
-      e.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      e.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      e.id.toString().includes(this.searchTerm.toLowerCase())
-      );
-      
+    const searchTerm = this.searchTerm.trim().toLowerCase(); // Nettoyer et convertir en minuscule
+  
+    this.filteredInscriptions = this.inscriptions.filter(e => {
+      // Combiner nom et prénom dans les deux ordres
+      const fullName = `${e.nom?.toLowerCase()} ${e.prenom?.toLowerCase()}`;
+      const reverseFullName = `${e.prenom?.toLowerCase()} ${e.nom?.toLowerCase()}`;
+  
+      // Vérifier les autres champs
+      const matchOtherFields =
+        e.id.toString().includes(searchTerm);
+  
+      // Retourner true si une des conditions correspond
+      return fullName.includes(searchTerm) || reverseFullName.includes(searchTerm) || matchOtherFields;
+    });
   }
+  
 
   id:any;
   openEditModal(id: any): void {
@@ -205,7 +214,7 @@ export class ListEtudiantComponent {
     
 printTable(): void {
   // Get the table element by its ID
-  const tableElement = document.getElementById('ListdesEtudiant');
+  const tableElement = document.getElementById('list-etudiantTable');
   if (!tableElement) {
     console.error('Table element not found!');
     return;

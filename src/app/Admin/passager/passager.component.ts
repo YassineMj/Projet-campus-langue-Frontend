@@ -117,18 +117,27 @@ export class PassagerComponent implements OnInit {
   }
 
   filterPassages(): void {
-    this.filteredPassages = this.passages.filter(p => 
-      p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.telephone.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.etablissement.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.niveau.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.nomMere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.nomPere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.dateEnregistrement.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-      
+    const searchTerm = this.searchTerm.trim().toLowerCase(); // Nettoyer et convertir en minuscule
+  
+    this.filteredPassages = this.passages.filter(p => {
+      // Combiner nom et prénom dans les deux ordres
+      const fullName = `${p.nom.toLowerCase()} ${p.prenom.toLowerCase()}`;
+      const reverseFullName = `${p.prenom.toLowerCase()} ${p.nom.toLowerCase()}`;
+  
+      // Vérification des autres champs
+      const matchOtherFields =
+        p.telephone.toLowerCase().includes(searchTerm) ||
+        p.etablissement.nom.toLowerCase().includes(searchTerm) ||
+        p.niveau.nom.toLowerCase().includes(searchTerm) ||
+        (p.nomMere && p.nomMere.toLowerCase().includes(searchTerm)) ||
+        (p.nomPere && p.nomPere.toLowerCase().includes(searchTerm)) ||
+        (p.dateEnregistrement && p.dateEnregistrement.toLowerCase().includes(searchTerm));
+  
+      // Retourner true si une des conditions correspond
+      return fullName.includes(searchTerm) || reverseFullName.includes(searchTerm) || matchOtherFields;
+    });
   }
+  
 
   openAddModal(): void {
     this.data1 = {
