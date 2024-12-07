@@ -222,29 +222,39 @@
 
                   <td>
                     <ng-container *ngFor="let l of item.lesLangues">
-                      <span class="badge badge-warning" *ngIf="!l.active">{{
-                        l.langue
-                      }}</span>
+                      <span
+                        class="badge badge-warning"
+                        *ngIf="!l.active"
+                        style="margin-right: 8px"
+                      >
+                        {{ l.langue }}
+                      </span>
                       <span
                         class="badge badge-success"
                         *ngIf="l.active"
-                        style="margin-left: 8px"
-                        >{{ l.langue }}</span
+                        style="margin-right: 8px"
                       >
+                        {{ l.langue }}
+                      </span>
                     </ng-container>
                   </td>
 
                   <td>
                     <ng-container *ngFor="let g of item.groupes">
-                      <span class="badge badge-warning" *ngIf="!g.active">{{
-                        g.groupe
-                      }}</span>
+                      <span
+                        class="badge badge-warning"
+                        *ngIf="!g.active"
+                        style="margin-right: 8px"
+                      >
+                        {{ g.groupe }}
+                      </span>
                       <span
                         class="badge badge-success"
                         *ngIf="g.active"
-                        style="margin-left: 8px"
-                        >{{ g.groupe }}</span
+                        style="margin-right: 8px"
                       >
+                        {{ g.groupe }}
+                      </span>
                     </ng-container>
                   </td>
 
