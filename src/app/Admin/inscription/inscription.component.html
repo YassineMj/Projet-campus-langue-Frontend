@@ -17,7 +17,10 @@
   class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
   role="alert"
 >
-  <strong> <i class="fa-solid fa-user-plus"></i> {{ successMessage }} </strong>
+  <strong>
+    <i class="fa-solid fa-user-plus"></i>
+    {{ successMessage }}
+  </strong>
   <button
     type="button"
     class="btn-close"
@@ -539,7 +542,8 @@
                     "
                   />
                   <span class="hr-text"
-                    ><i class="fa-solid fa-list-check"></i> Liste des passagers et etudiants
+                    ><i class="fa-solid fa-list-check"></i> Liste des passagers
+                    et etudiants
                   </span>
                 </div>
                 <div class="card-body">
@@ -580,6 +584,7 @@
                           <th><b>Prénom</b></th>
                           <th><b>Etablissement</b></th>
                           <th><b>Niveaux</b></th>
+                          <th><b>Statue</b></th>
                           <th class="text-right"><b>Actions</b></th>
                           <!-- Align header to right -->
                         </tr>
@@ -595,6 +600,15 @@
                           <td>{{ item.prenom }}</td>
                           <td>{{ item.etablissement.nom }}</td>
                           <td>{{ item.niveau.nom }}</td>
+                          <td>
+                            <span *ngIf="isPassager" class="badge-red"
+                              >Passager</span
+                            ><br />
+                            <span *ngIf="isEtudiant" class="badge-green"
+                              >Étudiant</span
+                            >
+                          </td>
+
                           <td
                             class="td-actions text-right d-flex justify-content-end"
                           >
@@ -632,7 +646,9 @@
                           <h1 class="modal-title fs-5" id="detailsModalLabel">
                             <i class="fa fa-eye"></i> Détails de l'élément
                           </h1>
-                          <br /><br />
+                          <br />
+                          <br />
+
                           <!-- Close button that dismisses the current modal -->
                           <!-- <button
                             type="button"
@@ -644,6 +660,24 @@
 
                         <div class="modal-body">
                           <div class="container-fluid">
+                            <!-- Success message container -->
+                            <div
+                              *ngIf="successMessage"
+                              class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+                              role="alert"
+                            >
+                              <strong>
+                                <i class="fa-solid fa-user-plus"></i>
+                                {{ successMessage }}
+                              </strong>
+                              <button
+                                type="button"
+                                class="btn-close"
+                                (click)="hideSuccessMessage()"
+                                style="color: white"
+                                aria-label="Close"
+                              ></button>
+                            </div>
                             <div class="row mb-2 date-highlight">
                               <div class="col-10">
                                 <b
@@ -656,7 +690,7 @@
                                 {{ selectedItem.dateEnregistrement }}
                               </div>
                             </div>
-
+                            <br />
                             <!-- Display fields inline -->
                             <div class="row mb-2">
                               <div class="col-6">
@@ -775,7 +809,9 @@
                                       </option>
                                     </select>
                                     <div
-                                      *ngIf="CoursInput.invalid && CoursInput.touched"
+                                      *ngIf="
+                                        CoursInput.invalid && CoursInput.touched
+                                      "
                                       class="text-danger"
                                     >
                                       Le choix du cours est obligatoire.
@@ -892,24 +928,60 @@
                                       required
                                       #annee="ngModel"
                                     >
-                                      <option value="" disabled selected>Choisir une année</option>
-                                      <option value="2024/2025">2024/2025</option>
-                                      <option value="2025/2026">2025/2026</option>
-                                      <option value="2026/2027">2026/2027</option>
-                                      <option value="2027/2028">2027/2028</option>
-                                      <option value="2028/2029">2028/2029</option>
-                                      <option value="2029/2030">2029/2030</option>
-                                      <option value="2030/2031">2030/2031</option>
-                                      <option value="2031/2032">2031/2032</option>
-                                      <option value="2032/2033">2032/2033</option>
-                                      <option value="2033/2034">2033/2034</option>
-                                      <option value="2034/2035">2034/2035</option>
-                                      <option value="2035/2036">2035/2036</option>
-                                      <option value="2036/2037">2036/2037</option>
-                                      <option value="2037/2038">2037/2038</option>
-                                      <option value="2038/2039">2038/2039</option>
-                                      <option value="2039/2040">2039/2040</option>
-                                      <option value="2040/2041">2040/2041</option>
+                                      <option value="" disabled selected>
+                                        Choisir une année
+                                      </option>
+                                      <option value="2024/2025">
+                                        2024/2025
+                                      </option>
+                                      <option value="2025/2026">
+                                        2025/2026
+                                      </option>
+                                      <option value="2026/2027">
+                                        2026/2027
+                                      </option>
+                                      <option value="2027/2028">
+                                        2027/2028
+                                      </option>
+                                      <option value="2028/2029">
+                                        2028/2029
+                                      </option>
+                                      <option value="2029/2030">
+                                        2029/2030
+                                      </option>
+                                      <option value="2030/2031">
+                                        2030/2031
+                                      </option>
+                                      <option value="2031/2032">
+                                        2031/2032
+                                      </option>
+                                      <option value="2032/2033">
+                                        2032/2033
+                                      </option>
+                                      <option value="2033/2034">
+                                        2033/2034
+                                      </option>
+                                      <option value="2034/2035">
+                                        2034/2035
+                                      </option>
+                                      <option value="2035/2036">
+                                        2035/2036
+                                      </option>
+                                      <option value="2036/2037">
+                                        2036/2037
+                                      </option>
+                                      <option value="2037/2038">
+                                        2037/2038
+                                      </option>
+                                      <option value="2038/2039">
+                                        2038/2039
+                                      </option>
+                                      <option value="2039/2040">
+                                        2039/2040
+                                      </option>
+                                      <option value="2040/2041">
+                                        2040/2041
+                                      </option>
                                     </select>
                                     <div
                                       *ngIf="annee.invalid && annee.touched"
@@ -973,7 +1045,6 @@
                                     placeholder="Saisir l'emploi du temps..."
                                   ></textarea>
                                 </div>
-                                
                               </div>
 
                               <div class="modal-footer justify-content-center">

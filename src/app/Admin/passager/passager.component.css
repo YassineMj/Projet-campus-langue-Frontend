@@ -761,7 +761,11 @@ small {
 
 }
 
-
+.alert-info {
+    background-color: #0f98b7;
+    color: #ffffff;
+    border: 1px solid #0ca8cb;
+}
    .alert {
        max-width: 500px;
        /* Adjust as needed */

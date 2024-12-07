@@ -33,25 +33,26 @@
         class="card shadow-md rounded-3"
       >
         <div class="card-body">
-          <a href="/menu-admin/etudiant">
-            <div style="width: 80%; font-size: 20px; text-align: left">
+          <div class="header-container d-flex align-items-center">
+            <!-- Back Link -->
+            <a href="/menu-admin/etudiant" class="back-link">
               <img
                 src="../../../assets/images/Back-PNG-Transparent-Image.png"
                 alt="Left Arrow"
-                style="width: 24px; height: 24px"
+                class="back-arrow"
               />
-            </div>
-          </a>
+            </a>
 
-          <h5
-            class="card-title text-center color-ttle mb-4"
-            style="color: #008cc7"
-          >
-            <u><i class="fa-solid fa-circle-info"></i> Détails de l'Étudiant</u>
-          </h5>
+            <!-- Title -->
+            <h5 class="card-title text-center c" style="color: #008cc7">
+              <u
+                ><i class="fa-solid fa-circle-info"></i> Détails de
+                l'Étudiant</u
+              >
+            </h5>
+          </div>
+          <hr />
           <br />
-
-
           <div class="row mb-3 oo">
             <div class="col-6">
               <strong>Nom : </strong> <span>{{ etudiant.nom }}</span>
@@ -60,44 +61,45 @@
               <strong>Prénom : </strong> <span>{{ etudiant.prenom }}</span>
             </div>
           </div>
-          
+
           <div class="row mb-3 oo">
             <div class="col-6">
-              <strong>Établissement : </strong> <span>{{ etudiant.etablissement.nom }}</span>
+              <strong>Établissement : </strong>
+              <span>{{ etudiant.etablissement.nom }}</span>
             </div>
             <div class="col-6">
               <strong>Niveau : </strong> <span>{{ etudiant.niveau.nom }}</span>
             </div>
           </div>
-          
-          <div class="row mb-3 oo">
-            <div class="col-6">
-              <strong>Téléphone : </strong> <span>{{ etudiant.telephone }}</span>
-            </div>
-          </div>
-          
-          <hr />
-          
-          <div class="row mb-3 oo">
-            <div class="col-6">
-              <strong>Nom du Père : </strong> <span>{{ etudiant.nomPere }}</span>
-            </div>
-            <div class="col-6">
-              <strong>Téléphone du Père : </strong> <span>{{ etudiant.telPere }}</span>
-            </div>
-          </div>
-          
-          <div class="row mb-3 oo">
-            <div class="col-6">
-              <strong>Nom de la Mère : </strong> <span>{{ etudiant.nomMere }}</span>
-            </div>
-            <div class="col-6">
-              <strong>Téléphone de la Mère : </strong> <span>{{ etudiant.telMere }}</span>
-            </div>
-          </div>
-          
 
+          <div class="row mb-3 oo">
+            <div class="col-6">
+              <strong>Téléphone : </strong>
+              <span>{{ etudiant.telephone }}</span>
+            </div>
+          </div>
 
+          <div class="row mb-3 oo">
+            <div class="col-6">
+              <strong>Nom du Père : </strong>
+              <span>{{ etudiant.nomPere }}</span>
+            </div>
+            <div class="col-6">
+              <strong>Téléphone du Père : </strong>
+              <span>{{ etudiant.telPere }}</span>
+            </div>
+          </div>
+
+          <div class="row mb-3 oo">
+            <div class="col-6">
+              <strong>Nom de la Mère : </strong>
+              <span>{{ etudiant.nomMere }}</span>
+            </div>
+            <div class="col-6">
+              <strong>Téléphone de la Mère : </strong>
+              <span>{{ etudiant.telMere }}</span>
+            </div>
+          </div>
         </div>
       </div>
       <div class="card">
@@ -164,7 +166,7 @@
             </div>
           </div>
 
-          <div class="table-responsive table-container" id="etudianttable">
+          <div class="table-responsive table-container" id="DetailDetudiant">
             <table class="table" id="etudianttable">
               <thead>
                 <tr>
@@ -180,9 +182,10 @@
                 </tr>
               </thead>
               <tbody>
-
                 <tr *ngFor="let inscription of filteredInscriptions">
-                  <td style="text-align: center">{{ inscription.dateInscription }}</td>
+                  <td style="text-align: center">
+                    {{ inscription.dateInscription }}
+                  </td>
                   <td>{{ inscription.annee }}</td>
                   <td>{{ inscription.mois }}</td>
                   <td>{{ inscription.langue }}</td>
@@ -214,13 +217,8 @@
                     </button>
                   </td>
                 </tr>
-                
-
               </tbody>
             </table>
-
-
-            
           </div>
 
           <!-- Modal for Editing -->
@@ -253,7 +251,9 @@
                         <!-- Cours et Test -->
                         <div class="row mb-3">
                           <div class="col-md-6">
-                            <label for="editCours" class="form-label">Cours <span class="required">*</span></label>
+                            <label for="editCours" class="form-label"
+                              >Cours <span class="required">*</span></label
+                            >
                             <select
                               id="editCours"
                               class="form-select"
@@ -262,18 +262,28 @@
                               required
                               #CoursInput="ngModel"
                             >
-                              <option value="" disabled selected>Choisir un cours</option>
-                              <option *ngFor="let course of cours" [value]="course.id">
+                              <option value="" disabled selected>
+                                Choisir un cours
+                              </option>
+                              <option
+                                *ngFor="let course of cours"
+                                [value]="course.id"
+                              >
                                 {{ course.libelle }}
                               </option>
                             </select>
-                            <div *ngIf="CoursInput.invalid && CoursInput.touched" class="text-danger">
+                            <div
+                              *ngIf="CoursInput.invalid && CoursInput.touched"
+                              class="text-danger"
+                            >
                               Le choix du cours est obligatoire.
                             </div>
                           </div>
-                
+
                           <div class="col-md-6">
-                            <label for="test" class="form-label">Test <span class="required">*</span></label>
+                            <label for="test" class="form-label"
+                              >Test <span class="required">*</span></label
+                            >
                             <select
                               class="form-select"
                               id="test"
@@ -282,21 +292,28 @@
                               required
                               #test="ngModel"
                             >
-                              <option value="" disabled selected>Choisir un test</option>
+                              <option value="" disabled selected>
+                                Choisir un test
+                              </option>
                               <option value="Oui">Oui</option>
                               <option value="Non">Non</option>
                               <option value="Sans">Sans</option>
                             </select>
-                            <div *ngIf="test.invalid && test.touched" class="text-danger">
+                            <div
+                              *ngIf="test.invalid && test.touched"
+                              class="text-danger"
+                            >
                               Le choix du test est obligatoire.
                             </div>
                           </div>
                         </div>
-                
+
                         <!-- Groupe et Prof -->
                         <div class="row mb-3">
                           <div class="col-md-6">
-                            <label for="group" class="form-label">Groupe <span class="required">*</span></label>
+                            <label for="group" class="form-label"
+                              >Groupe <span class="required">*</span></label
+                            >
                             <select
                               class="form-select"
                               id="group"
@@ -306,18 +323,28 @@
                               (change)="onGroupChange()"
                               #group="ngModel"
                             >
-                              <option value="" disabled selected>Choisir un groupe</option>
-                              <option *ngFor="let gr of groupes" [value]="gr.id">
+                              <option value="" disabled selected>
+                                Choisir un groupe
+                              </option>
+                              <option
+                                *ngFor="let gr of groupes"
+                                [value]="gr.id"
+                              >
                                 {{ gr.nomGroupe }}
                               </option>
                             </select>
-                            <div *ngIf="group.invalid && group.touched" class="text-danger">
+                            <div
+                              *ngIf="group.invalid && group.touched"
+                              class="text-danger"
+                            >
                               Le choix du groupe est obligatoire.
                             </div>
                           </div>
-                
+
                           <div class="col-md-6">
-                            <label for="editProf" class="form-label">Profs <span class="required">*</span></label>
+                            <label for="editProf" class="form-label"
+                              >Profs <span class="required">*</span></label
+                            >
                             <select
                               id="editProf"
                               class="form-select"
@@ -326,21 +353,33 @@
                               required
                               #editProfInput="ngModel"
                             >
-                              <option value="" disabled selected>Choisir un prof</option>
-                              <option *ngFor="let professor of profs" [value]="professor.id">
+                              <option value="" disabled selected>
+                                Choisir un prof
+                              </option>
+                              <option
+                                *ngFor="let professor of profs"
+                                [value]="professor.id"
+                              >
                                 {{ professor.nom }} {{ professor.prenom }}
                               </option>
                             </select>
-                            <div *ngIf="editProfInput.invalid && editProfInput.touched" class="text-danger">
+                            <div
+                              *ngIf="
+                                editProfInput.invalid && editProfInput.touched
+                              "
+                              class="text-danger"
+                            >
                               Le prof est obligatoire.
                             </div>
                           </div>
                         </div>
-                
+
                         <!-- Année et Mois -->
                         <div class="row mb-3">
                           <div class="col-md-6">
-                            <label for="annee" class="form-label">Année <span class="required">*</span></label>
+                            <label for="annee" class="form-label"
+                              >Année <span class="required">*</span></label
+                            >
                             <select
                               class="form-select"
                               id="annee"
@@ -349,32 +388,39 @@
                               required
                               #annee="ngModel"
                             >
-                            <option value="" disabled selected>Choisir une année</option>
-                            <option value="2024/2025">2024/2025</option>
-                            <option value="2025/2026">2025/2026</option>
-                            <option value="2026/2027">2026/2027</option>
-                            <option value="2027/2028">2027/2028</option>
-                            <option value="2028/2029">2028/2029</option>
-                            <option value="2029/2030">2029/2030</option>
-                            <option value="2030/2031">2030/2031</option>
-                            <option value="2031/2032">2031/2032</option>
-                            <option value="2032/2033">2032/2033</option>
-                            <option value="2033/2034">2033/2034</option>
-                            <option value="2034/2035">2034/2035</option>
-                            <option value="2035/2036">2035/2036</option>
-                            <option value="2036/2037">2036/2037</option>
-                            <option value="2037/2038">2037/2038</option>
-                            <option value="2038/2039">2038/2039</option>
-                            <option value="2039/2040">2039/2040</option>
-                            <option value="2040/2041">2040/2041</option>
+                              <option value="" disabled selected>
+                                Choisir une année
+                              </option>
+                              <option value="2024/2025">2024/2025</option>
+                              <option value="2025/2026">2025/2026</option>
+                              <option value="2026/2027">2026/2027</option>
+                              <option value="2027/2028">2027/2028</option>
+                              <option value="2028/2029">2028/2029</option>
+                              <option value="2029/2030">2029/2030</option>
+                              <option value="2030/2031">2030/2031</option>
+                              <option value="2031/2032">2031/2032</option>
+                              <option value="2032/2033">2032/2033</option>
+                              <option value="2033/2034">2033/2034</option>
+                              <option value="2034/2035">2034/2035</option>
+                              <option value="2035/2036">2035/2036</option>
+                              <option value="2036/2037">2036/2037</option>
+                              <option value="2037/2038">2037/2038</option>
+                              <option value="2038/2039">2038/2039</option>
+                              <option value="2039/2040">2039/2040</option>
+                              <option value="2040/2041">2040/2041</option>
                             </select>
-                            <div *ngIf="annee.invalid && annee.touched" class="text-danger">
+                            <div
+                              *ngIf="annee.invalid && annee.touched"
+                              class="text-danger"
+                            >
                               Le choix de l'année est obligatoire.
                             </div>
                           </div>
-                
+
                           <div class="col-md-6">
-                            <label for="mois" class="form-label">Mois <span class="required">*</span></label>
+                            <label for="mois" class="form-label"
+                              >Mois <span class="required">*</span></label
+                            >
                             <select
                               class="form-select"
                               id="mois"
@@ -383,7 +429,9 @@
                               required
                               #mois="ngModel"
                             >
-                              <option value="" disabled selected>Choisir un mois</option>
+                              <option value="" disabled selected>
+                                Choisir un mois
+                              </option>
                               <option value="01">Janvier</option>
                               <option value="02">Février</option>
                               <option value="03">Mars</option>
@@ -397,15 +445,20 @@
                               <option value="11">Novembre</option>
                               <option value="12">Décembre</option>
                             </select>
-                            <div *ngIf="mois.invalid && mois.touched" class="text-danger">
+                            <div
+                              *ngIf="mois.invalid && mois.touched"
+                              class="text-danger"
+                            >
                               Le choix du mois est obligatoire.
                             </div>
                           </div>
                         </div>
-                
+
                         <!-- Emploi du Temps -->
                         <div class="mb-3">
-                          <label for="editEmploiTemps" class="form-label"><b>Emploi du Temps</b></label>
+                          <label for="editEmploiTemps" class="form-label"
+                            ><b>Emploi du Temps</b></label
+                          >
                           <textarea
                             class="form-control formtexterea"
                             id="editEmploiTemps"
@@ -418,20 +471,25 @@
                       </div>
                     </div>
                   </div>
-                
+
                   <!-- Boutons -->
                   <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-round colormodalfermer" data-bs-dismiss="modal">
+                    <button
+                      type="button"
+                      class="btn btn-round colormodalfermer"
+                      data-bs-dismiss="modal"
+                    >
                       <i class="fa fa-close text-white"></i>
                     </button>
-                    <button type="submit" class="btn btn-round colormodalmodifier" [disabled]="editForm.invalid">
+                    <button
+                      type="submit"
+                      class="btn btn-round colormodalmodifier"
+                      [disabled]="editForm.invalid"
+                    >
                       <i class="fa fa-save text-white"></i> Enregistrer
                     </button>
                   </div>
                 </form>
-                
-
-
               </div>
             </div>
           </div>

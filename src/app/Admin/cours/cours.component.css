@@ -680,10 +680,17 @@ small {
 
     box-shadow: none;
 }
+
 .alert-success {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
+}
+
+.alert-info {
+    background-color: #0f98b7;
+    color: #ffffff;
+    border: 1px solid #0ca8cb;
 }
 
 /* Styling the success alert container */
@@ -754,7 +761,13 @@ small {
     border-bottom: 10px double #c2efff;
 
 }
+@media print {
 
+    .td-actions,
+    th.text-right {
+        display: none !important;
+    }
+}
 .hed {
     border-bottom: 5px solid rgb(0, 0, 0);
 }

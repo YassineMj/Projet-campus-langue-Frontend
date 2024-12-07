@@ -52,7 +52,30 @@
      background-color: #0d98bb;
      border-color: #0d98bb;
  }
-
+.badge-red {
+  display: inline-block;
+  background-color: #dc3545; /* Red color for Passager */
+  color: #fff; /* White text */
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.badge-green {
+    display: inline-block;
+    background-color: #28a745;
+    /* Green color */
+    color: #fff;
+    /* White text */
+    padding: 5px 10px;
+    /* Adjust padding */
+    border-radius: 12px;
+    /* Rounded corners for badge look */
+    font-size: 14px;
+    /* Adjust font size */
+    font-weight: bold;
+    /* Bold text */
+}
  .form-check:hover {
      background-color: #f8f9fa;
      border-color: #0d98bb;
