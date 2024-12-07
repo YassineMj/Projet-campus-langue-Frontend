@@ -18,47 +18,7 @@
   class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
   role="alert"
 >
-  <strong>
-    <i class="fa-solid fa-delete-left"></i> {{deleteMessage}}
-  </strong>
-  <button
-    type="button"
-    class="btn-close"
-    (click)="hideSuccessMessage()"
-    style="color: white"
-    aria-label="Close"
-  ></button>
-</div>
-
-
-<!-- Success modify container -->
-<div
-  *ngIf="modifysuccess"
-  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
-  role="alert"
->
-  <strong>
-    <i class="fa-solid fa-pen"></i> {{modifysuccess}}
-  </strong>
-  <button
-    type="button"
-    class="btn-close"
-    (click)="hideSuccessMessage()"
-    style="color: white"
-    aria-label="Close"
-  ></button>
-</div>
-
-
-<!-- Success message container -->
-<div
-  *ngIf="successMessage"
-  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
-  role="alert"
->
-  <strong>
-    <i class="fa-solid fa-user-plus"></i> {{successMessage}}
-  </strong>
+  <strong> <i class="fa-solid fa-delete-left"></i> {{ deleteMessage }} </strong>
   <button
     type="button"
     class="btn-close"
@@ -187,6 +147,24 @@
                     <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
                       <div class="modal-body">
                         <div class="container-fluid">
+                          <!-- Success message container -->
+                          <div
+                            *ngIf="successMessage"
+                            class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+                            role="alert"
+                          >
+                            <strong>
+                              <i class="fa-solid fa-user-plus"></i>
+                              {{ successMessage }}
+                            </strong>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              (click)="hideSuccessMessage()"
+                              style="color: white"
+                              aria-label="Close"
+                            ></button>
+                          </div>
                           <div class="row">
                             <!-- Nom -->
                             <div class="col-md-6">
@@ -333,7 +311,7 @@
                 </div>
               </div>
             </div>
-            <table *ngIf="!isLoading" class="table">
+            <table *ngIf="!isLoading" class="table" id="CoursTable">
               <thead>
                 <tr>
                   <th><b>Nom de cours</b></th>
@@ -367,14 +345,13 @@
 
                     <!-- Delete Button -->
                     <button
-                    type="button"
-                    class="btn btn-danger btn-round btn-just-icon"
-                    (click)="confirmDelete(item.id)"
-                    style="margin-right: 5px"
-                  >
-                  <i class="fa fa-trash" style="font-size: medium"></i>
-
-                  </button>
+                      type="button"
+                      class="btn btn-danger btn-round btn-just-icon"
+                      (click)="confirmDelete(item.id)"
+                      style="margin-right: 5px"
+                    >
+                      <i class="fa fa-trash" style="font-size: medium"></i>
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -390,7 +367,7 @@
             aria-hidden="true"
           >
             <div class="modal-dialog modal-lg">
-              <div class="modal-content ">
+              <div class="modal-content">
                 <div class="modal-header hedtopedit">
                   <h1 class="modal-title fs-5" id="editModalLabel">
                     <i class="fa fa-pen"></i> Modifier les Informations
@@ -405,6 +382,23 @@
                 <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
                   <div class="modal-body">
                     <div class="container-fluid">
+                      <!-- Success modify container -->
+                      <div
+                        *ngIf="modifysuccess"
+                        class="alert body alert-info alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+                        role="alert"
+                      >
+                        <strong>
+                          <i class="fa-solid fa-pen"></i> {{ modifysuccess }}
+                        </strong>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          (click)="hideSuccessMessage()"
+                          style="color: white"
+                          aria-label="Close"
+                        ></button>
+                      </div>
                       <div class="row">
                         <!-- Nom de la Matière -->
                         <div class="col-md-6">

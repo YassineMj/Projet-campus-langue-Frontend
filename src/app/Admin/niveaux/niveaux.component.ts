@@ -46,7 +46,6 @@ export class NiveauxComponent implements OnInit {
 
   // For editing a level (Pre-filled values)
   editNom: string = '';
-
   niveaux: any[] = [];
   filteredNiveaux: any[] = [];
   searchTerm: string = '';
@@ -149,14 +148,29 @@ export class NiveauxComponent implements OnInit {
   }
  
 
-// Function to print the list
+
 printTable(): void {
-  // Get the table element by its ID (adjust the ID as needed)
-  const tableElement = document.getElementById('matieresTable');
+  // Get the table element by its ID
+  const tableElement = document.getElementById('NiveauxTable');
   if (!tableElement) {
     console.error('Table element not found!');
     return;
   }
+
+  // Clone the table to modify it for printing
+  const tableClone = tableElement.cloneNode(true) as HTMLElement;
+
+  // Remove the "Actions" column (last column) from the cloned table
+  const headerRow = tableClone.querySelector('thead tr');
+  const bodyRows = tableClone.querySelectorAll('tbody tr');
+
+  if (headerRow) {
+    headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
+  }
+
+  bodyRows.forEach(row => {
+    row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
+  });
 
   // Create a new window for printing
   const printWindow = window.open('', '', 'width=900,height=650');
@@ -169,7 +183,7 @@ printTable(): void {
   printWindow.document.write(`
     <html>
       <head>
-        <title>Matiere List</title>
+        <title>Niveaux List</title>
         <style>
           /* General body styling */
           body {
@@ -184,17 +198,18 @@ printTable(): void {
           .header {
             text-align: center;
             margin-bottom: 30px;
-            border-bottom: 2px solid #0a9dd2;
+            border-bottom: 3px solid #0275d8;
             padding-bottom: 10px;
+            background-color: #eaf4fc;
           }
           .header h1 {
             font-size: 28px;
             margin: 0;
-            color: #0a9dd2;
+            color: #0275d8;
           }
           .header p {
             font-size: 14px;
-            color: #666;
+            color: #555;
           }
 
           /* Table styling */
@@ -213,26 +228,29 @@ printTable(): void {
             font-size: 14px;
           }
           th {
-            background-color: #0a9dd2;
+            background-color: #0275d8;
             color: white;
             font-weight: bold;
             text-transform: uppercase;
           }
           td {
-            color: #555;
+            color: #333;
           }
           tr:nth-child(even) {
             background-color: #f9f9f9;
           }
+          tr:nth-child(odd) {
+            background-color: #eaf4fc;
+          }
           tr:hover {
-            background-color: #f1f1f1;
+            background-color: #d9edf7;
           }
 
           /* Footer section styling */
           .footer {
             text-align: center;
             font-size: 12px;
-            color: #aaa;
+            color: #0275d8;
             margin-top: 30px;
             border-top: 1px solid #ddd;
             padding-top: 10px;
@@ -252,16 +270,16 @@ printTable(): void {
       <body>
         <!-- Header -->
         <div class="header">
-          <h1>Matiere List</h1>
+          <h1>Niveaux List</h1>
           <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
         </div>
 
         <!-- Table Content -->
-        ${tableElement.outerHTML}
+        ${tableClone.outerHTML}
 
         <!-- Footer -->
         <div class="footer">
-          © ${new Date().getFullYear()} Your Organization Name | Powered by [Your Software].
+          © ${new Date().getFullYear()} Campus | Gestion des langues, cours, matières et inscriptions.
         </div>
       </body>
     </html>
@@ -272,9 +290,10 @@ printTable(): void {
   printWindow.print();
 }
 
+
 // Function to download the list as Excel
 downloadAsExcel(): void {
-  const tableElement = document.getElementById('matieresTable') as HTMLTableElement;
+  const tableElement = document.getElementById('NiveauxTable') as HTMLTableElement;
 
   if (!tableElement) {
     console.error('Table element not found!');

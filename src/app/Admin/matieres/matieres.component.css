@@ -44,11 +44,25 @@
     right: 5px;
     padding: 0.5rem;
 }
+
 .alert {
     max-width: 500px;
     /* Adjust as needed */
     margin-top: 2%;
 }
+
+.alert-info {
+    background-color: #0f98b7;
+    color: #ffffff;
+    border: 1px solid #0ca8cb;
+}
+
+.alert-info {
+    background-color: #0f98b7;
+    color: #ffffff;
+    border: 1px solid #0ca8cb;
+}
+
 /* Animation for alert when showing */
 .alert-success.show {
     opacity: 1;

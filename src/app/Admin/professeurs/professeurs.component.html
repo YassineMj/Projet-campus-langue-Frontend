@@ -12,54 +12,13 @@
   rel="stylesheet"
 />
 
-
 <!-- Success delete container -->
 <div
   *ngIf="deleteMessage"
   class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
   role="alert"
 >
-  <strong>
-    <i class="fa-solid fa-delete-left"></i> {{deleteMessage}}
-  </strong>
-  <button
-    type="button"
-    class="btn-close"
-    (click)="hideSuccessMessage()"
-    style="color: white"
-    aria-label="Close"
-  ></button>
-</div>
-
-
-<!-- Success modify container -->
-<div
-  *ngIf="modifysuccess"
-  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
-  role="alert"
->
-  <strong>
-    <i class="fa-solid fa-pen"></i> {{modifysuccess}}
-  </strong>
-  <button
-    type="button"
-    class="btn-close"
-    (click)="hideSuccessMessage()"
-    style="color: white"
-    aria-label="Close"
-  ></button>
-</div>
-
-
-<!-- Success message container -->
-<div
-  *ngIf="successMessage"
-  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
-  role="alert"
->
-  <strong>
-    <i class="fa-solid fa-user-plus"></i> {{successMessage}}
-  </strong>
+  <strong> <i class="fa-solid fa-delete-left"></i> {{ deleteMessage }} </strong>
   <button
     type="button"
     class="btn-close"
@@ -190,6 +149,25 @@
                     <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
                       <div class="modal-body">
                         <div class="container-fluid">
+                          <!-- Success message container -->
+                          <div
+                            *ngIf="successMessage"
+                            class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+                            role="alert"
+                          >
+                            <strong>
+                              <i class="fa-solid fa-user-plus"></i>
+                              {{ successMessage }}
+                            </strong>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              (click)="hideSuccessMessage()"
+                              style="color: white"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+
                           <div class="row">
                             <!-- Nom -->
 
@@ -358,6 +336,7 @@
               </div>
             </div>
           </div>
+
           <div class="table-responsive table-container">
             <!-- Modal d'affichage' -->
             <div *ngIf="isLoading" style="text-align: center">
@@ -368,7 +347,7 @@
               </div>
             </div>
 
-            <table *ngIf="!isLoading" class="table" id="professorsTable">
+            <table *ngIf="!isLoading" class="table" id="ProfesseurTable">
               <thead>
                 <tr>
                   <th><b>Nom</b></th>
@@ -389,35 +368,39 @@
                   <td>{{ professor.tel }}</td>
                   <td>{{ professor.description }}</td>
 
-                  <td>
+                  <td
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: flex-end;
+                    "
+                  >
                     <!-- Edit Button -->
                     <button
                       type="button"
                       rel="tooltip"
                       class="btn btn-round btn-just-icon"
-                      style="margin-right: 4px"
+                      style="margin-right: 5px"
                       data-bs-toggle="modal"
                       data-bs-target="#editModal"
                       (click)="openEditModal(professor)"
                     >
                       <i class="fa fa-edit" style="font-size: medium"></i>
                     </button>
+
                     <!-- Delete Button -->
                     <button
-                    type="button"
-                    class="btn btn-danger btn-round btn-just-icon"
-                    (click)="confirmDelete(professor.id)"
-                    style="margin-right: 5px"
-                  >
-                  <i class="fa fa-trash" style="font-size: medium"></i>
-
-                  </button>
+                      type="button"
+                      class="btn btn-danger btn-round btn-just-icon"
+                      (click)="confirmDelete(professor.id)"
+                    >
+                      <i class="fa fa-trash" style="font-size: medium"></i>
+                    </button>
                   </td>
                 </tr>
               </tbody>
             </table>
-            
-            
+
             <!-- Modal for Editing -->
             <div class="modal fade" id="editModal">
               <div class="modal-dialog modal-lg">
@@ -436,6 +419,23 @@
                   <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
                     <div class="modal-body">
                       <div class="container-fluid">
+                        <!-- Success modify container -->
+                        <div
+                          *ngIf="modifysuccess"
+                          class="alert body alert-info alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+                          role="alert"
+                        >
+                          <strong>
+                            <i class="fa-solid fa-pen"></i> {{ modifysuccess }}
+                          </strong>
+                          <button
+                            type="button"
+                            class="btn-close"
+                            (click)="hideSuccessMessage()"
+                            style="color: white"
+                            aria-label="Close"
+                          ></button>
+                        </div>
                         <div class="row">
                           <!-- Nom -->
                           <div class="col-md-6">
@@ -574,7 +574,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="modal-footer justify-content-center ">
+                    <div class="modal-footer justify-content-center">
                       <button
                         type="button"
                         class="btn btn-round colormodalfermer"

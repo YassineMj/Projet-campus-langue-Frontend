@@ -285,4 +285,7 @@ export class InscriptionComponent implements OnInit {
   }
 
 
+    isPassager: boolean = true; // Example value
+  isEtudiant: boolean = false; // Example value
+
 }

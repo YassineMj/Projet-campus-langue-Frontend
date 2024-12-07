@@ -379,7 +379,104 @@ small {
 
 
 }
+/* Flex container for alignment */
+.header-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
+/* Back link styling */
+.back-link {
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+.back-arrow {
+    width: 24px;
+    height: 24px;
+}
+
+/* Back link styling */
+.back-link {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.back-arrow {
+    width: 24px;
+    height: 24px;
+}
+
+/* Card title */
+.card-title {
+    font-size: 1.5rem;
+    color: #008cc7;
+}
+
+/* Print-specific adjustments */
+@media print {
+  body {
+    margin: 0;
+  }
+  .header, .footer {
+    page-break-inside: avoid;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    table-layout: auto; /* Allows columns to adjust based on content */
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    word-wrap: break-word; /* Ensures text breaks onto new lines */
+    white-space: normal; /* Allows text wrapping for long sentences */
+  }
+
+  th {
+    background-color: #0275d8;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  td {
+    color: #333;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:nth-child(odd) {
+    background-color: #eaf4fc;
+  }
+
+  tr:hover {
+    background-color: #d9edf7;
+  }
+}
+
+/* Title styling */
+.card-title {
+    font-size: 1.5rem;
+    color: #008cc7;
+    margin: 0;
+    flex-grow: 1;
+    /* Ensures the title takes the remaining space */
+    text-align: center;
+}
 .colormodalfermer {
     background-color: rgb(17, 17, 17);
     color: white;

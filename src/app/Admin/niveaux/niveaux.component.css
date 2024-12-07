@@ -736,6 +736,12 @@ small {
     /* Adjust as needed */
     margin-top: 2%;
 }
+
+.alert-info {
+    background-color: #0f98b7;
+    color: #ffffff;
+    border: 1px solid #0ca8cb;
+}
 /* Animation for alert when showing */
 .alert-success.show {
     opacity: 1;

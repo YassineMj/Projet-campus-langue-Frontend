@@ -18,47 +18,7 @@
   class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
   role="alert"
 >
-  <strong>
-    <i class="fa-solid fa-delete-left"></i> {{deleteMessage}}
-  </strong>
-  <button
-    type="button"
-    class="btn-close"
-    (click)="hideSuccessMessage()"
-    style="color: white"
-    aria-label="Close"
-  ></button>
-</div>
-
-
-<!-- Success modify container -->
-<div
-  *ngIf="modifysuccess"
-  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
-  role="alert"
->
-  <strong>
-    <i class="fa-solid fa-pen"></i> {{modifysuccess}}
-  </strong>
-  <button
-    type="button"
-    class="btn-close"
-    (click)="hideSuccessMessage()"
-    style="color: white"
-    aria-label="Close"
-  ></button>
-</div>
-
-
-<!-- Success message container -->
-<div
-  *ngIf="successMessage"
-  class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
-  role="alert"
->
-  <strong>
-    <i class="fa-solid fa-user-plus"></i> {{successMessage}}
-  </strong>
+  <strong> <i class="fa-solid fa-delete-left"></i> {{ deleteMessage }} </strong>
   <button
     type="button"
     class="btn-close"
@@ -187,6 +147,24 @@
                     <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
                       <div class="modal-body">
                         <div class="container-fluid">
+                          <!-- Success message container -->
+                          <div
+                            *ngIf="successMessage"
+                            class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+                            role="alert"
+                          >
+                            <strong>
+                              <i class="fa-solid fa-user-plus"></i>
+                              {{ successMessage }}
+                            </strong>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              (click)="hideSuccessMessage()"
+                              style="color: white"
+                              aria-label="Close"
+                            ></button>
+                          </div>
                           <div class="row">
                             <!-- Nom -->
                             <div class="col-md-6">
@@ -332,6 +310,7 @@
               </div>
             </div>
           </div>
+
           <!-- Table for displaying list of matieres -->
           <div class="table-responsive table-container">
             <div *ngIf="isLoading" style="text-align: center">
@@ -341,7 +320,7 @@
                 </div>
               </div>
             </div>
-            <table *ngIf="!isLoading" class="table">
+            <table *ngIf="!isLoading" class="table" id="GroupeTable">
               <thead>
                 <tr>
                   <th>Nom de groupe</th>
@@ -372,19 +351,19 @@
 
                     <!-- Delete Button -->
                     <button
-                    type="button"
-                    class="btn btn-danger btn-round btn-just-icon"
-                    (click)="confirmDelete(item.id)"
-                    style="margin-right: 5px"
-                  >
-                  <i class="fa fa-trash" style="font-size: medium"></i>
-
-                  </button>
+                      type="button"
+                      class="btn btn-danger btn-round btn-just-icon"
+                      (click)="confirmDelete(item.id)"
+                      style="margin-right: 5px"
+                    >
+                      <i class="fa fa-trash" style="font-size: medium"></i>
+                    </button>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
+
           <!-- Modal for Editing -->
           <div
             class="modal fade"
@@ -409,12 +388,29 @@
                 <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
                   <div class="modal-body">
                     <div class="container-fluid">
+                      <!-- Success modify container -->
+                      <div
+                        *ngIf="modifysuccess"
+                        class="alert body alert-info alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+                        role="alert"
+                      >
+                        <strong>
+                          <i class="fa-solid fa-pen"></i> {{ modifysuccess }}
+                        </strong>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          (click)="hideSuccessMessage()"
+                          style="color: white"
+                          aria-label="Close"
+                        ></button>
+                      </div>
                       <div class="row">
                         <!-- Nom -->
                         <div class="col-md-6">
                           <div class="mb-3">
                             <label for="editNom" class="form-label">
-                              <b>Nom</b>
+                              Nom
                               <span class="required"> *</span>
                             </label>
                             <input
@@ -441,12 +437,12 @@
                         <div class="col-md-6">
                           <div class="mb-3">
                             <label for="editCours" class="form-label">
-                              <b>Cours</b>
+                              Cours
                               <span class="required"> *</span>
                             </label>
                             <select
                               id="editCours"
-                              class="form-control"
+                              class="form-select"
                               name="editCours"
                               [(ngModel)]="editCoursId"
                               required
@@ -478,12 +474,12 @@
                         <div class="col-md-6">
                           <div class="mb-3">
                             <label for="editProf" class="form-label">
-                              <b>Prof</b>
+                              Prof
                               <span class="required"> *</span>
                             </label>
                             <select
                               id="editProf"
-                              class="form-control"
+                              class="form-select"
                               name="editProf"
                               [(ngModel)]="editProfId"
                               required
@@ -513,7 +509,7 @@
                       <!-- Emploi du Temps Textarea -->
                       <div class="mb-3">
                         <label for="editEmploiTemps" class="form-label">
-                          <b>Emploi du Temps</b>
+                          Emploi du Temps
                         </label>
                         <textarea
                           class="form-control formtexterea"
@@ -553,8 +549,6 @@
               </div>
             </div>
           </div>
-
-
           <!-- End of Modal -->
         </div>
       </div>
