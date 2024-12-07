@@ -40,15 +40,25 @@ loadProfessors(): void {
   }
 
   filterProfessors(): void {
-    this.filteredProfessors = this.professors.filter(p => 
-      p.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.prenom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.cin?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.tel?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.adresse?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    const searchTerm = this.searchTerm.trim().toLowerCase(); // Nettoyer et convertir en minuscule
+  
+    this.filteredProfessors = this.professors.filter(p => {
+      // Combiner nom et prénom dans les deux ordres
+      const fullName = `${p.nom?.toLowerCase()} ${p.prenom?.toLowerCase()}`;
+      const reverseFullName = `${p.prenom?.toLowerCase()} ${p.nom?.toLowerCase()}`;
+  
+      // Vérifier les autres champs
+      const matchOtherFields =
+        p.cin?.toLowerCase().includes(searchTerm) ||
+        p.tel?.toLowerCase().includes(searchTerm) ||
+        p.adresse?.toLowerCase().includes(searchTerm) ||
+        p.description?.toLowerCase().includes(searchTerm);
+  
+      // Retourner true si une des conditions correspond
+      return fullName.includes(searchTerm) || reverseFullName.includes(searchTerm) || matchOtherFields;
+    });
   }
+  
 
   nom = '';
   prenom = '';

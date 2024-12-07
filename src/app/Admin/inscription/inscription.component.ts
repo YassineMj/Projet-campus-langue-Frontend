@@ -64,18 +64,29 @@ export class InscriptionComponent implements OnInit {
   }
 
   filterEtudiant(): void {
-    this.filteredEtudiant = this.etudiants.filter(p => 
-      p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.prenom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.telephone.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.etablissement.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.niveau.nom.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.nomMere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.nomPere.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      p.dateEnregistrement.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-      
+    this.filteredEtudiant = this.etudiants.filter(p => {
+      const searchTerm = this.searchTerm.toLowerCase();
+  
+      // Combinaison des noms pour recherche "nom prénom" et "prénom nom"
+      const fullName = `${p.nom.toLowerCase()} ${p.prenom.toLowerCase()}`;
+      const reverseFullName = `${p.prenom.toLowerCase()} ${p.nom.toLowerCase()}`;
+  
+      // Vérifie si les autres champs correspondent
+      const matchOtherFields =
+        p.telephone.toLowerCase().includes(searchTerm) ||
+        p.etablissement.nom.toLowerCase().includes(searchTerm) ||
+        p.niveau.nom.toLowerCase().includes(searchTerm) ||
+        (p.nomMere && p.nomMere.toLowerCase().includes(searchTerm)) ||
+        (p.nomPere && p.nomPere.toLowerCase().includes(searchTerm)) ||
+        (p.dateEnregistrement && p.dateEnregistrement.toLowerCase().includes(searchTerm));
+  
+     
+  
+      // Combine toutes les conditions
+      return fullName.includes(searchTerm) || reverseFullName.includes(searchTerm) || matchOtherFields;
+    });
   }
+  
 
   formatDate(date: Date): string {
     const jour = date.getDate().toString().padStart(2, '0');

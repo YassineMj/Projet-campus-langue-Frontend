@@ -601,10 +601,10 @@
                           <td>{{ item.etablissement.nom }}</td>
                           <td>{{ item.niveau.nom }}</td>
                           <td>
-                            <span *ngIf="isPassager" class="badge-red"
+                            <span *ngIf="item.passage" class="badge-red"
                               >Passager</span
-                            ><br />
-                            <span *ngIf="isEtudiant" class="badge-green"
+                            >
+                            <span *ngIf="!item.passage" class="badge-green"
                               >Étudiant</span
                             >
                           </td>
