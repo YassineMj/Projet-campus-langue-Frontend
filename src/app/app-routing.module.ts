@@ -12,6 +12,7 @@ import { PassagerComponent } from './Admin/passager/passager.component';
 import { InscriptionComponent } from './Admin/inscription/inscription.component';
 import { ListEtudiantComponent } from './Admin/list-etudiant/list-etudiant.component';
 import { DetailEtudiantComponent } from './Admin/detail-etudiant/detail-etudiant.component';
+import { DetailPaiementComponent } from './Admin/detail-paiement/detail-paiement.component';
 
 
 const routes: Routes = [
@@ -67,6 +68,10 @@ const routes: Routes = [
        {
         path: 'detail-etudiant/:idEtu',  // Route pour les groupes
         component: DetailEtudiantComponent,  // Composant des groupes
+      },
+         {
+        path: 'detail-paiement',  // Route pour les groupes
+        component: DetailPaiementComponent,  // Composant des groupes
       },
     ],
   },

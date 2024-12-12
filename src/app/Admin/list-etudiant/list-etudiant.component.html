@@ -270,10 +270,11 @@
                     >
                       <i class="fa fa-edit" style="font-size: medium"></i>
                     </button>
-                    <!-- Details Button -->
+                     <!-- Details Button -->
                     <button
                       type="button"
-                      class="btn btn-warning btn-round btn-just-icon"
+                      class="btn btn-info btn-round btn-just-icon"
+                      style="margin-right: 5px"
                       [routerLink]="['/menu-admin/detail-etudiant', item.id]"
                     >
                       <i
@@ -281,6 +282,18 @@
                         style="font-size: larger; color: #ffffff"
                       ></i>
                     </button>
+                    <button
+                      type="button"
+                      [routerLink]="['/menu-admin/detail-paiement']"
+                      class="btn  btn-round btn-just-icon"
+                      style="background-color: rgb(244, 65, 65);"
+                    >
+                      <i
+                        class="fa-solid fa-credit-card"
+                        style="font-size: larger; color: #ffffff"
+                      ></i>
+                    </button>
+
                   </td>
                 </tr>
               </tbody>
