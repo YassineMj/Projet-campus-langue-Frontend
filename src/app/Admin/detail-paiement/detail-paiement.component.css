@@ -13,6 +13,34 @@
     /* Smooth transition */
 }
 
+.card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0056b3;
+}
+
+.card-body strong {
+    color: #333333;
+}
+
+.oo{
+    font-weight: 500;
+        color: #555555;
+}
+
+h6.text-secondary {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #6c757d;
+}
 
 button.btn-round.colormodalmodifier:disabled {
     background-color: rgba(141, 111, 36, 0.468) !important;
@@ -21,9 +49,7 @@ button.btn-round.colormodalmodifier:disabled {
     opacity: 1 !important;
 
 }
-.paye:hover{
-  background-color: #ffeaea;
-}
+
 .table-responsive {
     max-height: 500px;
 }
@@ -353,11 +379,108 @@ small {
 
 
 }
+/* Flex container for alignment */
+.header-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
+/* Back link styling */
+.back-link {
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+.back-arrow {
+    width: 24px;
+    height: 24px;
+}
+
+/* Back link styling */
+.back-link {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.back-arrow {
+    width: 24px;
+    height: 24px;
+}
+
+/* Card title */
+.card-title {
+    font-size: 1.5rem;
+    color: #008cc7;
+}
+
+/* Print-specific adjustments */
+@media print {
+  body {
+    margin: 0;
+  }
+  .header, .footer {
+    page-break-inside: avoid;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    table-layout: auto; /* Allows columns to adjust based on content */
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    word-wrap: break-word; /* Ensures text breaks onto new lines */
+    white-space: normal; /* Allows text wrapping for long sentences */
+  }
+
+  th {
+    background-color: #0275d8;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  td {
+    color: #333;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  tr:nth-child(odd) {
+    background-color: #eaf4fc;
+  }
+
+  tr:hover {
+    background-color: #d9edf7;
+  }
+}
+
+/* Title styling */
+.card-title {
+    font-size: 1.5rem;
+    color: #008cc7;
+    margin: 0;
+    flex-grow: 1;
+    /* Ensures the title takes the remaining space */
+    text-align: center;
+}
 .colormodalfermer {
     background-color: rgb(17, 17, 17);
     color: white;
-    font-size: 20px;
+    font-size: 16px;
     border-radius: 100px;
 }
 
@@ -857,7 +980,7 @@ small {
 }
 
 .date-highlight {
-    border: 2px solid #0d98bb;
+    border: 2px solid #1ba4c6;
     background-color: #0d98bb;
     padding: 10px;
     border-radius: 5px;
@@ -911,7 +1034,35 @@ select option:hover {
     background-color: #f0f0f0;
     /* Light hover effect */
 }
+.hr-container {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    /* Center text horizontally */
+}
 
+.hr-container hr {
+    border: 4px double #008cc7;
+    width: 80%;
+    /* You can adjust the width of the <hr> */
+    margin: 20px auto;
+    border-radius: 100px;
+    position: relative;
+}
+
+.hr-text {
+    position: absolute;
+    top: -0.75em;
+    /* Adjust text vertical position */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    /* Make background white to cover the <hr> line */
+    padding: 0 10px;
+    /* Padding around the text */
+    font-weight: bold;
+    /* Optional: make the text bold */
+}
 .card-title {
     font-weight: bold;
     text-align: center;

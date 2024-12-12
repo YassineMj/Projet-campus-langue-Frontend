@@ -17,6 +17,7 @@ import { PassagerComponent } from './Admin/passager/passager.component';
 import { InscriptionComponent } from './Admin/inscription/inscription.component';
 import { ListEtudiantComponent } from './Admin/list-etudiant/list-etudiant.component';
 import { DetailEtudiantComponent } from './Admin/detail-etudiant/detail-etudiant.component';
+import { DetailPaiementComponent } from './Admin/detail-paiement/detail-paiement.component';
 
 
 
@@ -35,7 +36,8 @@ import { DetailEtudiantComponent } from './Admin/detail-etudiant/detail-etudiant
     PassagerComponent,
     InscriptionComponent,
     ListEtudiantComponent,
-    DetailEtudiantComponent
+    DetailEtudiantComponent,
+    DetailPaiementComponent
     
     
   ],

@@ -1,0 +1,940 @@
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+/>
+
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+
+<br />
+<div class="container" style="margin-top: 0%">
+  <div *ngIf="isLoading" style="text-align: center">
+    <div>
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Chargement...</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isLoading" class="row justify-content-center">
+    <div class="col-lg-12 col-md-12">
+      <div
+        class="card shadow-md rounded-3"
+        style="border-top: 8px solid rgba(20, 152, 209, 0.683)"
+      >
+        <div class="card-body">
+          <div class="header-container d-flex align-items-center">
+            <!-- Back Link -->
+            <a href="/menu-admin/etudiant" class="back-link">
+              <img
+                src="assets/images/Back-PNG-Transparent-Image.png"
+                alt="Left Arrow"
+                class="back-arrow"
+              />
+            </a>
+
+            <h5 class="card-title text-center mb-4">
+              <span
+                class="badge ms-2"
+                style="background-color: rgba(20, 152, 209, 0.683)"
+              >
+                <i class="fa-solid fa-circle-info"></i> Détails de
+                l'Étudiant</span
+              >
+            </h5>
+          </div>
+          <hr
+            style="
+              border: 4px double #008cc7;
+              width: 100%;
+              margin: auto;
+              border-radius: 100px;
+            "
+          />
+          <br />
+          <div class="row mb-3 oo">
+            <div class="col-6">
+              <strong>Nom : </strong> <span>{{ etudiant.nom }}</span>
+            </div>
+            <div class="col-6">
+              <strong>Prénom : </strong> <span>{{ etudiant.prenom }}</span>
+            </div>
+          </div>
+
+          <div class="row mb-3 oo">
+            <div class="col-6">
+              <strong>Établissement : </strong>
+              <span>{{ etudiant.etablissement.nom }}</span>
+            </div>
+            <div class="col-6">
+              <strong>Niveau : </strong> <span>{{ etudiant.niveau.nom }}</span>
+            </div>
+          </div>
+
+          <div class="row mb-3 oo">
+            <div class="col-6">
+              <strong>Téléphone : </strong>
+              <span>{{ etudiant.telephone }}</span>
+            </div>
+          </div>
+
+          <div class="row mb-3 oo">
+            <div class="col-6">
+              <strong>Nom du Père : </strong>
+              <span>{{ etudiant.nomPere }}</span>
+            </div>
+            <div class="col-6">
+              <strong>Téléphone du Père : </strong>
+              <span>{{ etudiant.telPere }}</span>
+            </div>
+          </div>
+
+          <div class="row mb-3 oo">
+            <div class="col-6">
+              <strong>Nom de la Mère : </strong>
+              <span>{{ etudiant.nomMere }}</span>
+            </div>
+            <div class="col-6">
+              <strong>Téléphone de la Mère : </strong>
+              <span>{{ etudiant.telMere }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--br-->
+      <div class="card" style="border-top: 12px solid rgba(232, 39, 39, 0.804)">
+        <div class="card-body">
+          <h5 class="card-title text-center mb-4">
+            <span
+              class="badge"
+              style="background-color: rgba(232, 39, 39, 0.804)"
+              ><i class="fa-solid fa-credit-card"></i> Liste de paiement</span
+            >
+          </h5>
+
+          <div class="mb-2 d-flex justify-content-between align-items-center">
+            <div class="position-relative">
+              <span class="position-absolute search"
+                ><i class="fa fa-search"></i
+              ></span>
+              <input
+                class="form-control searchform w-100"
+                placeholder="Rechercher..."
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="filterInscription()"
+              />
+            </div>
+          </div>
+
+          <div class="table-responsive table-container" id="DetailDetudiant">
+            <table class="table" id="etudianttable">
+              <thead>
+                <tr>
+                  <th><b>ID d'Inscription</b></th>
+                  <th><b>Date d'Inscription</b></th>
+                  <th><b>Montant</b></th>
+                  <th><b>Description</b></th>
+                  <th class="text-right"><b>Actions</b></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align: center"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td class="td-actions text-right d-flex justify-content-end">
+                    <!-- Edit Button -->
+                    <button
+                      type="button"
+                      class="btn btn-round btn-just-icon"
+                      style="margin-right: 5px"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editModal"
+                    >
+                      <i class="fa fa-edit" style="font-size: medium"></i>
+                    </button>
+                    <!-- hand Button -->
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-round btn-just-icon"
+                      data-bs-toggle="modal"
+                      data-bs-target="#deleteConfirmationModal"
+                    >
+                      <i class="fa fa-trash" style="font-size: medium"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Modal for Viewing Details -->
+            <div
+              class="modal fade"
+              id="detailsModal"
+              tabindex="-1"
+              aria-labelledby="detailsModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" style="max-width: 60%">
+                <!-- Increased width -->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="detailsModalLabel">
+                      <i class="fa-solid fa-list"></i> Détails de l'élément
+                    </h1>
+                    <br />
+                    <br />
+                  </div>
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                      <!-- Success message container -->
+                      <div
+                        *ngIf="successMessage"
+                        class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+                        role="alert"
+                      >
+                        <strong>
+                          <i class="fa-solid fa-user-plus"></i>
+                          {{ successMessage }}
+                        </strong>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          (click)="hideSuccessMessage()"
+                          style="color: white"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="row mb-2 date-highlight">
+                        <div class="col-10">
+                          <b
+                            ><i
+                              class="fa fa-calendar"
+                              style="margin-right: 5px"
+                            ></i
+                            >Date d'inscription :</b
+                          >
+                          11
+                        </div>
+                      </div>
+                      <br />
+                      <!-- Display fields inline -->
+                      <div class="row mb-2">
+                        <div class="col-6"><b>Nom:</b> Hajji</div>
+                        <div class="col-6"><b>Prenom:</b> Oumaima</div>
+                      </div>
+                      <br />
+                      <div class="row mb-2">
+                        <div class="col-6"><b>Matière:</b> Mathématiques</div>
+                        <div class="col-6"><b>Cours:</b> Physique</div>
+                      </div>
+                      <br />
+                      <div class="row mb-2">
+                        <div class="col-6"><b>Groupe:</b> Groupe A</div>
+                        <div class="col-6"><b>Prof:</b> M. Dupont</div>
+                      </div>
+
+                      <br />
+                      <div class="row mb-2">
+                        <div class="col-6">
+                          <b>Tarif: </b>
+                          <span class="badge bg-warning text-dark">200 DH</span>
+                        </div>
+                      </div>
+
+                      <br />
+                    </div>
+                  </div>
+                  <!-- Card Container for Registration Form -->
+                  <div
+                    class="card"
+                    style="max-width: 100%; border-radius: 15px"
+                  >
+                    <div class="card-body">
+                      <form>
+                        <!-- Separator for details -->
+                        <div class="hr-container">
+                          <hr
+                            style="
+                              border: 4px double #008cc7;
+                              width: 100%;
+                              margin: auto;
+                              border-radius: 100px;
+                            "
+                          />
+                          <span class="hr-text">
+                            <i class="fa-solid fa-circle-plus"></i> Détails de
+                            paiement
+                          </span>
+                        </div>
+                        <br /><br />
+
+                        <div style="margin-left: 3%; margin-right: 3%">
+                          <!-- Montant -->
+                          <div class="row mb-3">
+                            <div class="col-md-6">
+                              <label for="montant" class="form-label">
+                                Montant
+                              </label>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="montant"
+                                name="montant"
+                                [(ngModel)]="montant"
+                                #montantInput="ngModel"
+                                placeholder="Entrez le montant"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- Description -->
+                          <div class="mb-3">
+                            <label for="description" class="form-label">
+                              Description
+                            </label>
+                            <textarea
+                              class="form-control"
+                              id="description"
+                              name="description"
+                              rows="4"
+                              placeholder="Entrez une description"
+                            ></textarea>
+                          </div>
+                        </div>
+
+                        <!-- Modal Footer with Submit -->
+                        <div class="modal-footer justify-content-center">
+                          <button
+                            type="submit"
+                            class="btn btn-primary-btn"
+                            style="
+                              background-color: #f04940;
+                              border: 3px solid rgb(255, 144, 140);
+                              color: white;
+                              font-weight: bolder;
+                              border-radius: 50px;
+                            "
+                          >
+                            <ng-container>
+                              <i class="fa-solid fa-credit-card"></i> Payer
+                            </ng-container>
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <!-- End of Card Container -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal for Editing -->
+          <div
+            class="modal fade"
+            id="editModal"
+            tabindex="-1"
+            aria-labelledby="editModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-sm" style="max-width: 50%">
+              <div class="modal-content">
+                <div class="modal-header hedtopedit">
+                  <h1 class="modal-title fs-5" id="editModalLabel">
+                    <i class="fa fa-pen"></i> Modifier les Informations
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close text-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+
+                <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-12 mb-3">
+                          <label for="montant" class="form-label">
+                            Montant <span class="required">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="montant"
+                            name="montant"
+                            placeholder="Entrez le montant"
+                            required
+                          />
+                        </div>
+                        <div class="col-12 mb-3">
+                          <label for="description" class="form-label">
+                            Description
+                          </label>
+                          <textarea
+                            class="form-control"
+                            id="description"
+                            name="description"
+                            rows="4"
+                            placeholder="Entrez une description"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer justify-content-center">
+                    <button
+                      type="button"
+                      class="btn btn-round colormodalfermer"
+                      data-bs-dismiss="modal"
+                    >
+                      <i class="fa fa-close text-white"></i>
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-round colormodalmodifier"
+                      [disabled]="editForm.invalid"
+                    >
+                      <i class="fa fa-save text-white"></i> 
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- End of Modal -->
+        </div>
+      </div>
+      <!--br-->
+      <div class="card" style="border-top: 12px solid #75920cc3">
+        <div class="card-body">
+          <h5 class="card-title text-center mb-4">
+            <span class="badge" style="background-color: rgb(117, 146, 12)"
+              ><i class="fa-solid fa-list-check"></i> Liste d'inscription</span
+            >
+          </h5>
+
+          <div class="mb-2 d-flex justify-content-between align-items-center">
+            <div class="position-relative">
+              <span class="position-absolute search"
+                ><i class="fa fa-search"></i
+              ></span>
+              <input
+                class="form-control searchform w-100"
+                placeholder="Rechercher..."
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="filterInscription()"
+              />
+            </div>
+          </div>
+
+          <div class="table-responsive table-container" id="DetailDetudiant">
+            <table class="table" id="etudianttable">
+              <thead>
+                <tr>
+                  <th><b>Date d'Inscription</b></th>
+                  <th><b>Année</b></th>
+                  <th><b>Mois</b></th>
+                  <th><b>Matière</b></th>
+                  <th><b>Groupe</b></th>
+                  <th><b>Professeur</b></th>
+                  <th><b>Cours</b></th>
+                  <th><b>Emploi du Temps</b></th>
+                  <th class="text-right"><b>Actions</b></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align: center"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <!-- Emploi du temps formaté -->
+                  <td></td>
+                  <td class="td-actions text-right d-flex justify-content-end">
+                    <!-- Edit Button -->
+                    <!-- <button
+                      type="button"
+                      class="btn btn-round btn-just-icon"
+                      style="margin-right: 5px"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editModal"
+                    >
+                      <i class="fa fa-edit" style="font-size: medium"></i>
+                    </button> -->
+                    <!-- hand Button -->
+                    <button
+                      type="button"
+                      class="btn btn-dark btn-round btn-just-icon"
+                      data-bs-toggle="modal"
+                      data-bs-target="#detailsModal"
+                    >
+                      <i
+                        class="fa-solid fa-hand-pointer"
+                        style="font-size: larger; color: #ffffff"
+                      ></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Modal for Viewing Details -->
+            <div
+              class="modal fade"
+              id="detailsModal"
+              tabindex="-1"
+              aria-labelledby="detailsModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" style="max-width: 60%">
+                <!-- Increased width -->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="detailsModalLabel">
+                      <i class="fa-solid fa-list"></i> Détails de l'élément
+                    </h1>
+                    <br />
+                    <br />
+                  </div>
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                      <!-- Success message container -->
+                      <div
+                        *ngIf="successMessage"
+                        class="alert body alert-success alert-dismissible fade show position-absolute top-0 start-50 translate-middle-x"
+                        role="alert"
+                      >
+                        <strong>
+                          <i class="fa-solid fa-user-plus"></i>
+                          {{ successMessage }}
+                        </strong>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          (click)="hideSuccessMessage()"
+                          style="color: white"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                      <div class="row mb-2 date-highlight">
+                        <div class="col-10">
+                          <b
+                            ><i
+                              class="fa fa-calendar"
+                              style="margin-right: 5px"
+                            ></i
+                            >Date d'inscription :</b
+                          >
+                          11
+                        </div>
+                      </div>
+                      <br />
+                      <!-- Display fields inline -->
+                      <div class="row mb-2">
+                        <div class="col-6"><b>Nom:</b> Hajji</div>
+                        <div class="col-6"><b>Prenom:</b> Oumaima</div>
+                      </div>
+                      <br />
+                      <div class="row mb-2">
+                        <div class="col-6"><b>Matière:</b> Mathématiques</div>
+                        <div class="col-6"><b>Cours:</b> Physique</div>
+                      </div>
+                      <br />
+                      <div class="row mb-2">
+                        <div class="col-6"><b>Groupe:</b> Groupe A</div>
+                        <div class="col-6"><b>Prof:</b> M. Dupont</div>
+                      </div>
+
+                      <br />
+                      <div class="row mb-2">
+                        <div class="col-6">
+                          <b>Tarif: </b>
+                          <span class="badge bg-warning text-dark">200 DH</span>
+                        </div>
+                      </div>
+
+                      <br />
+                    </div>
+                  </div>
+                  <!-- Card Container for Registration Form -->
+                  <div
+                    class="card"
+                    style="max-width: 100%; border-radius: 15px"
+                  >
+                    <div class="card-body">
+                      <form>
+                        <!-- Separator for details -->
+                        <div class="hr-container">
+                          <hr
+                            style="
+                              border: 4px double #008cc7;
+                              width: 100%;
+                              margin: auto;
+                              border-radius: 100px;
+                            "
+                          />
+                          <span class="hr-text">
+                            <i class="fa-solid fa-circle-plus"></i> Détails de
+                            paiement
+                          </span>
+                        </div>
+                        <br /><br />
+
+                        <div style="margin-left: 3%; margin-right: 3%">
+                          <!-- Montant -->
+                          <div class="row mb-3">
+                            <div class="col-md-6">
+                              <label for="montant" class="form-label">
+                                Montant
+                              </label>
+                              <input
+                                type="number"
+                                class="form-control"
+                                id="montant"
+                                name="montant"
+                                [(ngModel)]="montant"
+                                #montantInput="ngModel"
+                                placeholder="Entrez le montant"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- Description -->
+                          <div class="mb-3">
+                            <label for="description" class="form-label">
+                              Description
+                            </label>
+                            <textarea
+                              class="form-control"
+                              id="description"
+                              name="description"
+                              rows="4"
+                              placeholder="Entrez une description"
+                            ></textarea>
+                          </div>
+                        </div>
+
+                        <!-- Modal Footer with Submit -->
+                        <div class="modal-footer justify-content-center">
+                          <button
+                            type="submit"
+                            class="btn btn-primary-btn"
+                            style="
+                              background-color: #f04940;
+                              border: 3px solid rgb(255, 144, 140);
+                              color: white;
+                              font-weight: bolder;
+                              border-radius: 50px;
+                            "
+                          >
+                            <ng-container>
+                              <i class="fa-solid fa-credit-card"></i> Payer
+                            </ng-container>
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <!-- End of Card Container -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal for Editing -->
+          <div
+            class="modal fade"
+            id="editModal"
+            tabindex="-1"
+            aria-labelledby="editModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg" style="max-width: 80%">
+              <div class="modal-content">
+                <div class="modal-header hedtopedit">
+                  <h1 class="modal-title fs-5" id="editModalLabel">
+                    <i class="fa fa-pen"></i> Modifier les Informations
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close text-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+
+                <form #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                      <!-- Première Ligne : Matières, Mois -->
+                      <div class="row">
+                        <!-- Cours et Test -->
+                        <div class="row mb-3">
+                          <div class="col-md-6">
+                            <label for="editCours" class="form-label"
+                              >Cours <span class="required">*</span></label
+                            >
+                            <select
+                              id="editCours"
+                              class="form-select"
+                              name="editCours"
+                              [(ngModel)]="data.coursId"
+                              required
+                              #CoursInput="ngModel"
+                            >
+                              <option value="" disabled selected>
+                                Choisir un cours
+                              </option>
+                              <option
+                                *ngFor="let course of cours"
+                                [value]="course.id"
+                              >
+                                {{ course.libelle }}
+                              </option>
+                            </select>
+                            <div
+                              *ngIf="CoursInput.invalid && CoursInput.touched"
+                              class="text-danger"
+                            >
+                              Le choix du cours est obligatoire.
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label for="test" class="form-label"
+                              >Test <span class="required">*</span></label
+                            >
+                            <select
+                              class="form-select"
+                              id="test"
+                              [(ngModel)]="data.test"
+                              name="test"
+                              required
+                              #test="ngModel"
+                            >
+                              <option value="" disabled selected>
+                                Choisir un test
+                              </option>
+                              <option value="Oui">Oui</option>
+                              <option value="Non">Non</option>
+                              <option value="Sans">Sans</option>
+                            </select>
+                            <div
+                              *ngIf="test.invalid && test.touched"
+                              class="text-danger"
+                            >
+                              Le choix du test est obligatoire.
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Groupe et Prof -->
+                        <div class="row mb-3">
+                          <div class="col-md-6">
+                            <label for="group" class="form-label"
+                              >Groupe <span class="required">*</span></label
+                            >
+                            <select
+                              class="form-select"
+                              id="group"
+                              [(ngModel)]="data.groupeId"
+                              name="group"
+                              required
+                              (change)="onGroupChange()"
+                              #group="ngModel"
+                            >
+                              <option value="" disabled selected>
+                                Choisir un groupe
+                              </option>
+                              <option
+                                *ngFor="let gr of groupes"
+                                [value]="gr.id"
+                              >
+                                {{ gr.nomGroupe }}
+                              </option>
+                            </select>
+                            <div
+                              *ngIf="group.invalid && group.touched"
+                              class="text-danger"
+                            >
+                              Le choix du groupe est obligatoire.
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label for="editProf" class="form-label"
+                              >Profs <span class="required">*</span></label
+                            >
+                            <select
+                              id="editProf"
+                              class="form-select"
+                              name="editProf"
+                              [(ngModel)]="data.profId"
+                              required
+                              #editProfInput="ngModel"
+                            >
+                              <option value="" disabled selected>
+                                Choisir un prof
+                              </option>
+                              <option
+                                *ngFor="let professor of profs"
+                                [value]="professor.id"
+                              >
+                                {{ professor.nom }} {{ professor.prenom }}
+                              </option>
+                            </select>
+                            <div
+                              *ngIf="
+                                editProfInput.invalid && editProfInput.touched
+                              "
+                              class="text-danger"
+                            >
+                              Le prof est obligatoire.
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Année et Mois -->
+                        <div class="row mb-3">
+                          <div class="col-md-6">
+                            <label for="annee" class="form-label"
+                              >Année <span class="required">*</span></label
+                            >
+                            <select
+                              class="form-select"
+                              id="annee"
+                              [(ngModel)]="data.annee"
+                              name="annee"
+                              required
+                              #annee="ngModel"
+                            >
+                              <option value="" disabled selected>
+                                Choisir une année
+                              </option>
+                              <option value="2024/2025">2024/2025</option>
+                              <option value="2025/2026">2025/2026</option>
+                              <option value="2026/2027">2026/2027</option>
+                              <option value="2027/2028">2027/2028</option>
+                              <option value="2028/2029">2028/2029</option>
+                              <option value="2029/2030">2029/2030</option>
+                              <option value="2030/2031">2030/2031</option>
+                              <option value="2031/2032">2031/2032</option>
+                              <option value="2032/2033">2032/2033</option>
+                              <option value="2033/2034">2033/2034</option>
+                              <option value="2034/2035">2034/2035</option>
+                              <option value="2035/2036">2035/2036</option>
+                              <option value="2036/2037">2036/2037</option>
+                              <option value="2037/2038">2037/2038</option>
+                              <option value="2038/2039">2038/2039</option>
+                              <option value="2039/2040">2039/2040</option>
+                              <option value="2040/2041">2040/2041</option>
+                            </select>
+                            <div
+                              *ngIf="annee.invalid && annee.touched"
+                              class="text-danger"
+                            >
+                              Le choix de l'année est obligatoire.
+                            </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <label for="mois" class="form-label"
+                              >Mois <span class="required">*</span></label
+                            >
+                            <select
+                              class="form-select"
+                              id="mois"
+                              [(ngModel)]="data.mois"
+                              name="mois"
+                              required
+                              #mois="ngModel"
+                            >
+                              <option value="" disabled selected>
+                                Choisir un mois
+                              </option>
+                              <option value="01">Janvier</option>
+                              <option value="02">Février</option>
+                              <option value="03">Mars</option>
+                              <option value="04">Avril</option>
+                              <option value="05">Mai</option>
+                              <option value="06">Juin</option>
+                              <option value="07">Juillet</option>
+                              <option value="08">Août</option>
+                              <option value="09">Septembre</option>
+                              <option value="10">Octobre</option>
+                              <option value="11">Novembre</option>
+                              <option value="12">Décembre</option>
+                            </select>
+                            <div
+                              *ngIf="mois.invalid && mois.touched"
+                              class="text-danger"
+                            >
+                              Le choix du mois est obligatoire.
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Emploi du Temps -->
+                        <div class="mb-3">
+                          <label for="editEmploiTemps" class="form-label"
+                            ><b>Emploi du Temps</b></label
+                          >
+                          <textarea
+                            class="form-control formtexterea"
+                            id="editEmploiTemps"
+                            name="editEmploiTemps"
+                            [(ngModel)]="data.emploidutemp"
+                            rows="5"
+                            placeholder="Saisir l'emploi du temps..."
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Boutons -->
+                  <div class="modal-footer justify-content-center">
+                    <button
+                      type="button"
+                      class="btn btn-round colormodalfermer"
+                      data-bs-dismiss="modal"
+                    >
+                      <i class="fa fa-close text-white"></i>
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-round colormodalmodifier"
+                      [disabled]="editForm.invalid"
+                    >
+                      <i class="fa fa-save text-white"></i> Enregistrer
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- End of Modal -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
