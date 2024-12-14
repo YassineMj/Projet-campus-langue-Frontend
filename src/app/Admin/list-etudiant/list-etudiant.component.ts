@@ -354,7 +354,7 @@ printTable(): void {
 }
 
     downloadAsExcel(): void {
-    const tableElement = document.getElementById('ListdesEtudiant') as HTMLTableElement;
+    const tableElement = document.getElementById('list-etudiantTable') as HTMLTableElement;
 
     if (!tableElement) {
       console.error('Table element not found!');

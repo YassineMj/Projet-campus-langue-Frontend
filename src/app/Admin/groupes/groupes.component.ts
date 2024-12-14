@@ -129,6 +129,7 @@ export class GroupesComponent {
     this.editProfId = item.prof.id;
   }
 
+  
   // Soumettre les modifications d'un groupe
   onEditSubmit(editForm: any): void {
     if (editForm.valid && this.editId !== null) {

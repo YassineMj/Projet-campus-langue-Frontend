@@ -19,6 +19,21 @@
 
 <br />
 <div class="container" style="margin-top: 0%">
+  <!-- Success message container -->
+  <!-- Success message container -->
+  <div class="container bootstrap snippets bootdey">
+    <div
+      *ngIf="deleteMessage"
+      class="alert alert-success alert-white rounded mx-auto w-75"
+      role="alert"
+    >
+      <div class="icon">
+        <i class="fa-solid fa-trash"></i>
+      </div>
+      <strong>Succès!</strong>
+      {{ deleteMessage }}
+    </div>
+  </div>
   <div *ngIf="isLoading" style="text-align: center">
     <div>
       <div class="spinner-border" role="status">
@@ -28,16 +43,14 @@
   </div>
   <div *ngIf="!isLoading" class="row justify-content-center">
     <div class="col-lg-12 col-md-12">
-      <div
-        class="card shadow-md rounded-3"
-        style="border-top: 8px solid rgba(20, 152, 209, 0.683)"
-      >
+      <!--br-->
+      <div class="card shadow-md rounded-4">
         <div class="card-body">
           <div class="header-container d-flex align-items-center">
             <!-- Back Link -->
             <a href="/menu-admin/etudiant" class="back-link">
               <img
-                src="assets/images/Back-PNG-Transparent-Image.png"
+                src="assets/images/backiconn.webp"
                 alt="Left Arrow"
                 class="back-arrow"
               />
@@ -46,7 +59,7 @@
             <h5 class="card-title text-center mb-4">
               <span
                 class="badge ms-2"
-                style="background-color: rgba(20, 152, 209, 0.683)"
+                style="background-color: rgba(227, 174, 12, 0.989)"
               >
                 <i class="fa-solid fa-circle-info"></i> Détails de
                 l'Étudiant</span
@@ -55,7 +68,7 @@
           </div>
           <hr
             style="
-              border: 4px double #008cc7;
+              border: 4px double rgba(156, 119, 5, 0.989);
               width: 100%;
               margin: auto;
               border-radius: 100px;
@@ -113,7 +126,7 @@
       </div>
 
       <!--br-->
-      <div class="card" style="border-top: 12px solid rgba(232, 39, 39, 0.804)">
+      <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center mb-4">
             <span
@@ -153,13 +166,15 @@
               </thead>
               <tbody>
                 <tr *ngFor="let paiement of filteredPaiements">
-                  <td style="text-align: center">{{paiement.datePaiement}}</td>
-                  <td>{{paiement.idInscription}}</td>
-                  <td>{{paiement.anne}}</td>
-                  <td>{{paiement.mois}}</td>
-                  <td>{{paiement.matiere}}</td>
-                  <td>{{paiement.montant}}</td>
-                  <td>{{paiement.descriptionPaiement}}</td>
+                  <td style="text-align: center">
+                    {{ paiement.datePaiement }}
+                  </td>
+                  <td>{{ paiement.idInscription }}</td>
+                  <td>{{ paiement.anne }}</td>
+                  <td>{{ paiement.mois }}</td>
+                  <td>{{ paiement.matiere }}</td>
+                  <td>{{ paiement.montant }}</td>
+                  <td>{{ paiement.descriptionPaiement }}</td>
 
                   <td class="td-actions text-right d-flex justify-content-end">
                     <!-- Edit Button -->
@@ -187,7 +202,6 @@
                 </tr>
               </tbody>
             </table>
-
           </div>
 
           <!-- Modal for Editing -->
@@ -212,7 +226,7 @@
                   ></button>
                 </div>
 
-                <form #editForm="ngForm" (ngSubmit)="onSubmitUpdate()" >
+                <form #editForm="ngForm" (ngSubmit)="onSubmitUpdate()">
                   <div class="modal-body">
                     <div class="container-fluid">
                       <div class="row">
@@ -227,7 +241,6 @@
                             name="montant"
                             placeholder="Entrez le montant"
                             [(ngModel)]="montant"
-
                             required
                           />
                         </div>
@@ -241,7 +254,6 @@
                             name="description"
                             rows="4"
                             [(ngModel)]="description"
-
                             placeholder="Entrez une description"
                           ></textarea>
                         </div>
@@ -250,6 +262,20 @@
                   </div>
 
                   <div class="modal-footer justify-content-center">
+                    <!-- Success Alert (before footer and centered) -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="modifysuccess"
+                        class="alert alert-success alert-white rounded mx-auto w-75 success-alert"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa fa-pen"></i>
+                        </div>
+                        <strong>Success!</strong>
+                        {{ modifysuccess }}
+                      </div>
+                    </div>
                     <button
                       type="button"
                       class="btn btn-round colormodalfermer"
@@ -258,31 +284,28 @@
                       <i class="fa fa-close text-white"></i>
                     </button>
 
-                    <button     
+                    <button
                       [disabled]="isLoadingUpdate || editForm.invalid"
                       class="btn btn-round colormodalmodifier"
-                          >
-                            <ng-container *ngIf="!isLoadingUpdate">
-                              <i class="fa fa-edit"></i>
-                            </ng-container>
-                            <ng-container *ngIf="isLoadingUpdate">
-                              <i
-                                class="fa fa-spinner fa-spin text-white"
-                              ></i>
-                              En cours...
-                            </ng-container>
-                          </button>
-
+                    >
+                      <ng-container *ngIf="!isLoadingUpdate">
+                        <i class="fa fa-edit"></i>
+                      </ng-container>
+                      <ng-container *ngIf="isLoadingUpdate">
+                        <i class="fa fa-spinner fa-spin text-white"></i>
+                        En cours...
+                      </ng-container>
+                    </button>
                   </div>
                 </form>
               </div>
             </div>
           </div>
-
         </div>
       </div>
+
       <!--br-->
-      <div class="card" style="border-top: 12px solid #75920cc3">
+      <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center mb-4">
             <span class="badge" style="background-color: rgb(117, 146, 12)"
@@ -304,9 +327,8 @@
             </div>
           </div>
 
-
           <div class="table-responsive table-container" id="DetailDetudiant">
-                            <!--list inscriptions-->
+            <!--list inscriptions-->
             <table class="table" id="etudianttable">
               <thead>
                 <tr>
@@ -335,7 +357,6 @@
                   <!-- Emploi du temps formaté -->
                   <td>{{ formatEdt(inscription.edt) }}</td>
                   <td class="td-actions text-right d-flex justify-content-end">
-                    
                     <button
                       type="button"
                       class="btn btn-dark btn-round btn-just-icon"
@@ -352,6 +373,7 @@
                 </tr>
               </tbody>
             </table>
+
             <!-- Modal for Viewing Details -->
             <div
               class="modal fade"
@@ -399,31 +421,43 @@
                             ></i
                             >Date d'inscription :</b
                           >
-                          {{selectedItemInscription.dateInscription}}
+                          {{ selectedItemInscription.dateInscription }}
                         </div>
                       </div>
                       <br />
                       <!-- Display fields inline -->
                       <div class="row mb-2">
-                        <div class="col-6"><b>Nom:</b> {{etudiant.nom}}</div>
-                        <div class="col-6"><b>Prenom:</b> {{etudiant.prenom}}</div>
+                        <div class="col-6"><b>Nom:</b> {{ etudiant.nom }}</div>
+                        <div class="col-6">
+                          <b>Prenom:</b> {{ etudiant.prenom }}
+                        </div>
                       </div>
                       <br />
                       <div class="row mb-2">
-                        <div class="col-6"><b>Matière:</b> {{selectedItemInscription.langue}}</div>
-                        <div class="col-6"><b>Cours:</b> {{selectedItemInscription.cours}}</div>
+                        <div class="col-6">
+                          <b>Matière:</b> {{ selectedItemInscription.langue }}
+                        </div>
+                        <div class="col-6">
+                          <b>Cours:</b> {{ selectedItemInscription.cours }}
+                        </div>
                       </div>
                       <br />
                       <div class="row mb-2">
-                        <div class="col-6"><b>Groupe:</b> {{selectedItemInscription.groupe}}</div>
-                        <div class="col-6"><b>Prof:</b> {{selectedItemInscription.prof}}</div>
+                        <div class="col-6">
+                          <b>Groupe:</b> {{ selectedItemInscription.groupe }}
+                        </div>
+                        <div class="col-6">
+                          <b>Prof:</b> {{ selectedItemInscription.prof }}
+                        </div>
                       </div>
 
                       <br />
                       <div class="row mb-2">
                         <div class="col-6">
                           <b>Tarif: </b>
-                          <span class="badge bg-warning text-dark">{{selectedItemInscription.tarif}}</span>
+                          <span class="badge bg-warning text-dark">{{
+                            selectedItemInscription.tarif
+                          }}</span>
                         </div>
                       </div>
 
@@ -436,87 +470,95 @@
                     style="max-width: 100%; border-radius: 15px"
                   >
                     <div class="card-body">
-                      
-                        <!-- Separator for details -->
-                        <div class="hr-container">
-                          <hr
-                            style="
-                              border: 4px double #008cc7;
-                              width: 100%;
-                              margin: auto;
-                              border-radius: 100px;
-                            "
-                          />
-                          <span class="hr-text">
-                            <i class="fa-solid fa-circle-plus"></i> Détails de
-                            paiement
-                          </span>
-                        </div>
-                        <br /><br />
+                      <!-- Separator for details -->
+                      <div class="hr-container">
+                        <hr
+                          style="
+                            border: 4px double #008cc7;
+                            width: 100%;
+                            margin: auto;
+                            border-radius: 100px;
+                          "
+                        />
+                        <span class="hr-text">
+                          <i class="fa-solid fa-circle-plus"></i> Détails de
+                          paiement
+                        </span>
+                      </div>
+                      <br /><br />
 
-                        <div style="margin-left: 3%; margin-right: 3%">
-                          <!-- Montant -->
-                          <div class="row mb-3">
-                            <div class="col-md-6">
-                              <label for="montant" class="form-label">
-                                Montant
-                              </label>
-                              <input
-                                type="number"
-                                class="form-control"
-                                id="montant"
-                                name="montant"
-                                [(ngModel)]="montant"
-                                #montantInput="ngModel"
-                                placeholder="Entrez le montant"
-                              />
-                            </div>
-                          </div>
-
-                          <!-- Description -->
-                          <div class="mb-3">
-                            <label for="description" class="form-label">
-                              Description
+                      <div style="margin-left: 3%; margin-right: 3%">
+                        <!-- Montant -->
+                        <div class="row mb-3">
+                          <div class="col-md-6">
+                            <label for="montant" class="form-label">
+                              Montant
                             </label>
-                            <textarea
-                            [(ngModel)]="description"
-
+                            <input
+                              type="number"
                               class="form-control"
-                              id="description"
-                              name="description"
-                              rows="4"
-                              placeholder="Entrez une description"
-                            ></textarea>
+                              id="montant"
+                              name="montant"
+                              [(ngModel)]="montant"
+                              #montantInput="ngModel"
+                              placeholder="Entrez le montant"
+                            />
                           </div>
                         </div>
 
-                        <!-- Modal Footer with Submit -->
-                        <div class="modal-footer justify-content-center">
-                          <button
-                            
-                            [disabled]="isLoadingPai"
-                            class="btn btn-primary-btn"
-                            style="
-                              background-color: #f04940;
-                              border: 3px solid rgb(255, 144, 140);
-                              color: white;
-                              font-weight: bolder;
-                              border-radius: 50px;
-                            "
-                            (click)="onSubmitPaiement()"
-                          >
-                            <ng-container *ngIf="!isLoadingPai">
-                              <i class="fa-solid fa-credit-card"></i> Payer
-                            </ng-container>
-                            <ng-container *ngIf="isLoadingPai">
-                              <i
-                                class="fa fa-spinner fa-spin text-white"
-                              ></i>
-                              En cours...
-                            </ng-container>
-                          </button>
+                        <!-- Description -->
+                        <div class="mb-3">
+                          <label for="description" class="form-label">
+                            Description
+                          </label>
+                          <textarea
+                            [(ngModel)]="description"
+                            class="form-control"
+                            id="description"
+                            name="description"
+                            rows="4"
+                            placeholder="Entrez une description"
+                          ></textarea>
                         </div>
-                      
+                      </div>
+
+                      <!-- Modal Footer with Submit -->
+                      <div class="modal-footer justify-content-center">
+                        <!-- Success message container -->
+                        <div class="container bootstrap snippets bootdey">
+                          <div
+                            *ngIf="successMessage"
+                            class="alert alert-success alert-white rounded mx-auto w-75"
+                            role="alert"
+                          >
+                            <div class="icon">
+                              <i class="fa-solid fa-credit-card"></i>
+                            </div>
+                            <strong>Succès!</strong>
+                            {{ successMessage }}
+                          </div>
+                        </div>
+                        <button
+                          [disabled]="isLoadingPai"
+                          class="btn btn-primary-btn"
+                          style="
+                            background-color: #f04940;
+                            border: 3px solid rgb(255, 144, 140);
+                            color: white;
+                            font-weight: bolder;
+                            border-radius: 50px;
+                          "
+                          (click)="onSubmitPaiement()"
+                        >
+                          <ng-container *ngIf="!isLoadingPai">
+                            <i class="fa-solid fa-credit-card"></i> Payer
+                          </ng-container>
+                          <ng-container *ngIf="isLoadingPai">
+                            <i class="fa fa-spinner fa-spin text-white"></i>
+                            En cours...
+                          </ng-container>
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <!-- End of Card Container -->
