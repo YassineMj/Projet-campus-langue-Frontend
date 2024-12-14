@@ -332,6 +332,7 @@
             <table class="table" id="etudianttable">
               <thead>
                 <tr>
+                  <th><b>ID d'Inscription</b></th>
                   <th><b>Date d'Inscription</b></th>
                   <th><b>Année</b></th>
                   <th><b>Mois</b></th>
@@ -345,6 +346,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let inscription of filteredInscriptions">
+                  <td>{{ inscription.id }}</td>
                   <td style="text-align: center">
                     {{ inscription.dateInscription }}
                   </td>
