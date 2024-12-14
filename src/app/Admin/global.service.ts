@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class GlobalService {
 
+
   private baseUrl = 'https://projet-campus-langue-backend-v17.onrender.com/api';
 
   constructor(private http: HttpClient) {}
@@ -168,5 +169,19 @@ export class GlobalService {
     }
     deleteInscriptions(id:any): Observable<any[]> {
       return this.http.delete<any[]>(`${this.baseUrl}/inscriptions/${id}`);
+    }
+
+    // ----- Paiements -----
+    addPaiement(paiement:any): Observable<any> {
+      return this.http.post<any>(`${this.baseUrl}/paiements`,paiement);
+    }
+    getPaiementsByIdEtudiant(idEtu:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/paiements/etudiant/${idEtu}`);
+    }
+    deletePaiement(id: number): Observable<any> {
+      return this.http.delete<any>(`${this.baseUrl}/paiements/${id}`);
+    }
+    updatePaiement(paiement:any,id:any): Observable<any> {
+      return this.http.put<any>(`${this.baseUrl}/paiements/${id}`,paiement);
     }
 }

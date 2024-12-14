@@ -70,7 +70,7 @@ const routes: Routes = [
         component: DetailEtudiantComponent,  // Composant des groupes
       },
          {
-        path: 'detail-paiement',  // Route pour les groupes
+        path: 'detail-paiement/:idEtu',  // Route pour les groupes
         component: DetailPaiementComponent,  // Composant des groupes
       },
     ],

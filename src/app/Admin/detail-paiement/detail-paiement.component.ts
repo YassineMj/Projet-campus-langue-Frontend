@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Form, NgForm } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { GlobalService } from '../global.service';
 import { ActivatedRoute } from '@angular/router';
@@ -15,7 +15,18 @@ export class DetailPaiementComponent {
 
   isLoading: boolean = false;
   successMessage: string = ''; // This will hold the success message
-  selectedItem: any;
+  selectedItemInscription: any={
+    annee:"",
+    cours:"",
+    dateInscription:"",
+    edt:"",
+    groupe:"",
+    id:null,
+    langue:"",
+    mois:"",
+    prof:"",
+    tarif:null
+  };
   hideSuccessMessage(): void {
     this.successMessage = ''; // Clear the message, hiding the alert
   }
@@ -25,25 +36,19 @@ export class DetailPaiementComponent {
       this.idEtu = params['idEtu'];
     });
   }
-items = [
-  { id: 1, name: 'Item 1' },
-  { id: 2, name: 'Item 2' },
-];
-  openDetailsModal(item: any): void {
-  this.selectedItem = item; // Save the selected item
-  // Optionally, fetch additional data if required
-}
+
  
-  // Déclaration des variables liées au formulaire
-  description: string = '';
-  montant: number | null = null;
+
 
   etudiant:any
-  inscriptions:any
-  inscriptions2:any[]=[]
 
+  inscriptions:any[]=[]
   filteredInscriptions:any[]=[]
-  searchTerm: string = '';
+  searchTermInscription: string = '';
+
+  paiements:any[]=[]
+  filteredPaiements:any[]=[]
+  searchTermPaiement: string = '';
   
 
 
@@ -60,9 +65,7 @@ items = [
   }
 
   ngOnInit(): void {
-    // this.loadCours();
-    // this.loadProfs();
-    // this.loadGroupes();
+
     this.loadDetails();
     
   }
@@ -75,134 +78,191 @@ items = [
         this.etudiant=data
         
         this._service.getInscriptionsByIdEtudiant(this.idEtu).subscribe(
-          (data) => {
-            this.inscriptions=data
-            this.inscriptions2=this.inscriptions.inscriptions;
-
-            this.inscriptions2 = this.inscriptions2.map(i => ({
+          (data:any) => {
+            this.inscriptions=data.inscriptions
+            this.inscriptions = this.inscriptions.map(i => ({
               ...i,
               mois: this.getMois(i.mois)
             }));
-
-            this.filteredInscriptions=this.inscriptions2;
-
+            this.filteredInscriptions=this.inscriptions;
            },
           (error) => {
             alert('Erreur lors de chargement des inscriptions.');
           })
+
+          this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
+            (data:any) => {
+              this.paiements=data 
+              this.paiements = this.paiements.map(i => ({
+                ...i,
+                mois: this.getMois(i.mois)
+              }));
+              this.filteredPaiements=this.paiements;
+             },
+            (error) => {
+              alert('Erreur lors de chargement des paiements.');
+            })
+
           this.isLoading = false;
        },
     
       (error) => {
-        alert('Erreur lors de la mise à jour du Etudiant.');
+        alert('Erreur lors de chargement du Etudiant.');
         this.isLoading = false;
       }
     );
   }
 
   filterInscription(): void {
-    this.filteredInscriptions = this.inscriptions2.filter(i => 
-      i.annee.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      i.dateInscription.toString().includes(this.searchTerm.toLowerCase()) ||
-      i.mois.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      i.prof.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      i.langue.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      i.groupe.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      i.cours.toLowerCase().includes(this.searchTerm.toLowerCase())
+    this.filteredInscriptions = this.inscriptions.filter(i => 
+      i.annee.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
+      i.dateInscription.toString().includes(this.searchTermInscription.toLowerCase()) ||
+      i.mois.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
+      i.prof.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
+      i.langue.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
+      i.groupe.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
+      i.cours.toLowerCase().includes(this.searchTermInscription.toLowerCase())
     );
       
   }
 
-  confirmDelete(idInsc:any): void {
-    this.isLoading = true;
-
-      this._service.deleteInscriptions(idInsc).subscribe(
-        () => {
-          this.loadDetails();
-        },
-        (error) => {
-          this.isLoading = false;
-
-          if(error.status==200){
-            this.ngOnInit();
-            return
-          }
-          alert('Erreur lors de la suppression d\'inscription.');
-
-        }
-      );
+  filterPaiements(): void {
+    this.filteredPaiements = this.paiements.filter(i => 
+      i.idInscription.toString().includes(this.searchTermPaiement.toLowerCase()) ||
+      i.mois.toLowerCase().includes(this.searchTermPaiement.toLowerCase()) ||
+      i.montant.toString().includes(this.searchTermPaiement.toLowerCase()) ||
+      i.matiere.toLowerCase().includes(this.searchTermPaiement.toLowerCase()) ||
+      i.datePaiement.toLowerCase().includes(this.searchTermPaiement.toLowerCase()) ||
+      i.descriptionPaiement.toLowerCase().includes(this.searchTermPaiement.toLowerCase()) ||
+      i.anne.toLowerCase().includes(this.searchTermPaiement.toLowerCase())
+    );
+      
   }
 
-  data = {
+  openDetailsInscriptionModal(item: any): void {
+    this.selectedItemInscription = item; 
+    console.log(item);
     
-      etudiantId: null,
-      coursId: null,
-      groupeId: null,
-      profId: null,
-      mois: null,
-      annee: null,
-      emploidutemp: null,
-      test:null
+    }
+
+
+  // Déclaration des variables liées au formulaire
+  description: string = '';
+  montant: number | null = null;
+  isLoadingPai=false;
+
+  onSubmitPaiement(): void {
+    // if (!this.selectedItemInscription?.id || !this.montant) {
+    //   this.errorMessage = "Veuillez renseigner tous les champs obligatoires.";
+    //   return;
+    // }
+  
+    this.isLoadingPai = true;
+    console.log(this.isLoadingPai);
     
-  };
+    const dataPaiement = {
+      inscriptionId: this.selectedItemInscription.id,
+      montantPaye: this.montant,
+      description: this.description || ""
+    };
+  
+    this._service.addPaiement(dataPaiement).subscribe({
+      next: (data) => {
+        console.log("Paiement ajouté avec succès :", data);
 
-  onGroupChange(){
-    this.groupes.forEach(element => {
+        // Réinitialisation des champs
+        this.montant = null;
+        this.description = "";
+  
+        // Affichage du message de succès
+        this.successMessage = "Paiement enregistré avec succès.";
+        this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
+          (data:any) => {
+            this.paiements=data 
+            this.paiements = this.paiements.map(i => ({
+              ...i,
+              mois: this.getMois(i.mois)
+            }));
+            this.filteredPaiements=this.paiements;
+           },
+          (error) => {
+            alert('Erreur lors de chargement des paiements.');
+          })
+        this.isLoadingPai = false;
 
-      if(element.id==this.data.groupeId){
-        this.data.emploidutemp=element.emploiDuTemps
-        return;
+        setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 3000);
+      },
+      error: (error) => {  
+        // Affichage d'une erreur utilisateur claire
+        //this.errorMessage = "Une erreur est survenue lors de l'enregistrement du paiement.";
+        console.error("Erreur :", error);
+        this.isLoadingPai = false;
+
       }
     });
-  }
 
-  onSubmit(form: NgForm) {
-    if (form.valid) {
-      // Handle form submission logic
-      console.log('Form data:', this.data);
-    } else {
-      console.log('Form is invalid');
+  }
+  
+  deletePaiement(id:any){
+    if (id) {
+      this.isLoading = true;
+      this._service.deletePaiement(id).subscribe(
+        () => {
+        //this.deleteMessage = 'Passage supprimé avec succès!';
+
+          this.loadDetails();
+          this.isLoading = false;
+          setTimeout(() => {
+            //this.deleteMessage = ''; // Clear the message after 2 seconds
+          }, 2000);  
+            
+        },
+        (error) => {
+          alert('Erreur lors de la suppression du passage.');
+          this.isLoading = false;
+        }
+      );
     }
   }
 
-  // idInscription:any
+  idPaiement:any;
+  openUpdateModal(item:any){
+    this.idPaiement=item.idPaiement
+    this.montant=item.montant
+    this.description=item.descriptionPaiement
+  }
 
-  cours:any[]=[];
-  profs:any[]=[];
-  groupes:any[]=[];
+  isLoadingUpdate=false
+  onSubmitUpdate(){
+    this.isLoadingUpdate=true
+    const dataPaiement = {
+      montantPaye: this.montant,
+      description: this.description || ""
+    };
+    this._service.updatePaiement(dataPaiement,this.idPaiement).subscribe(
+      (data)=>{
+        this.montant=null
+        this.description=''
 
-  // loadCours(): void {
-  //   this._service.getCours().subscribe(
-  //     (data) => {
-  //       this.cours = data;
-  //     },
-  //     (error) => {
-  //       console.error('Erreur lors du chargement des cours', error);
-  //     }
-  //   );
-  // }
+        this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
+          (data:any) => {
+            this.paiements=data 
+            this.paiements = this.paiements.map(i => ({
+              ...i,
+              mois: this.getMois(i.mois)
+            }));
+            this.filteredPaiements=this.paiements;
+           },
+          (error) => {
+            alert('Erreur lors de chargement des paiements.');
+          })
 
-  // loadProfs(): void {
-  //   this._service.getProfessors().subscribe(
-  //     (data) => {
-  //       this.profs = data;
-  //     },
-  //     (error) => {
-  //       console.error('Erreur lors du chargement des profs', error);
-  //     }
-  //   );
-  // }
-
-  // loadGroupes(): void {
-  //   this._service.getGroupes().subscribe(
-  //     (data) => {
-  //       this.groupes = data;
-  //     },
-  //     (error) => {
-  //       console.error('Erreur lors du chargement des groupes', error);
-  //     }
-  //   );
-  // }
+          this.isLoadingUpdate=false
+      }
+    )
+  }
   
   
 printTable(): void {
