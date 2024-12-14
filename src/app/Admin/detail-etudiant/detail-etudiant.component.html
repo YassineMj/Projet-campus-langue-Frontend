@@ -28,30 +28,52 @@
   </div>
   <div *ngIf="!isLoading" class="row justify-content-center">
     <div class="col-lg-12 col-md-12">
-      <div
-        style="border-top: 7px solid rgb(20, 124, 184)"
-        class="card shadow-md rounded-3"
-      >
+      <div class="card shadow-md rounded-3">
         <div class="card-body">
+          <!-- Success message container -->
+          <!-- Success message container -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deleteMessage"
+              class="alert alert-success alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-trash"></i>
+              </div>
+              <strong>Succès!</strong>
+              {{ deleteMessage }}
+            </div>
+          </div>
           <div class="header-container d-flex align-items-center">
             <!-- Back Link -->
             <a href="/menu-admin/etudiant" class="back-link">
               <img
-                src="assets/images/Back-PNG-Transparent-Image.png"
+                src="assets/images/backiconn.webp"
                 alt="Left Arrow"
                 class="back-arrow"
               />
             </a>
 
             <!-- Title -->
-            <h5 class="card-title text-center c" style="color: #008cc7">
-              <u
-                ><i class="fa-solid fa-circle-info"></i> Détails de
-                l'Étudiant</u
+            <h5 class="card-title text-center mb-4">
+              <span
+                class="badge ms-2"
+                style="background-color: rgba(227, 174, 12, 0.989)"
+              >
+                <i class="fa-solid fa-circle-info"></i> Détails de
+                l'Étudiant</span
               >
             </h5>
           </div>
-          <hr />
+          <hr
+            style="
+              border: 4px double rgba(156, 119, 5, 0.989);
+              width: 100%;
+              margin: auto;
+              border-radius: 100px;
+            "
+          />
           <br />
           <div class="row mb-3 oo">
             <div class="col-6">
@@ -104,11 +126,10 @@
       </div>
       <div class="card">
         <div class="card-body">
-          <h5
-            class="card-title text-center color-ttle mb-4"
-            style="color: #008cc7"
-          >
-            <u> Liste d'Inscription</u>
+          <h5 class="card-title text-center mb-4">
+            <span class="badge" style="background-color: rgb(117, 146, 12)"
+              ><i class="fa-solid fa-list-check"></i> Liste d'inscription</span
+            >
           </h5>
 
           <div class="mb-2 d-flex justify-content-between align-items-center">

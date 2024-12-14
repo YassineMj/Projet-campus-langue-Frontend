@@ -710,54 +710,123 @@ small {
     /* No border */
 }
 
-.alert-success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
 /* Styling the success alert container */
-.alert.body {
-    z-index: 1050;
-    /* Make sure the alert is above other content */
-    max-width: 400px;
+.alert {
+    border-radius: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.11);
+    display: table;
     width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Soft shadow for a more modern look */
-    border-radius: 8px;
-    /* Rounded corners */
-}
-
-/* Custom success color and transition */
-.alert-success {
-    background-color: #28a745;
-    color: white;
-    transition: opacity 0.5s ease-in-out;
-}
-
-/* Close button position */
-.alert .btn-close {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    padding: 0.5rem;
-}
-
-/* Animation for alert when showing */
-.alert-success.show {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-}
-
-/* Animation for alert when fading out */
-.alert-success.hide {
     opacity: 0;
-    transform: translateY(-50px);
+    transform: translateY(-20px);
+    animation: slideIn 0.5s ease-out forwards;
+    /* Slide-in animation */
 }
+
+/* Custom background for the white alert */
+.alert-white {
+    background-image: linear-gradient(to bottom, #fff, #f9f9f9);
+    border-top-color: #d8d8d8;
+    border-bottom-color: #bdbdbd;
+    border-left-color: #cacaca;
+    border-right-color: #cacaca;
+    color: #404040;
+    padding-left: 61px;
+    position: relative;
+}
+
+/* Rounded corners */
+.alert-white.rounded {
+    border-radius: 3px;
+}
+
+/* Icon style */
+.alert-white .icon {
+    text-align: center;
+    width: 45px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px solid #bdbdbd;
+    padding-top: 15px;
+}
+
+.alert-white .icon:after {
+    transform: rotate(45deg);
+    content: '';
+    width: 10px;
+    height: 10px;
+    border: 1px solid #bdbdbd;
+    position: absolute;
+    border-left: 0;
+    border-bottom: 0;
+    top: 50%;
+    right: -6px;
+    background: #fff;
+}
+
+.alert-white .icon i {
+    font-size: 20px;
+    color: #fff;
+    left: 12px;
+    margin-top: -10px;
+    position: absolute;
+    top: 50%;
+}
+
+/* Custom colors */
+.alert-success {
+    color: #618d0f;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-white.alert-success .icon,
+.alert-white.alert-success .icon:after {
+    border-color: #3da103;
+    background: #388c0a;
+}
+
+/* Control the alert width */
+.alert {
+    max-width: 400px;
+    /* Max width of the alert */
+    margin-top: 2%;
+    /* Space above */
+    margin-bottom: 2%;
+    /* Space below */
+    opacity: 1;
+    /* Ensure it starts visible after animation */
+    position: relative;
+    z-index: 1050;
+}
+
+/* Animation for alert appearance */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animation for alert disappearance (if needed) */
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
 
 .tophed {
     background-color: #0a9dd2;

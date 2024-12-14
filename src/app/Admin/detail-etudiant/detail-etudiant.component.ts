@@ -17,6 +17,7 @@ export class DetailEtudiantComponent {
 
   isLoading: boolean = false;
 
+  deleteMessage: string = ''; // This will hold the success message
 
   constructor(private activeRoute: ActivatedRoute,private _service: GlobalService) {
     this.activeRoute.params.subscribe((params) => {
@@ -109,7 +110,13 @@ export class DetailEtudiantComponent {
         (error) => {
           this.isLoading = false;
 
-          if(error.status==200){
+          if (error.status == 200) {
+             this.deleteMessage = 'Linscription supprimé avec succès!';
+          //alert('Cours supprimé avec succès!');
+          this.isLoading = false;
+          setTimeout(() => {
+          this.deleteMessage = ''; // Hide the success message after 5 seconds
+        }, 2000);
             this.ngOnInit();
             return
           }

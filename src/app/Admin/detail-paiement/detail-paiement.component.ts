@@ -14,8 +14,12 @@ export class DetailPaiementComponent {
    @Input() idEtu!: any;
 
   isLoading: boolean = false;
+  deleteMessage: string = ''; // This will hold the success message
   successMessage: string = ''; // This will hold the success message
-  selectedItemInscription: any={
+  modifysuccess: string = '';
+  hideSuccessMessage(): void {
+    this.successMessage = ''; // Clear the message, hiding the alert
+  }  selectedItemInscription: any={
     annee:"",
     cours:"",
     dateInscription:"",
@@ -27,9 +31,7 @@ export class DetailPaiementComponent {
     prof:"",
     tarif:null
   };
-  hideSuccessMessage(): void {
-    this.successMessage = ''; // Clear the message, hiding the alert
-  }
+
 
   constructor(private activeRoute: ActivatedRoute,private _service: GlobalService) {
     this.activeRoute.params.subscribe((params) => {
@@ -168,8 +170,12 @@ export class DetailPaiementComponent {
   
     this._service.addPaiement(dataPaiement).subscribe({
       next: (data) => {
-        console.log("Paiement ajouté avec succès :", data);
-
+          this.successMessage = 'Paiement ajouté avec succès'; // Set success message
+          this.ngOnInit();
+          this.isLoading = false;
+          setTimeout(() => {
+          this.successMessage = ''; // Hide the success message after 5 seconds
+        }, 2000);
         // Réinitialisation des champs
         this.montant = null;
         this.description = "";
@@ -210,8 +216,12 @@ export class DetailPaiementComponent {
       this.isLoading = true;
       this._service.deletePaiement(id).subscribe(
         () => {
-        //this.deleteMessage = 'Passage supprimé avec succès!';
-
+         this.deleteMessage = 'Paiement supprimé avec succès!';
+          //alert('Cours supprimé avec succès!');
+          this.isLoading = false;
+          setTimeout(() => {
+          this.deleteMessage = ''; // Hide the success message after 5 seconds
+        }, 2000);
           this.loadDetails();
           this.isLoading = false;
           setTimeout(() => {
@@ -234,7 +244,8 @@ export class DetailPaiementComponent {
     this.description=item.descriptionPaiement
   }
 
-  isLoadingUpdate=false
+  isLoadingUpdate = false
+  
   onSubmitUpdate(){
     this.isLoadingUpdate=true
     const dataPaiement = {
@@ -247,13 +258,21 @@ export class DetailPaiementComponent {
         this.description=''
 
         this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
-          (data:any) => {
+          (data: any) => {
+       
             this.paiements=data 
             this.paiements = this.paiements.map(i => ({
               ...i,
               mois: this.getMois(i.mois)
             }));
-            this.filteredPaiements=this.paiements;
+            this.filteredPaiements = this.paiements;
+                 this.modifysuccess = 'Montant modifier avec succès!';
+          //alert('Cours mis à jour avec succès!');
+          this.ngOnInit();
+          this.isLoading = false;
+          setTimeout(() => {
+          this.modifysuccess = ''; // Hide the success message after 5 seconds
+        }, 2000);
            },
           (error) => {
             alert('Erreur lors de chargement des paiements.');
