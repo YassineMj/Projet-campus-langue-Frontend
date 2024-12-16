@@ -13,6 +13,7 @@ import { InscriptionComponent } from './Admin/inscription/inscription.component'
 import { ListEtudiantComponent } from './Admin/list-etudiant/list-etudiant.component';
 import { DetailEtudiantComponent } from './Admin/detail-etudiant/detail-etudiant.component';
 import { DetailPaiementComponent } from './Admin/detail-paiement/detail-paiement.component';
+import { ListDePaiementComponent } from './Admin/list-de-paiement/list-de-paiement.component';
 
 
 const routes: Routes = [
@@ -72,6 +73,10 @@ const routes: Routes = [
          {
         path: 'detail-paiement/:idEtu',  // Route pour les groupes
         component: DetailPaiementComponent,  // Composant des groupes
+      },
+          {
+        path: 'paiement',  // Route pour les groupes
+        component: ListDePaiementComponent,  // Composant des groupes
       },
     ],
   },

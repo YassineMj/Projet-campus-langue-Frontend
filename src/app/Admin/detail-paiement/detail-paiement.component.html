@@ -230,9 +230,10 @@
                   <div class="modal-body">
                     <div class="container-fluid">
                       <div class="row">
+                        <!-- Montant Field -->
                         <div class="col-12 mb-3">
                           <label for="montant" class="form-label">
-                            Montant <span class="required">*</span>
+                            Montant <span style="color: #ff0d00">*</span>
                           </label>
                           <input
                             type="number"
@@ -241,9 +242,18 @@
                             name="montant"
                             placeholder="Entrez le montant"
                             [(ngModel)]="montant"
+                            #montantInput="ngModel"
                             required
                           />
+                          <div
+                            *ngIf="montantInput.invalid && montantInput.touched"
+                            class="text-danger"
+                          >
+                            Le montant est obligatoire.
+                          </div>
                         </div>
+
+                        <!-- Description Field -->
                         <div class="col-12 mb-3">
                           <label for="description" class="form-label">
                             Description
@@ -272,10 +282,12 @@
                         <div class="icon">
                           <i class="fa fa-pen"></i>
                         </div>
-                        <strong>Success!</strong>
+                        <strong>Succès!</strong>
                         {{ modifysuccess }}
                       </div>
                     </div>
+
+                    <!-- Close Button -->
                     <button
                       type="button"
                       class="btn btn-round colormodalfermer"
@@ -284,16 +296,17 @@
                       <i class="fa fa-close text-white"></i>
                     </button>
 
+                    <!-- Submit Button -->
                     <button
                       [disabled]="isLoadingUpdate || editForm.invalid"
                       class="btn btn-round colormodalmodifier"
                     >
                       <ng-container *ngIf="!isLoadingUpdate">
-                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-edit"></i> Modifier
                       </ng-container>
                       <ng-container *ngIf="isLoadingUpdate">
-                        <i class="fa fa-spinner fa-spin text-white"></i>
-                        En cours...
+                        <i class="fa fa-spinner fa-spin text-white"></i> En
+                        cours...
                       </ng-container>
                     </button>
                   </div>
@@ -494,7 +507,7 @@
                         <div class="row mb-3">
                           <div class="col-md-6">
                             <label for="montant" class="form-label">
-                              Montant
+                              Montant <span style="color: #ff0d00">*</span>
                             </label>
                             <input
                               type="number"
@@ -504,7 +517,16 @@
                               [(ngModel)]="montant"
                               #montantInput="ngModel"
                               placeholder="Entrez le montant"
+                              required
                             />
+                            <div
+                              *ngIf="
+                                montantInput.invalid && montantInput.touched
+                              "
+                              class="text-danger"
+                            >
+                              Le montant est obligatoire.
+                            </div>
                           </div>
                         </div>
 
@@ -541,7 +563,7 @@
                           </div>
                         </div>
                         <button
-                          [disabled]="isLoadingPai"
+                          [disabled]="montantInput.invalid || isLoadingPai"
                           class="btn btn-primary-btn"
                           style="
                             background-color: #f04940;
@@ -556,8 +578,8 @@
                             <i class="fa-solid fa-credit-card"></i> Payer
                           </ng-container>
                           <ng-container *ngIf="isLoadingPai">
-                            <i class="fa fa-spinner fa-spin text-white"></i>
-                            En cours...
+                            <i class="fa fa-spinner fa-spin text-white"></i> En
+                            cours...
                           </ng-container>
                         </button>
                       </div>
