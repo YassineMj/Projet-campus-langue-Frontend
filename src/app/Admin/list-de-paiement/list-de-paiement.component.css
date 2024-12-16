@@ -21,17 +21,25 @@ button.btn-round.colormodalmodifier:disabled {
     opacity: 1 !important;
 
 }
-.paye:hover{
-  background-color: #ffeaea;
+
+.paye:hover {
+    background-color: #ffeaea;
 }
+
 .table-responsive {
     max-height: 500px;
+}
+
+.hover-matiere:hover{
+
+    background-color: #c6ae0e3a;
 }
 
 /* Hover effect */
 .print-btn:hover {
     background-color: rgb(84, 181, 220) !important;
-        /* Background turns yellow on hover */    /* Background turns yellow on hover */
+    /* Background turns yellow on hover */
+    /* Background turns yellow on hover */
 }
 
 
@@ -406,17 +414,17 @@ small {
 .table>thead>tr>th {
     padding: 12px 8px;
     vertical-align: middle;
-    border-color: #ddd;
+    border-color: #ffaa00;
     font-weight: 300;
 }
 
 .table>tbody>tr>td {
     padding: 12px 8px;
     vertical-align: middle;
-    border-color: #ddd;
+    border-color: #ffaa00;
     font-weight: 300;
     font-size: 14px;
-    color: #3c4858;
+    color: #000000;
 }
 
 .table .td-actions .btn {
@@ -446,7 +454,7 @@ small {
 .table-shopping>thead>tr>th {
     font-size: 12px;
     text-transform: uppercase;
-    color: #555;
+    color: #ffaa00;
 }
 
 .table-shopping .td-name {
@@ -462,6 +470,29 @@ small {
     font-weight: 300;
 }
 
+.table th, .table td {
+  border-right: 1px solid #ddd;
+}
+
+.table th:last-child, .table td:last-child {
+  border-right: none;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.table th[colspan="3"] {
+  width: 30%; /* Adjust this percentage to control how wide "Nom complet" should be */
+}
+
+.table td[colspan="3"] {
+  width: 30%; /* Same here, adjust width if needed */
+}
+/* Add a class to hide the columns when the isOnlyJanvier flag is true */
+.hidden {
+    display: none;
+}
 .table-shopping .img-container {
     width: 120px;
     max-height: 160px;
@@ -863,7 +894,22 @@ small {
 }
 
 .download-btn:hover {
-    background-color: rgb(84, 181, 220) !important;    /* Background turns yellow on hover */
+    background-color: rgb(84, 181, 220) !important;
+    /* Background turns yellow on hover */
+}
+
+.table th,
+.table td {
+    border-right: 1px solid #000000;
+}
+
+.table th:last-child,
+.table td:last-child {
+    border-right: none;
+}
+
+.table td {
+    vertical-align: middle;
 }
 
 .colormodalsupp {
@@ -964,6 +1010,7 @@ select option:hover {
     background-color: #f0f0f0;
     /* Light hover effect */
 }
+
 /* Style for the marked first option */
 .highlight-option {
     background-color: #e0e0e0;
@@ -978,6 +1025,90 @@ select option:hover {
     /* Light hover effect */
 }
 
+/* Container for the dropdown */
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+/* Label styling */
+.dropdown-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+/* Dropdown styling */
+.year-dropdown {
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  padding: 0 12px;
+  font-size: 16px;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+/* Hover and focus effects */
+.year-dropdown:hover,
+.year-dropdown:focus {
+  border-color: #0a9dd2;
+  outline: none;
+}
+
+/* Disabled option styling */
+.year-dropdown option[disabled] {
+  color: #aaa;
+}
+
+/* Responsive behavior */
+@media (max-width: 576px) {
+  .dropdown-container {
+    width: 100%;
+  }
+}
+/* Custom dropdown styling */
+.custom-dropdown {
+  height: 40px; /* Slightly larger for a comfortable click area */
+  border-radius: 8px; /* Smooth rounded corners */
+  border: 1px solid #ced4da; /* Light gray border for modern look */
+  padding: 0 12px; /* Added padding for better spacing */
+  font-size: 16px; /* Clean and modern font size */
+  font-weight: 500; /* Slightly bolder font for better readability */
+  color: #495057; /* Dark gray text for contrast */
+  background-color: #fff; /* Clean white background */
+  transition: all 0.3s ease; /* Smooth hover/focus effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Hover and focus styles */
+.custom-dropdown:hover,
+.custom-dropdown:focus {
+  border-color: #0a9dd2; /* Highlighted border color */
+  outline: none; /* Removes default outline */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15); /* Enhanced shadow on interaction */
+}
+
+/* Disabled option */
+.custom-dropdown option[disabled] {
+  color: #aaa; /* Light gray for disabled text */
+}
+
+/* Dropdown arrow styling */
+.custom-dropdown::-ms-expand {
+  display: none; /* Hide default arrow for Internet Explorer */
+}
+
+.custom-dropdown {
+  appearance: none; /* Remove default dropdown arrow */
+  background-image: url('data:image/svg+xml;charset=UTF-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-chevron-down" viewBox="0 0 16 16"%3E%3Cpath fill-rule="evenodd" d="M1.646 5.646a.5.5 0 0 1 .708 0L8 11.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+}
+
 .card-title {
     font-weight: bold;
     text-align: center;
@@ -987,4 +1118,49 @@ select option:hover {
 .btn-primary {
     width: 100%;
     border-radius: 10px;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.badge.bg-success {
+  background-color: green;
+}
+
+.badge.bg-danger {
+  background-color: red;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  color: white;
+}
+
+/* Styling for the scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    /* Controls the width of the vertical scrollbar */
+    height: 6px;
+    /* Controls the height of the horizontal scrollbar */
+}
+
+/* Styling for the scrollbar track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Light background color */
+}
+
+/* Styling for the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    /* Color of the scrollbar thumb */
+    border-radius: 10px;
+    /* Rounded corners for the thumb */
+}
+
+/* Hover effect for the scrollbar thumb */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* Darker color when hovering */
 }
