@@ -72,13 +72,17 @@
       </div>
     </div>
 
-
     <div *ngIf="!isLoading">
       <div class="table-responsive">
         <table class="table text-center" style="table-layout: auto">
           <thead class="table-warning">
             <tr>
-              <th rowspan="3" [attr.colspan]="getVisibleSubjectsCount() * 2 + 1" class="align-middle" style="width: 250px; white-space: nowrap">
+              <th
+                rowspan="3"
+                [attr.colspan]="getVisibleSubjectsCount() * 2 + 1"
+                class="align-middle"
+                style="width: 250px; white-space: nowrap"
+              >
                 <b>Nom Complet</b>
               </th>
               <ng-container *ngFor="let m of matieres">
@@ -95,61 +99,104 @@
             <tr>
               <ng-container *ngFor="let m of matieres">
                 <ng-container *ngFor="let month of months; let i = index">
-                  <th *ngIf="m.monthsVisibility[i]" colspan="2" style="white-space: nowrap">
+                  <th
+                    *ngIf="m.monthsVisibility[i]"
+                    colspan="2"
+                    style="white-space: nowrap"
+                  >
                     <b>
                       <!-- Logique conditionnelle pour afficher le mois en texte -->
                       <ng-container [ngSwitch]="month">
-                        <span *ngSwitchCase="9" style="font-size: 0.8em;">Septembre</span>
-                        <span *ngSwitchCase="10" style="font-size: 0.8em;">Octobre</span>
-                        <span *ngSwitchCase="11" style="font-size: 0.8em;">Novembre</span>
-                        <span *ngSwitchCase="12" style="font-size: 0.8em;">Décembre</span>
-                        <span *ngSwitchCase="1" style="font-size: 0.8em;">Janvier</span>
-                        <span *ngSwitchCase="2" style="font-size: 0.8em;">Février</span>
-                        <span *ngSwitchCase="3" style="font-size: 0.8em;">Mars</span>
-                        <span *ngSwitchCase="4" style="font-size: 0.8em;">Avril</span>
-                        <span *ngSwitchCase="5" style="font-size: 0.8em;">Mai</span>
-                        <span *ngSwitchCase="6" style="font-size: 0.8em;">Juin</span>
-                        <span *ngSwitchCase="7" style="font-size: 0.8em;">Juillet</span>
-                        <span *ngSwitchCase="8" style="font-size: 0.8em;">Août</span>
+                        <span *ngSwitchCase="9" style="font-size: 0.8em"
+                          ><b>Septembre</b>
+                        </span>
+                        <span *ngSwitchCase="10" style="font-size: 0.8em"
+                          ><b>Octobre</b>
+                        </span>
+                        <span *ngSwitchCase="11" style="font-size: 0.8em"
+                          ><b>Novembre</b>
+                        </span>
+                        <span *ngSwitchCase="12" style="font-size: 0.8em"
+                          ><b>Décembre</b>
+                        </span>
+                        <span *ngSwitchCase="1" style="font-size: 0.8em"
+                          ><b>Janvier</b>
+                        </span>
+                        <span *ngSwitchCase="2" style="font-size: 0.8em"
+                          ><b>Février</b>
+                        </span>
+                        <span *ngSwitchCase="3" style="font-size: 0.8em"
+                          ><b>Mars</b>
+                        </span>
+                        <span *ngSwitchCase="4" style="font-size: 0.8em"
+                          ><b>Avril</b>
+                        </span>
+                        <span *ngSwitchCase="5" style="font-size: 0.8em"
+                          ><b>Mai</b>
+                        </span>
+                        <span *ngSwitchCase="6" style="font-size: 0.8em"
+                          ><b>Juin</b>
+                        </span>
+                        <span *ngSwitchCase="7" style="font-size: 0.8em"
+                          ><b>Juillet</b>
+                        </span>
+                        <span *ngSwitchCase="8" style="font-size: 0.8em"
+                          ><b>Août</b>
+                        </span>
                         <!-- Valeur par défaut si ce n'est pas un mois valide -->
-                        <span *ngSwitchDefault style="font-size: 0.8em;">Inconnu</span>
+                        <span *ngSwitchDefault style="font-size: 0.8em"
+                          >Inconnu</span
+                        >
                       </ng-container>
                     </b>
                   </th>
                 </ng-container>
               </ng-container>
-              
-              
             </tr>
             <tr>
               <ng-container *ngFor="let m of matieres">
                 <ng-container *ngFor="let month of months; let i = index">
-                  <th *ngIf="m.monthsVisibility[i]" style="font-size: 0.8em;">Tarif</th>
-                  <th *ngIf="m.monthsVisibility[i]" style="font-size: 0.8em;">Payé</th>
+                  <th *ngIf="m.monthsVisibility[i]" style="font-size: 0.9em">
+                    <b>Tarif</b>
+                  </th>
+                  <th *ngIf="m.monthsVisibility[i]" style="font-size: 0.9em">
+                    <b>Payé</b>
+                  </th>
                 </ng-container>
-                
               </ng-container>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let etudiant of filteredPaiements">
-              <td rowspan="1" [attr.colspan]="getVisibleSubjectsCount() * 2 + 1">{{ etudiant.prenom }} {{ etudiant.nom }}</td>
-          
+              <td
+                rowspan="1"
+                [attr.colspan]="getVisibleSubjectsCount() * 2 + 1"
+              >
+                <b>{{ etudiant.prenom }} {{ etudiant.nom }}</b>
+              </td>
+
               <!-- Boucle sur chaque matière -->
               <ng-container *ngFor="let m of matieres">
                 <!-- Boucle sur les mois de l'année -->
                 <ng-container *ngFor="let month of months; let i = index">
                   <!-- Vérifier si le mois est visible pour la matière -->
                   <td *ngIf="m.monthsVisibility[i]">
-                    {{ etudiant.matieres[m.libelle]?.[month]?.tarif }}
+                    <b> {{ etudiant.matieres[m.libelle]?.[month]?.tarif }}</b>
                   </td>
-                  
-                  <td *ngIf="m.monthsVisibility[i]" [style.background-color]="getColorAndStatus(m.libelle, month, etudiant).color">
+
+                  <td
+                    *ngIf="m.monthsVisibility[i]"
+                    [style.background-color]="
+                      getColorAndStatus(m.libelle, month, etudiant).color
+                    "
+                  >
                     <!-- Afficher le badge avec le statut -->
-                    <span [innerHTML]="getColorAndStatus(m.libelle, month, etudiant).status"></span>
+                    <span
+                      [innerHTML]="
+                        getColorAndStatus(m.libelle, month, etudiant).status
+                      "
+                    ></span>
                   </td>
-                  
-                  
                 </ng-container>
               </ng-container>
             </tr>
@@ -157,9 +204,5 @@
         </table>
       </div>
     </div>
-    
-
-
-
   </div>
 </div>
