@@ -138,6 +138,7 @@ export class ListDePaiementComponent implements OnInit {
     }
     return 0; 
   }
+  
 
   getVisibleSubjectsCount(): number {
     return this.matieres.filter(m => m.monthsVisibility.some((visible: any) => visible)).length;

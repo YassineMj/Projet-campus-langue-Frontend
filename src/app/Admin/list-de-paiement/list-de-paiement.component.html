@@ -195,6 +195,9 @@
                       [innerHTML]="
                         getColorAndStatus(m.libelle, month, etudiant).status
                       "
+                      data-bs-toggle="modal"
+                      data-bs-target="#statusModal"
+                      style="cursor: pointer"
                     ></span>
                   </td>
                 </ng-container>
@@ -202,6 +205,88 @@
             </tr>
           </tbody>
         </table>
+
+        <!-- Modal HTML -->
+        <div
+          class="modal fade"
+          id="statusModal"
+          tabindex="-1"
+          aria-labelledby="statusModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h5 class="modal-title" id="statusModalLabel">
+               <i class="fa-solid fa-circle-dark"></i> Détails du Paiement
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <!-- Modal Body -->
+              <div class="modal-body">
+                <!-- Search Bar -->
+                <div class="position-relative mb-3">
+                  <span class="position-absolute search">
+                    <i class="fa fa-search"></i>
+                  </span>
+                  <input
+                    class="form-control searchform w-100"
+                    placeholder="Rechercher..."
+                    [(ngModel)]="searchTerm"
+                    (ngModelChange)="filterPaiements()"
+                  />
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+              <table class="table table-bordered custom-table">
+
+                    <thead class=" text-dark">
+                      <tr>
+                        <th scope="col" style="border: 1px solid black">
+                        <b>#Id de paiement</b>  
+                        </th>
+                        <th scope="col" style="border: 1px solid black">
+                         <b>Date de paiement</b>  
+                        </th>
+                        <th scope="col" style="border: 1px solid black">
+                          <b>Montant</b> 
+                        </th>
+                        <th scope="col" style="border: 1px solid black">
+                          <b>Description</b> 
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td style="border: 1px solid black">2444444122</td>
+                        <td style="border: 1px solid black">11/08/2001</td>
+                        <td style="border: 1px solid black">200dh</td>
+                        <td style="border: 1px solid black">test lorem</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!-- Modal Footer -->
+              <div class="modal-footer d-flex justify-content-center">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

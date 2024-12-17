@@ -410,7 +410,11 @@ small {
     font-size: 17px;
     font-weight: bold;
 }
-
+.custom-table th,
+.custom-table td {
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+}
 .table>thead>tr>th {
     padding: 12px 8px;
     vertical-align: middle;
