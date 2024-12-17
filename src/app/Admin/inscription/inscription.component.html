@@ -311,6 +311,8 @@
                   [(ngModel)]="formDataIns.coursId"
                   required
                   #editCoursInput="ngModel"
+                  (change)="onCoursChange()"
+
                 >
                   <option value="" disabled selected>Choisir un cours</option>
                   <option *ngFor="let course of cours" [value]="course.id">
@@ -805,6 +807,7 @@
                                       [(ngModel)]="formDataIns.coursId"
                                       required
                                       #CoursInput="ngModel"
+                                      (change)="onCoursChange()"
                                     >
                                       <option value="" disabled selected>
                                         Choisir un cours
