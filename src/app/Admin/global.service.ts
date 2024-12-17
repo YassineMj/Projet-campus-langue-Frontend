@@ -184,4 +184,7 @@ export class GlobalService {
     updatePaiement(paiement:any,id:any): Observable<any> {
       return this.http.put<any>(`${this.baseUrl}/paiements/${id}`,paiement);
     }
+    getPaiements(anne:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/paiements/matieres-tarifs?annee=${anne}`);
+    }
 }

@@ -32,7 +32,7 @@
           class="form-control searchform w-100"
           placeholder="Rechercher..."
           [(ngModel)]="searchTerm"
-          (ngModelChange)="filterInscriptions()"
+          (ngModelChange)="filterPaiements()"
         />
       </div>
 
@@ -64,408 +64,102 @@
       </select>
     </div>
 
-    <!-- Table for Payment Display -->
-    <div class="table-responsive">
-      <table class="table text-center" style="table-layout: auto">
-        <thead class="table-warning">
-          <tr>
-            <!-- Adjusted the column width for Nom complet -->
-            <th
-              rowspan="3"
-              colspan="3"
-              class="align-middle"
-              style="width: 250px; white-space: nowrap"
-            >
-              <b>Nom Complet</b>
-            </th>
-            <!-- Français Header -->
-            <th
-              [attr.colspan]="getColspan('francais')"
-              (click)="toggleFrancaisVisibility()"
-              style="cursor: pointer"
-              class="hover-matiere"
-            >
-              <b>Français</b>
-            </th>
-            <!-- Anglais Header -->
-            <th
-              [attr.colspan]="getColspan('anglais')"
-              (click)="toggleAnglaisVisibility()"
-              style="cursor: pointer"
-              class="hover-matiere"
-            >
-              <b>Anglais</b>
-            </th>
-          </tr>
-          <tr>
-            <!-- Mois for Français -->
-            <th colspan="2" style="white-space: nowrap"><b>Septembre</b></th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Octobre</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Novembre</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Décembre</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Janvier</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Février</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Mars</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Avril</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Mai</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Juin</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Juillet</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsFrancais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Août</b>
-            </th>
-
-            <!-- Mois for Anglais -->
-            <!-- Mois for Anglais -->
-            <th colspan="2" style="white-space: nowrap"><b>Septembre</b></th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Octobre</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Novembre</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Décembre</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Janvier</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Février</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Mars</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Avril</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Mai</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Juin</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Juillet</b>
-            </th>
-            <th
-              *ngIf="showOtherMonthsAnglais"
-              colspan="2"
-              style="white-space: nowrap"
-            >
-              <b>Août</b>
-            </th>
-          </tr>
-          <tr>
-            <!-- Header for Tarif and Payé columns (Français) -->
-            <th>Tarif</th>
-            <th>Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <th *ngIf="showOtherMonthsFrancais">Tarif</th>
-            <th *ngIf="showOtherMonthsFrancais">Payé</th>
-
-            <!-- Add similar for the rest of the months -->
-            <!-- Header for Tarif and Payé columns (Anglais) -->
-            <th>Tarif</th>
-            <th>Payé</th>
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-
-            <th *ngIf="showOtherMonthsAnglais">Tarif</th>
-            <th *ngIf="showOtherMonthsAnglais">Payé</th>
-            <!-- Add similar for the rest of the months -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <!-- Adjusted column for Nom complet -->
-            <td colspan="3" class="align-middle" style="white-space: nowrap">
-              <b>Mhamed hajji</b>
-            </td>
-            <!-- fr -->
-            <td>150 dh</td>
-            <td><span class="badge bg-success">150 dh</span></td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">55€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-
-            <!-- Français -->
-            <td *ngIf="showOtherMonthsFrancais">60€</td>
-            <td *ngIf="showOtherMonthsFrancais">
-              <span class="badge bg-danger">Non</span>
-            </td>
-
-            <!-- Add data for the rest of the months -->
-            <!-- Anglais -->
-            <td>50€</td>
-            <td><span class="badge bg-danger">0</span></td>
-
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Anglais -->
-            <td *ngIf="showOtherMonthsAnglais">55€</td>
-            <td *ngIf="showOtherMonthsAnglais">
-              <span class="badge bg-success">Oui</span>
-            </td>
-            <!-- Add data for the rest of the months -->
-          </tr>
-        </tbody>
-      </table>
+    <div *ngIf="isLoading" style="text-align: center">
+      <div>
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
     </div>
+
+
+    <div *ngIf="!isLoading">
+      <div class="table-responsive">
+        <table class="table text-center" style="table-layout: auto">
+          <thead class="table-warning">
+            <tr>
+              <th rowspan="3" [attr.colspan]="getVisibleSubjectsCount() * 2 + 1" class="align-middle" style="width: 250px; white-space: nowrap">
+                <b>Nom Complet</b>
+              </th>
+              <ng-container *ngFor="let m of matieres">
+                <th
+                  [attr.colspan]="getColspan(m.libelle)"
+                  (click)="toggleVisibility(m.libelle)"
+                  style="cursor: pointer"
+                  class="hover-matiere"
+                >
+                  <b>{{ m.libelle }}</b>
+                </th>
+              </ng-container>
+            </tr>
+            <tr>
+              <ng-container *ngFor="let m of matieres">
+                <ng-container *ngFor="let month of months; let i = index">
+                  <th *ngIf="m.monthsVisibility[i]" colspan="2" style="white-space: nowrap">
+                    <b>
+                      <!-- Logique conditionnelle pour afficher le mois en texte -->
+                      <ng-container [ngSwitch]="month">
+                        <span *ngSwitchCase="9" style="font-size: 0.8em;">Septembre</span>
+                        <span *ngSwitchCase="10" style="font-size: 0.8em;">Octobre</span>
+                        <span *ngSwitchCase="11" style="font-size: 0.8em;">Novembre</span>
+                        <span *ngSwitchCase="12" style="font-size: 0.8em;">Décembre</span>
+                        <span *ngSwitchCase="1" style="font-size: 0.8em;">Janvier</span>
+                        <span *ngSwitchCase="2" style="font-size: 0.8em;">Février</span>
+                        <span *ngSwitchCase="3" style="font-size: 0.8em;">Mars</span>
+                        <span *ngSwitchCase="4" style="font-size: 0.8em;">Avril</span>
+                        <span *ngSwitchCase="5" style="font-size: 0.8em;">Mai</span>
+                        <span *ngSwitchCase="6" style="font-size: 0.8em;">Juin</span>
+                        <span *ngSwitchCase="7" style="font-size: 0.8em;">Juillet</span>
+                        <span *ngSwitchCase="8" style="font-size: 0.8em;">Août</span>
+                        <!-- Valeur par défaut si ce n'est pas un mois valide -->
+                        <span *ngSwitchDefault style="font-size: 0.8em;">Inconnu</span>
+                      </ng-container>
+                    </b>
+                  </th>
+                </ng-container>
+              </ng-container>
+              
+              
+            </tr>
+            <tr>
+              <ng-container *ngFor="let m of matieres">
+                <ng-container *ngFor="let month of months; let i = index">
+                  <th *ngIf="m.monthsVisibility[i]" style="font-size: 0.8em;">Tarif</th>
+                  <th *ngIf="m.monthsVisibility[i]" style="font-size: 0.8em;">Payé</th>
+                </ng-container>
+                
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let etudiant of filteredPaiements">
+              <td rowspan="1" [attr.colspan]="getVisibleSubjectsCount() * 2 + 1">{{ etudiant.prenom }} {{ etudiant.nom }}</td>
+          
+              <!-- Boucle sur chaque matière -->
+              <ng-container *ngFor="let m of matieres">
+                <!-- Boucle sur les mois de l'année -->
+                <ng-container *ngFor="let month of months; let i = index">
+                  <!-- Vérifier si le mois est visible pour la matière -->
+                  <td *ngIf="m.monthsVisibility[i]">
+                    {{ etudiant.matieres[m.libelle]?.[month]?.tarif }}
+                  </td>
+                  
+                  <td *ngIf="m.monthsVisibility[i]" [style.background-color]="getColorAndStatus(m.libelle, month, etudiant).color">
+                    <!-- Afficher le badge avec le statut -->
+                    <span [innerHTML]="getColorAndStatus(m.libelle, month, etudiant).status"></span>
+                  </td>
+                  
+                  
+                </ng-container>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+
+
+
   </div>
 </div>

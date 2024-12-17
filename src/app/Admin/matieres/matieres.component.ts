@@ -35,7 +35,7 @@ export class MatieresComponent implements OnInit {
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
-        console.error('Erreur lors du chargement des professeurs', error);
+        console.error('Erreur lors du chargement des matiéres', error);
         this.isLoading = false; // Désactiver le spinner
       }
     );
