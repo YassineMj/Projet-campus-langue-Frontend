@@ -118,19 +118,22 @@ export class InscriptionComponent implements OnInit {
     telMere: "",
     nomPere: "",
     telPere: "",
-    passage: false
+    passage: false,
+    
   };
 
-  formDataIns={
+formDataIns = {
   etudiantId: null,
   coursId: null,
   groupeId: null,
-  profId:null ,
+  profId: null,
   mois: null,
   annee: null,
-	emploidutemp: null,
-	test:null
-  }
+  emploidutemp: null,
+  test: null,
+  tarif: null  // Add the tarif property
+};
+
 
 
   loadEtablissements(): void {
@@ -209,65 +212,31 @@ export class InscriptionComponent implements OnInit {
     this.selectedOption = option;
   }
 
-  onSubmit(): void {
-    if (this.formDataEtu && this.formDataIns) {
-      this.isLoading = true; // Indicateur de chargement
-      this._service.createPassage(this.formDataEtu).subscribe({
-        next: (etuData) => {
-          this.formDataIns.etudiantId = etuData.id;
-          console.log('ID de l’étudiant créé:', this.formDataIns.etudiantId);
-          
-          this._service.createInscription(this.formDataIns).subscribe({
-            next: (inscriptionData) => {
-              this.successMessage = 'Linscription effectuée avec succès!'; // Set success message
-              this.formDataEtu = {
-                nom: "",
-                prenom: "",
-                etablissement: { id: null },
-                niveau: { id: null },
-                telephone: "",
-                commentaire: "",
-                nomMere: "",
-                telMere: "",
-                nomPere: "",
-                telPere: "",
-                passage: false
-              };
-            
-              this.formDataIns={
-              etudiantId: null,
-              coursId: null,
-              groupeId: null,
-              profId:null ,
-              mois: null,
-              annee: null,
-              emploidutemp: null,
-              test:null
-              }
-                this.loadEtudiants();
-                setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
-            },
-            error: (error) => {
-              console.error('Erreur lors de la création de l’inscription:', error);
-              alert('Une erreur est survenue lors de la création de l’inscription.');
-            },
-            complete: () => this.isLoading = false
-          });
-        },
-        error: (error) => {
-          console.error('Erreur lors de la création du passage:', error);
-          alert('Une erreur est survenue lors de la création du passage.');
-          this.isLoading = false;
-          
-        }
-      });
-    } else {
-      alert('Veuillez remplir tous les champs requis.');
-    }
-  }
+ 
   
+  onSubmit(): void {
+  if (this.formDataIns && this.formDataIns.tarif !== null && this.formDataIns.tarif !== undefined) {
+    this.isLoading = true; // Indicate loading
+    this._service.createInscription(this.formDataIns).subscribe({
+      next: (inscriptionData) => {
+        this.successMessage = 'Linscription effectuée avec succès!';
+        this.isLoading = false;
+        this.loadEtudiants();
+        setTimeout(() => {
+          this.successMessage = '';
+        }, 2000);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la création de l’inscription:', error);
+        alert('Une erreur est survenue lors de la création de l’inscription.');
+        this.isLoading = false;
+      }
+    });
+  } else {
+    alert('Veuillez remplir tous les champs requis.');
+  }
+}
+
   onSubmitInsc(): void {
     if (this.formDataIns) {
       this.isLoading = true; 
