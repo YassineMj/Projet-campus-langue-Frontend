@@ -196,7 +196,9 @@
                         getColorAndStatus(m.libelle, month, etudiant).status
                       "
                       data-bs-toggle="modal"
-                      data-bs-target="#statusModal"
+                      [attr.data-bs-target]="etudiant.matieres[m.libelle]?.[month]?.inscriptionId ? '#statusModal' : null"
+
+                      (click)=" etudiant.matieres[m.libelle]?.[month]?.inscriptionId ? infoPaiement(etudiant.etudiantId, etudiant.matieres[m.libelle][month].inscriptionId) :null"
                       style="cursor: pointer"
                     ></span>
                   </td>
@@ -238,14 +240,21 @@
                   <input
                     class="form-control searchform w-100"
                     placeholder="Rechercher..."
-                    [(ngModel)]="searchTerm"
-                    (ngModelChange)="filterPaiements()"
+                    [(ngModel)]="searchTermDetails"
+                    (ngModelChange)="filterDetailsPaiements()"
                   />
                 </div>
 
                 <!-- Table -->
                 <div class="table-responsive">
-              <table class="table table-bordered custom-table">
+                  <div *ngIf="isLoadingDetails" style="text-align: center">
+                    <div>
+                      <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                      </div>
+                    </div>
+                  </div>
+                  <table *ngIf="!isLoadingDetails" class="table table-bordered custom-table">
 
                     <thead class=" text-dark">
                       <tr>
@@ -264,11 +273,11 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td style="border: 1px solid black">2444444122</td>
-                        <td style="border: 1px solid black">11/08/2001</td>
-                        <td style="border: 1px solid black">200dh</td>
-                        <td style="border: 1px solid black">test lorem</td>
+                      <tr *ngFor="let p of filteredInfoPaiements">
+                        <td style="border: 1px solid black">{{p.id}}</td>
+                        <td style="border: 1px solid black">{{p.datePaiement}}</td>
+                        <td style="border: 1px solid black">{{p.montant}}</td>
+                        <td style="border: 1px solid black">{{p.description}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -287,6 +296,8 @@
             </div>
           </div>
         </div>
+
+
       </div>
     </div>
   </div>

@@ -182,5 +182,34 @@ export class ListDePaiementComponent implements OnInit {
     return matiereData ? matiereData.montantTotal : 0;
   }
 
+  infoPaiements:any[] = []
+  filteredInfoPaiements:any[] = []
+  isLoadingDetails=false
+  infoPaiement(idEtu:any,idInsc:any){
+    this.isLoadingDetails=true
+
+    this._service.getDetailsPaiement(idEtu,idInsc).subscribe(
+      (data)=>{
+        this.searchTermDetails=''
+        this.infoPaiements=data
+        this.filteredInfoPaiements=this.infoPaiements
+        this.isLoadingDetails=false
+      },(error)=>{
+        console.error('Erreur lors du chargement des paiements', error);
+        this.isLoadingDetails=false
+      }
+    )
+
+  }
+
+  searchTermDetails:any
+  filterDetailsPaiements(){
+    this.filteredInfoPaiements = this.infoPaiements.filter(f => 
+      f.datePaiement?.toLowerCase().includes(this.searchTermDetails.toLowerCase()) ||
+      f.description?.toLowerCase().includes(this.searchTermDetails.toLowerCase()) ||
+      f.montant?.toString().includes(this.searchTermDetails.toString()) ||
+      f.id?.toString().includes(this.searchTermDetails.toString())
+    );
+  }
   
 }

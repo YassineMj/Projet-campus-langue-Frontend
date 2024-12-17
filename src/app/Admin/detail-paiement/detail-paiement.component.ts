@@ -218,19 +218,42 @@ export class DetailPaiementComponent {
         () => {
          this.deleteMessage = 'Paiement supprimé avec succès!';
           //alert('Cours supprimé avec succès!');
+          this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
+            (data: any) => {
+              this.paiements = data;
+          
+              // Test avant de transformer les paiements
+              if (Array.isArray(this.paiements) && this.paiements.length > 0) {
+                this.paiements = this.paiements.map(i => ({
+                  ...i,
+                  mois: this.getMois(i.mois) // Transformation uniquement si le test est validé
+                }));
+              } else {
+                console.warn('Aucun paiement trouvé ou données invalides.');
+              }
+          
+              this.filteredPaiements = this.paiements;
+              console.log(this.filteredPaiements);
+            },
+            (error) => {
+              alert('Erreur lors du chargement des paiements.');
+            }
+          );
+          
+
           this.isLoading = false;
+
           setTimeout(() => {
           this.deleteMessage = ''; // Hide the success message after 5 seconds
         }, 2000);
-          this.loadDetails();
-          this.isLoading = false;
-          setTimeout(() => {
-            //this.deleteMessage = ''; // Clear the message after 2 seconds
-          }, 2000);  
             
         },
         (error) => {
-          alert('Erreur lors de la suppression du passage.');
+          if(error.status==204){
+            this.loadDetails();
+            return
+          }
+          alert('Erreur lors de la suppression du paiement.');
           this.isLoading = false;
         }
       );

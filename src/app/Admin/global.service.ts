@@ -187,4 +187,7 @@ export class GlobalService {
     getPaiements(anne:any): Observable<any[]> {
       return this.http.get<any[]>(`${this.baseUrl}/paiements/matieres-tarifs?annee=${anne}`);
     }
+    getDetailsPaiement(idEtu:any,idInsc:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/paiements/etudiant/${idEtu}/inscription/${idInsc}`);
+    }
 }
