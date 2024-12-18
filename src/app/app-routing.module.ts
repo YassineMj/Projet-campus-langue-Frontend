@@ -14,6 +14,7 @@ import { ListEtudiantComponent } from './Admin/list-etudiant/list-etudiant.compo
 import { DetailEtudiantComponent } from './Admin/detail-etudiant/detail-etudiant.component';
 import { DetailPaiementComponent } from './Admin/detail-paiement/detail-paiement.component';
 import { ListDePaiementComponent } from './Admin/list-de-paiement/list-de-paiement.component';
+import { BibliothequeComponent } from './Admin/bibliotheque/bibliotheque.component';
 
 
 const routes: Routes = [
@@ -77,6 +78,10 @@ const routes: Routes = [
           {
         path: 'paiement',  // Route pour les groupes
         component: ListDePaiementComponent,  // Composant des groupes
+      },
+      {
+        path: 'bibliotheque',  // Route pour les groupes
+        component: BibliothequeComponent,  // Composant des groupes
       },
     ],
   },
