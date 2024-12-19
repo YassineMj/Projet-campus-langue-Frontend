@@ -13,34 +13,6 @@
     /* Smooth transition */
 }
 
-.card {
-    background-color: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
-
-.card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #0056b3;
-}
-
-.card-body strong {
-    color: #333333;
-}
-
-.oo{
-    font-weight: 500;
-        color: #555555;
-}
-
-h6.text-secondary {
-    margin-top: 10px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #6c757d;
-}
 
 button.btn-round.colormodalmodifier:disabled {
     background-color: rgba(141, 111, 36, 0.468) !important;
@@ -50,6 +22,10 @@ button.btn-round.colormodalmodifier:disabled {
 
 }
 
+.paye:hover {
+    background-color: #ffeaea;
+}
+
 .table-responsive {
     max-height: 500px;
 }
@@ -57,7 +33,8 @@ button.btn-round.colormodalmodifier:disabled {
 /* Hover effect */
 .print-btn:hover {
     background-color: rgb(84, 181, 220) !important;
-        /* Background turns yellow on hover */    /* Background turns yellow on hover */
+    /* Background turns yellow on hover */
+    /* Background turns yellow on hover */
 }
 
 
@@ -379,108 +356,11 @@ small {
 
 
 }
-/* Flex container for alignment */
-.header-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
 
-/* Back link styling */
-.back-link {
-    margin-right: 10px;
-    text-decoration: none;
-}
-
-.back-arrow {
-    width: 34px;
-    height: 24px;
-}
-
-/* Back link styling */
-.back-link {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    text-decoration: none;
-}
-
-.back-arrow {
-    width: 24px;
-    height: 24px;
-}
-
-/* Card title */
-.card-title {
-    font-size: 1.5rem;
-    color: #008cc7;
-}
-
-/* Print-specific adjustments */
-@media print {
-  body {
-    margin: 0;
-  }
-  .header, .footer {
-    page-break-inside: avoid;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    table-layout: auto; /* Allows columns to adjust based on content */
-  }
-
-  th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-    font-size: 14px;
-    word-wrap: break-word; /* Ensures text breaks onto new lines */
-    white-space: normal; /* Allows text wrapping for long sentences */
-  }
-
-  th {
-    background-color: #0275d8;
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-  td {
-    color: #333;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-
-  tr:nth-child(odd) {
-    background-color: #eaf4fc;
-  }
-
-  tr:hover {
-    background-color: #d9edf7;
-  }
-}
-
-/* Title styling */
-.card-title {
-    font-size: 1.5rem;
-    color: #008cc7;
-    margin: 0;
-    flex-grow: 1;
-    /* Ensures the title takes the remaining space */
-    text-align: center;
-}
 .colormodalfermer {
     background-color: rgb(17, 17, 17);
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     border-radius: 100px;
 }
 
@@ -833,7 +713,6 @@ small {
     /* No border */
 }
 
-
 /* Styling the success alert container */
 .alert {
     border-radius: 0;
@@ -952,8 +831,6 @@ small {
 }
 
 
-
-
 .tophed {
     background-color: #0a9dd2;
     color: rgb(255, 255, 255);
@@ -977,9 +854,6 @@ small {
     border-bottom: 10px double #a4e7ff;
 }
 
-/* Custom CSS to make the close button white */
-
-
 .MODAL {
 
     background-color: rgb(222, 51, 51);
@@ -992,7 +866,8 @@ small {
 }
 
 .download-btn:hover {
-    background-color: rgb(84, 181, 220) !important;    /* Background turns yellow on hover */
+    background-color: rgb(84, 181, 220) !important;
+    /* Background turns yellow on hover */
 }
 
 .colormodalsupp {
@@ -1052,7 +927,7 @@ small {
 }
 
 .date-highlight {
-    border: 2px solid #1ba4c6;
+    border: 2px solid #0d98bb;
     background-color: #0d98bb;
     padding: 10px;
     border-radius: 5px;
@@ -1093,6 +968,7 @@ select option:hover {
     background-color: #f0f0f0;
     /* Light hover effect */
 }
+
 /* Style for the marked first option */
 .highlight-option {
     background-color: #e0e0e0;
@@ -1106,22 +982,13 @@ select option:hover {
     background-color: #f0f0f0;
     /* Light hover effect */
 }
+
 .hr-container {
     position: relative;
     width: 100%;
     text-align: center;
     /* Center text horizontally */
 }
-
-.hr-container hr {
-    border: 4px double #008cc7;
-    width: 80%;
-    /* You can adjust the width of the <hr> */
-    margin: 20px auto;
-    border-radius: 100px;
-    position: relative;
-}
-
 .hr-text {
     position: absolute;
     top: -0.75em;
@@ -1135,7 +1002,32 @@ select option:hover {
     font-weight: bold;
     /* Optional: make the text bold */
 }
+.hr-container hr {
+    border: 4px double #008cc7;
+    width: 80%;
+    /* You can adjust the width of the <hr> */
+    margin: 20px auto;
+    border-radius: 100px;
+    position: relative;
+}
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Two columns, equally spaced */
+    gap: 20px;
+    /* Adjust spacing between the columns */
+}
 
+.form-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-select,
+.form-control {
+    width: 100%;
+    /* Ensure the inputs take full width of their container */
+}
 .card-title {
     font-weight: bold;
     text-align: center;

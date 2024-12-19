@@ -20,6 +20,7 @@ import { DetailEtudiantComponent } from './Admin/detail-etudiant/detail-etudiant
 import { DetailPaiementComponent } from './Admin/detail-paiement/detail-paiement.component';
 import { ListDePaiementComponent } from './Admin/list-de-paiement/list-de-paiement.component';
 import { BibliothequeComponent } from './Admin/bibliotheque/bibliotheque.component';
+import { GestionScolaireComponent } from './Admin/gestion-scolaire/gestion-scolaire.component';
 
 
 
@@ -41,7 +42,8 @@ import { BibliothequeComponent } from './Admin/bibliotheque/bibliotheque.compone
     DetailEtudiantComponent,
     DetailPaiementComponent,
     ListDePaiementComponent,
-    BibliothequeComponent
+    BibliothequeComponent,
+    GestionScolaireComponent
     
     
   ],

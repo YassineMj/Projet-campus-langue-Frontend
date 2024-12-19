@@ -19,7 +19,9 @@ export class DetailPaiementComponent {
   modifysuccess: string = '';
   hideSuccessMessage(): void {
     this.successMessage = ''; // Clear the message, hiding the alert
-  }  selectedItemInscription: any={
+  }
+  
+  selectedItemInscription: any = {
     annee:"",
     cours:"",
     dateInscription:"",
