@@ -12,33 +12,33 @@ export class BibliothequeComponent {
 
    constructor(private _service: GlobalService) {}
   
-    filterEtablissements(): void {
-      this.filteredEtablissements = this.etablissements.filter(e => 
-        e.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        e.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
+    filterScolaires(): void {
+      this.filteredScolaires = this.scolaires.filter(s => 
+        s.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        s.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
        
       );
     }
   
     isLoading: boolean = false;
   
-    loadEtablissemnts(): void {
+    loadScolaireAnnuelle(): void {
       this.isLoading = true; // Activer le spinner
-      this._service.getEtablissements().subscribe(
+      this._service.getScolaires().subscribe(
         (data) => {
-          this.etablissements = data;
-          this.filteredEtablissements=this.etablissements;
+          this.scolaires = data;
+          this.filteredScolaires=this.scolaires;
           this.isLoading = false; // Désactiver le spinner
         },
         (error) => {
-          console.error('Erreur lors du chargement des langues', error);
+          console.error('Erreur lors du chargement des informations', error);
           this.isLoading = false; // Désactiver le spinner
         }
       );
     }
   
     ngOnInit(): void {
-      this.loadEtablissemnts();
+      this.loadScolaireAnnuelle();
     }
   
   
@@ -51,8 +51,8 @@ export class BibliothequeComponent {
     editNom: string = '';
     editDescription: string = '';
   
-    etablissements:any[]=[]
-    filteredEtablissements:any[]=[]
+    scolaires:any[]=[]
+    filteredScolaires:any[]=[]
     searchTerm: string = '';
   
     deleteMessage: string = ''; // This will hold the success message
@@ -70,13 +70,12 @@ export class BibliothequeComponent {
           description: this.description
         };      
         console.log('New subject added:', newSubject);
-        this._service.createEtablissement({
+        this._service.createScolaire({
           nom: this.nom,
           description: this.description
         }).subscribe(
           (response) => {
-            this.successMessage = 'Etablissement ajouté avec succès!'; // Set success message
-            //alert('Etablissement ajouté avec succès!');
+            this.successMessage = 'Scolaire Annuelle ajouté avec succès!'; // Set success message
             form.reset(); // Réinitialiser le formulaire
             this.ngOnInit()
             this.isLoading = false;
@@ -85,7 +84,7 @@ export class BibliothequeComponent {
           }, 2000);
           },
           (error) => {
-            console.error('Erreur lors de l\'ajout du Etablissement:', error);
+            console.error('Erreur lors de l\'ajout du Scolaire Annuelle:', error);
             alert('Une erreur s\'est produite lors de l\'ajout.');
             this.isLoading = false;
           }
@@ -94,11 +93,11 @@ export class BibliothequeComponent {
     }
   
     id:any
-  onEdit(item: any) {
-    this.editNom = item.nom;  // Set the current subject's name
-    this.editDescription = item.description;  // Set the current subject's description
-    this.id =item.id;
-  }
+    onEdit(item: any) {
+      this.editNom = item.nom;  // Set the current subject's name
+      this.editDescription = item.description;  // Set the current subject's description
+      this.id =item.id;
+    }
     
    onEditSubmit(editForm: any) {
     if (editForm.valid) {
@@ -110,15 +109,14 @@ export class BibliothequeComponent {
       };
       console.log('Subject updated:', updatedSubject);
       
-      this._service
-          .updateEtablissement(this.id, {
+      this._service.updateScolaireAnnuelle(this.id, {
             nom: this.editNom,
             description: this.editDescription
           })
           .subscribe(
             (response) => {
               
-              this.modifysuccess = 'Etablissement modifier avec succès!';
+              this.modifysuccess = 'Scolaire Annuelle modifier avec succès!';
               //alert('Etablissement mis à jour avec succès');
               this.isLoading = false;
               this.ngOnInit();
@@ -130,7 +128,7 @@ export class BibliothequeComponent {
   
             },
             (error) => {
-              console.error('Erreur lors de la mise à jour du Etablissement :', error);
+              console.error('Erreur lors de la mise à jour du Scolaire Annuelle :', error);
               alert('Erreur lors de la mise à jour');
               this.isLoading = false;
             }
@@ -145,11 +143,11 @@ export class BibliothequeComponent {
     if (idE) {
       this.isLoading=true
   
-      this._service.deleteEtablissement(idE).subscribe(
+      this._service.deleteScolaireAnnuelle(idE).subscribe(
         () => {
-          this.deleteMessage = 'Etablissement supprimé avec succès!';
+          this.deleteMessage = 'Scolaire Annuelle supprimé avec succès!';
           //alert('Etablissement supprimé avec succès');
-          this.loadEtablissemnts();
+          this.loadScolaireAnnuelle();
           //this.ngOnInit() // Actualiser la liste
           this.isLoading=false
           setTimeout(() => {
@@ -157,7 +155,7 @@ export class BibliothequeComponent {
             }, 2000); 
         },
         (error) => {
-          console.error('Erreur lors de Etablissement:', error);
+          console.error('Erreur lors de Scolaire Annuelle:', error);
           alert('Erreur lors de la suppression.');
           this.isLoading=false
   
