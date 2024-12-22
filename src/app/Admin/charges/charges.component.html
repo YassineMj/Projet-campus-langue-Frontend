@@ -60,6 +60,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="filterCharge()"
               />
             </div>
             <div class="px-2">
@@ -294,7 +296,7 @@
                 </div>
               </div>
             </div>
-            <table class="table" id="Charges_Scolaire">
+            <table *ngIf="!isLoading" class="table" id="Charges_Scolaire">
               <thead>
                 <tr>
                   <th><b>ID</b></th>
@@ -314,19 +316,19 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of filteredScolaires">
-                  <td>123344</td>
-                  <td>11/08/2001</td>
-                  <td>200dh</td>
-                  <td>2024/2025</td>
-                  <td>desc1</td>
+                <tr *ngFor="let item of filteredCharges">
+                  <td>{{item.id}}</td>
+                  <td>{{item.dateAuto}}</td>
+                  <td>{{item.montant}}</td>
+                  <td>{{item.annee}}</td>
+                  <td>{{item.description}}</td>                  
                   <td class="td-actions">
                     <!-- Edit Button -->
                     <button
                       type="button"
                       rel="tooltip"
                       class="btn btn-round btn-just-icon"
-                      (click)="onEdit(item)"
+                      (click)="openEdit(item)"
                       data-bs-toggle="modal"
                       data-bs-target="#editModal"
                       style="margin-right: 5%"
@@ -452,7 +454,7 @@
                     class="form-control formtexterea"
                     id="editDescription"
                     name="editDescription"
-                    [(ngModel)]="description"
+                    [(ngModel)]="editData.description"
                     rows="3"
                     placeholder="Description..."
                   ></textarea>

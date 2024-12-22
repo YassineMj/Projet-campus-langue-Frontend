@@ -20,12 +20,29 @@ export class ListDePaiementComponent implements OnInit {
   constructor(private _service: GlobalService) {}
 
   ngOnInit(): void {
-    
-
+    //this.loadScolaireAnnuelle()
     this.loadMatieres();
-    this.loadPaiements();
-
+    this.loadPaiements();    
   }
+
+  // scolaires:any[]=[]
+  // count:number=0
+  // loadScolaireAnnuelle(): void {
+  //   this.isLoading = true; // Activer le spinner
+  //   this._service.getScolaires().subscribe(
+  //     (data) => {
+  //       this.scolaires = data;
+  //       this.count=this.scolaires.length;
+  //       console.log(this.count);
+
+  //       this.isLoading = false; // Désactiver le spinner
+  //     },
+  //     (error) => {
+  //       console.error('Erreur lors du chargement des informations', error);
+  //       this.isLoading = false; // Désactiver le spinner
+  //     }
+  //   );
+  // }
 
   loadMatieres(): void {
     this.isLoading=true
