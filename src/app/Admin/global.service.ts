@@ -218,4 +218,18 @@ export class GlobalService {
     deletePaiementsAnnuelle(id:any):Observable<any>{
       return this.http.delete<any>(`${this.baseUrl}/paiement-ponctuel/${id}`)
     }
+    
+    // ----- Charges -----
+    addCharge(c:any):Observable<any>{
+      return this.http.post<any>(`${this.baseUrl}/charges`,c)
+    }
+    getCharges(): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/charges`);
+    }
+    updateCharge(charge:any,id:any):Observable<any>{
+      return this.http.put<any>(`${this.baseUrl}/charges/${id}`,charge)
+    }
+    deleteCharge(id:any):Observable<any>{
+      return this.http.delete<any>(`${this.baseUrl}/charges/${id}`)
+    }
 }

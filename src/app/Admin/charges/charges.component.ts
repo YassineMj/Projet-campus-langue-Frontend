@@ -23,54 +23,60 @@ export class ChargesComponent {
     description: "",
     montant : null
   };
-    isLoading: boolean = false;
-
-    onEditSubmit(form: any) {
-      console.log('Form Submitted:', form.value);
-    }
-     
+    isLoading: boolean = false; 
   
     
-    loadScolaireAnnuelle(): void {
+    loadCharges(): void {
       this.isLoading = true; // Activer le spinner
-      this._service.getScolaires().subscribe(
+      this._service.getCharges().subscribe(
         (data) => {
-          this.scolaires = data;
-          this.filteredScolaires=this.scolaires;
+          this.charges = data;
+          this.charges = data.map(c => ({
+            ...c,
+            dateAuto: this.formatDate(new Date(c.dateAuto))
+          }));
+          this.filteredCharges=this.charges;
           this.isLoading = false; // Désactiver le spinner
         },
         (error) => {
-          console.error('Erreur lors du chargement des informations', error);
+          console.error('Erreur lors du chargement des charges', error);
           this.isLoading = false; // Désactiver le spinner
         }
       );
     }
   
     ngOnInit(): void {
-      this.loadScolaireAnnuelle();
+      this.loadCharges();
+    }
+
+    formatDate(date: Date): string {
+      const jour = date.getDate().toString().padStart(2, '0');
+      const mois = (date.getMonth() + 1).toString().padStart(2, '0'); // Les mois commencent à 0
+      const annee = date.getFullYear().toString().slice(-4); // Année sur 4 chiffres
+      const heures = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+    
+      return `${jour}-${mois}-${annee} | ${heures}:${minutes}`;
+    }
+
+    filterCharge(): void {
+      this.filteredCharges = this.charges.filter(c => 
+        c.id?.toString().includes(this.searchTerm.toLowerCase()) ||
+        c.annee?.toString().includes(this.searchTerm.toLowerCase()) ||
+        c.montant?.toString().includes(this.searchTerm.toLowerCase()) ||
+        c.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        c.dateAuto?.toString().includes(this.searchTerm.toLowerCase())
+      );
     }
   
   
-  // For adding a new subject
-    nom: string = '';
-    description: string = '';
-    
-  
-    // For editing a subject (Pre-filled values)
-    editNom: string = '';
-    editDescription: string = '';
-  
-    scolaires:any[]=[]
-    filteredScolaires:any[]=[]
+    charges:any[]=[]
+    filteredCharges:any[]=[]
     searchTerm: string = '';
   
     deleteMessage: string = ''; // This will hold the success message
     successMessage: string = ''; // This will hold the success message
-    modifysuccess: string = '';
-    hideSuccessMessage(): void {
-      this.successMessage = ''; // Clear the message, hiding the alert
-    }
-    
+    modifysuccess: string = '';  
       
   
     // Function to handle form submission for adding a new subject
@@ -78,25 +84,23 @@ export class ChargesComponent {
       if (form.valid) {
         this.isLoading = true;
         const newSubject = {
-          nom: this.nom,
-          description: this.description
+          montant: this.formsData.montant,
+          description: this.formsData.description,
+          annee:this.formsData.annee
         };      
         console.log('New subject added:', newSubject);
-        this._service.createScolaire({
-          nom: this.nom,
-          description: this.description
-        }).subscribe(
+        this._service.addCharge(newSubject).subscribe(
           (response) => {
-            this.successMessage = 'Scolaire Annuelle ajouté avec succès!'; // Set success message
+            this.successMessage = 'Charge ajouté avec succès!'; // Set success message
             form.reset(); // Réinitialiser le formulaire
-            this.ngOnInit()
+            this.loadCharges()
             this.isLoading = false;
               setTimeout(() => {
             this.successMessage = ''; // Hide the success message after 5 seconds
           }, 2000);
           },
           (error) => {
-            console.error('Erreur lors de l\'ajout du Scolaire Annuelle:', error);
+            console.error('Erreur lors de l\'ajout du Charge:', error);
             alert('Une erreur s\'est produite lors de l\'ajout.');
             this.isLoading = false;
           }
@@ -105,22 +109,46 @@ export class ChargesComponent {
     }
   
     id:any
-    onEdit(item: any) {
-      this.editNom = item.nom;  // Set the current subject's name
-      this.editDescription = item.description;  // Set the current subject's description
-      this.id =item.id;
+    openEdit(item: any) {
+      this.editData.montant = item.montant;  // Set the current subject's name
+      this.editData.description = item.description;  // Set the current subject's description
+      this.editData.annee = item.annee;
+      this.id=item.id
     }
   
+    onEditSubmit(form: any) {
+      if (form.valid) {
+        this.isLoading = true;
+        
+     
+        this._service.updateCharge(this.editData,this.id).subscribe(
+          (response) => {
+            this.modifysuccess = 'Charge modifier avec succès!'; // Set success message
+            form.reset(); // Réinitialiser le formulaire
+            this.loadCharges()
+            this.isLoading = false;
+              setTimeout(() => {
+            this.modifysuccess = ''; // Hide the success message after 5 seconds
+          }, 2000);
+          },
+          (error) => {
+            console.error('Erreur lors de modification du Charge:', error);
+            alert('Une erreur s\'est produite lors de l\'ajout.');
+            this.isLoading = false;
+          }
+        );
+      }
+    }
   
-  confirmDelete(idE:any): void {
-    if (idE) {
+  confirmDelete(id:any): void {
+    if (id) {
       this.isLoading=true
   
-      this._service.deleteScolaireAnnuelle(idE).subscribe(
+      this._service.deleteCharge(id).subscribe(
         () => {
-          this.deleteMessage = 'Scolaire Annuelle supprimé avec succès!';
+          this.deleteMessage = 'Charge supprimé avec succès!';
           //alert('Etablissement supprimé avec succès');
-          this.loadScolaireAnnuelle();
+          this.ngOnInit();
           //this.ngOnInit() // Actualiser la liste
           this.isLoading=false
           setTimeout(() => {
@@ -128,7 +156,7 @@ export class ChargesComponent {
             }, 2000); 
         },
         (error) => {
-          console.error('Erreur lors de Scolaire Annuelle:', error);
+          console.error('Erreur lors de Charge:', error);
           alert('Erreur lors de la suppression.');
           this.isLoading=false
   
