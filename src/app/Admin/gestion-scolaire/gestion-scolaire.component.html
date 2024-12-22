@@ -51,6 +51,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTermEtud"
+                        (ngModelChange)="filterEtudiant()"
               />
             </div>
           </div>
@@ -66,7 +68,14 @@
           </div>
           <!-- Table for displaying list of items with only the required attributes -->
           <div class="table-responsive table-container" id="list-etudiantTable">
-            <table class="table" id="etudianttable">
+            <div *ngIf="isLoading" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+            </div>
+            <table  *ngIf="!isLoading" class="table" id="etudianttable">
               <thead>
                 <tr>
                   <!-- New Date column -->
@@ -82,18 +91,19 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>id</td>
-                  <td>nom</td>
-                  <td>prenom</td>
-                  <td>SUP</td>
-                  <td>niv1</td>
+                <tr *ngFor="let item of filteredEtudiant">
+                  <td>{{item.id}}</td>
+                  <td>{{item.nom}}</td>
+                  <td>{{ item.prenom }}</td>
+                  <td>{{ item.etablissement.nom }}</td>
+                  <td>{{ item.niveau.nom }}</td>
                   <td class="td-actions text-right d-flex justify-content-end">
                     <button
                       type="button"
                       class="btn btn-dark btn-round btn-just-icon"
                       data-bs-toggle="modal"
                       data-bs-target="#detailsModal"
+                      (click)="openDetail(item)"
                     >
                       <i
                         class="fa-solid fa-hand-pointer"
@@ -123,39 +133,15 @@
                 </div>
                 <div class="modal-body">
                   <div class="container-fluid">
-                    <div class="row mb-2 date-highlight">
-                      <div class="col-10">
-                        <b
-                          ><i
-                            class="fa fa-calendar"
-                            style="margin-right: 5px"
-                          ></i
-                          >Date d'inscription :</b
-                        >
-                      </div>
-                    </div>
-                    <br />
                     <!-- Display fields inline -->
                     <div class="row mb-2">
-                      <div class="col-6"><b>Nom:</b> nom</div>
-                      <div class="col-6"><b>Prenom:</b> hajar</div>
+                      <div class="col-6"><b>Nom:</b> {{itemEtud.nom}}</div>
+                      <div class="col-6"><b>Prenom:</b> {{itemEtud.prenom}}</div>
                     </div>
                     <br />
                     <div class="row mb-2">
-                      <div class="col-6"><b>Matière:</b> anglais</div>
-                      <div class="col-6"><b>Cours:</b> cours</div>
-                    </div>
-                    <br />
-                    <div class="row mb-2">
-                      <div class="col-6"><b>Groupe:</b> a</div>
-                      <div class="col-6"><b>Prof:</b> ou</div>
-                    </div>
-                    <br />
-                    <div class="row mb-2">
-                      <div class="col-6">
-                        <b>Tarif: </b>
-                        <span class="badge bg-warning text-dark">mm</span>
-                      </div>
+                      <div class="col-6"><b>Etablissement:</b> {{itemEtud.etablissement?.nom}}</div>
+                      <div class="col-6"><b>Niveau:</b> {{ itemEtud.niveau?.nom }}</div>
                     </div>
                     <br />
                   </div>
@@ -176,7 +162,7 @@
                   </div>
                   <br />
 
-                  <form #f="ngForm">
+                  <form #f="ngForm" (ngSubmit)="onSubmitAdd(f)">
                     <div style="margin: 3%">
                       <!-- Fields in the same row (Type de frais and Montant) -->
                       <div class="row">
@@ -190,7 +176,7 @@
                             class="form-select"
                             id="type"
                             name="type"
-                            [(ngModel)]="formsData.typeFrais"
+                            [(ngModel)]="formsData.typePonctuelId"
                             #typeInput="ngModel"
                             required
                             [ngClass]="{
@@ -201,8 +187,7 @@
                             <option value="" disabled selected>
                               -- Sélectionner un type de frais --
                             </option>
-                            <option value="type1">type1</option>
-                            <option value="TYPE3">TYPE3</option>
+                            <option *ngFor="let s of scolaires" [value]="s.id">{{s.nom}}</option>
                           </select>
 
                           <div
@@ -210,6 +195,33 @@
                             class="text-danger"
                           >
                             Type de frais est obligatoire.
+                          </div>
+                        </div>
+
+                        <!-- Tarif -->
+                        <div class="col-md-6">
+                          <label for="montant" class="form-label">
+                            Tarif <span style="color: #ff0d00">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="tarif"
+                            name="tarif"
+                            [(ngModel)]="formsData.tarif"
+                            placeholder="Entrez le tarif"
+                            required
+                            #tarifInput="ngModel"
+                            [ngClass]="{
+                              'is-invalid':
+                              tarifInput.invalid && tarifInput.touched
+                            }"
+                          />
+                          <div
+                            *ngIf="tarifInput.invalid && tarifInput.touched"
+                            class="text-danger"
+                          >
+                            Tarif est obligatoire.
                           </div>
                         </div>
 
@@ -262,8 +274,57 @@
                             <option value="" disabled selected>
                               -- Année Scolaire --
                             </option>
-                            <option value="2025/2026">2025/2026</option>
-                            <option value="2024/2025">2024/2025</option>
+                            <option value="2024/2025">
+                              2024/2025
+                            </option>
+                            <option value="2025/2026">
+                              2025/2026
+                            </option>
+                            <option value="2026/2027">
+                              2026/2027
+                            </option>
+                            <option value="2027/2028">
+                              2027/2028
+                            </option>
+                            <option value="2028/2029">
+                              2028/2029
+                            </option>
+                            <option value="2029/2030">
+                              2029/2030
+                            </option>
+                            <option value="2030/2031">
+                              2030/2031
+                            </option>
+                            <option value="2031/2032">
+                              2031/2032
+                            </option>
+                            <option value="2032/2033">
+                              2032/2033
+                            </option>
+                            <option value="2033/2034">
+                              2033/2034
+                            </option>
+                            <option value="2034/2035">
+                              2034/2035
+                            </option>
+                            <option value="2035/2036">
+                              2035/2036
+                            </option>
+                            <option value="2036/2037">
+                              2036/2037
+                            </option>
+                            <option value="2037/2038">
+                              2037/2038
+                            </option>
+                            <option value="2038/2039">
+                              2038/2039
+                            </option>
+                            <option value="2039/2040">
+                              2039/2040
+                            </option>
+                            <option value="2040/2041">
+                              2040/2041
+                            </option>
                           </select>
                           <div
                             *ngIf="editAnnee.invalid && editAnnee.touched"
@@ -286,6 +347,7 @@
                             name="description"
                             rows="4"
                             placeholder="Entrez une description"
+                            [(ngModel)]="formsData.description"
                           ></textarea>
                         </div>
                       </div>
@@ -303,12 +365,16 @@
                               border-radius: 50px;
                               width: 100%; /* Makes button fill the container */
                             "
-                            [disabled]="f.invalid"
+                            [disabled]="f.invalid || isLoading"
                           >
-                            <ng-container
+                            <ng-container *ngIf="!isLoading"
                               ><i class="fa-solid fa-add"></i>
                               Ajouter</ng-container
                             >
+                            <ng-container *ngIf="isLoading">
+                              <i class="fa fa-spinner fa-spin text-white"></i> En
+                              cours...
+                            </ng-container>
                           </button>
                         </div>
                       </div>
@@ -336,6 +402,8 @@
               <input
                 class="form-control searchform w-100"
                 placeholder="Rechercher..."
+                [(ngModel)]="searchTermPai"
+                        (ngModelChange)="filterPaiement()"
               />
             </div>
           </div>
@@ -353,29 +421,39 @@
           <br />
           <!-- Table for displaying list of items with only the required attributes -->
           <div class="table-responsive table-container" id="list-etudiantTable">
-            <table class="table" id="etudianttable">
+            <div *ngIf="isLoading" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+            </div>
+            <table *ngIf="!isLoading" class="table" id="etudianttable">
               <thead>
                 <tr>
                   <!-- New Date column -->
-                  <th><b>ID</b></th>
+                  <th><b>ID Paiement</b></th>
+                  <th><b>Date paiement</b></th>
                   <th><b>Nom</b></th>
                   <th><b>Prénom</b></th>
                   <th><b>Etablissement</b></th>
                   <th><b>Niveaux</b></th>
+                  <th><b>Montant</b></th>
                   <th><b>Type de frais</b></th>
                   <th class="text-right"><b>Actions</b></th>
                   <!-- Align header to right -->
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>id</td>
-                  <!-- Display the name and surname -->
-                  <td>nom</td>
-                  <td>prenom</td>
-                  <td>Etablissement</td>
-                  <td>Niv</td>
-                  <td>Type de frais</td>
+                <tr *ngFor="let item of filteredPaiements">
+                  <td>{{item.id}}</td>
+                  <td>{{item.dateAuto}}</td>
+                  <td>{{item.etudiant!.nom}}</td>
+                  <td>{{item.etudiant!.prenom}}</td>
+                  <td>{{item.etudiant!.etablissement!.nom}}</td>
+                  <td>{{item.etudiant!.niveau!.nom}}</td>
+                  <td>{{item.montant}}</td>
+                  <td>{{item.typePonctuel!.nom}}</td>
 
                   <td class="td-actions text-right d-flex justify-content-end">
                     <!-- Edit Button -->
@@ -385,6 +463,7 @@
                       style="margin-right: 5px"
                       data-bs-toggle="modal"
                       data-bs-target="#editModal"
+                      (click)="openEditModal(item)"
                     >
                       <i class="fa fa-edit" style="font-size: medium"></i>
                     </button>
@@ -394,6 +473,7 @@
                       class="btn btn-danger btn-round btn-just-icon"
                       data-bs-toggle="modal"
                       data-bs-target="#deleteConfirmationModal"
+                      (click)="deletePaiement(item)"
                     >
                       <i class="fa fa-trash" style="font-size: medium"></i>
                     </button>
@@ -427,67 +507,32 @@
                 <form #editForm="ngForm">
                   <div class="modal-body">
                     <div class="container-fluid">
-                      <!-- Row: Année de frais -->
+
+                      <!-- Row: Tarif -->
                       <div class="row">
                         <div class="col-md-12 mb-3">
-                          <label for="editannee" class="form-label">
-                            Année Scolaire <span class="required">*</span>
+                          <label for="editMontant" class="form-label">
+                            Tarif <span class="required">*</span>
                           </label>
-                          <select
-                            class="form-select"
-                            id="editannee"
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="editTarif"
+                            placeholder="Entrez le tarif"
                             required
-                            name="annee"
-                            [(ngModel)]="editData.annee"
-                            #editAnnee="ngModel"
+                            name="tarif"
+                            [(ngModel)]="editData.tarif"
+                            #tarifMontant="ngModel"
                             [ngClass]="{
                               'is-invalid':
-                                editAnnee.invalid && editAnnee.touched
+                              tarifMontant.invalid && tarifMontant.touched
                             }"
-                          >
-                            <option value="" disabled selected>
-                              -- Année Scolaire --
-                            </option>
-                            <option value="2025/2026">2025/2026</option>
-                            <option value="2024/2025">2024/2025</option>
-                          </select>
+                          />
                           <div
-                            *ngIf="editAnnee.invalid && editAnnee.touched"
+                            *ngIf="tarifMontant.invalid && tarifMontant.touched"
                             class="text-danger"
                           >
-                            Année scolaire est obligatoire.
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Row: Type de frais -->
-                      <div class="row">
-                        <div class="col-md-12 mb-3">
-                          <label for="editTypeFrais" class="form-label">
-                            Type de frais <span class="required">*</span>
-                          </label>
-                          <select
-                            class="form-select"
-                            id="editTypeFrais"
-                            required
-                            name="typeFrais"
-                            [(ngModel)]="editData.typeFrais"
-                            #editType="ngModel"
-                            [ngClass]="{
-                              'is-invalid': editType.invalid && editType.touched
-                            }"
-                          >
-                            <option value="" disabled selected>
-                              -- Sélectionner un type de frais --
-                            </option>
-                            <option value="type1">Type 1</option>
-                            <option value="type2">Type 2</option>
-                          </select>
-                          <div
-                            *ngIf="editType.invalid && editType.touched"
-                            class="text-danger"
-                          >
-                            Type de frais est obligatoire.
+                            Tarif est obligatoire.
                           </div>
                         </div>
                       </div>
@@ -554,10 +599,17 @@
                     <button
                       type="submit"
                       class="btn btn-round colormodalmodifier"
-                      [disabled]="editForm.invalid"
+                      [disabled]="editForm.invalid || isLoading"
                       (click)="onSubmitEdit(editForm)"
+
                     >
+                    <ng-container *ngIf="!isLoading">
                       <i class="fa fa-save text-white"></i>
+                    </ng-container>
+                    <ng-container *ngIf="isLoading">
+                      <i class="fa fa-spinner fa-spin text-white"></i> En
+                      cours...
+                    </ng-container>
                     </button>
                   </div>
                 </form>
