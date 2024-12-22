@@ -32,6 +32,7 @@ export class GestionScolaireComponent {
     tarif:null,
     montant : null
   };
+  
   idPaiement:any
 
   ngOnInit(): void {
@@ -99,6 +100,14 @@ export class GestionScolaireComponent {
     );
   }
   
+    deleteMessage: string = ''; // This will hold the success message
+    successMessage: string = ''; // This will hold the success message
+    modifysuccess: string = '';
+    hideSuccessMessage(): void {
+      this.successMessage = ''; // Clear the message, hiding the alert
+    }
+    
+  
   onSubmitAdd(form: any) {
     if (form.valid) {
       this.isLoading=true
@@ -119,7 +128,15 @@ export class GestionScolaireComponent {
           };
           this.searchTermEtud=''
           this.loadPaiementsAnnuelle();
-          this.isLoading=false
+          this.isLoading = false
+
+              this.successMessage = 'Le paiement ajouté avec succès!'; // Set success message
+            form.reset(); // Réinitialiser le formulaire
+            this.ngOnInit()
+            this.isLoading = false;
+              setTimeout(() => {
+            this.successMessage = ''; // Hide the success message after 5 seconds
+          }, 2000);
 
         },
         (error) => {
@@ -132,7 +149,8 @@ export class GestionScolaireComponent {
   }
 
   paiements:any[]=[]
-  filteredPaiements:any[]=[]
+  filteredPaiements: any[] = []
+  
   loadPaiementsAnnuelle(): void {
     this.isLoading = true;
     this._service.getPaiementsAnnuelle().subscribe(
@@ -196,9 +214,17 @@ export class GestionScolaireComponent {
           };
           this.searchTermPai=''
           this.loadPaiementsAnnuelle();
-          this.isLoading=false
-
+          this.isLoading = false
+          this.modifysuccess = 'Le paiement modifier avec succès!';
+              //alert('Etablissement mis à jour avec succès');
+              this.isLoading = false;
+              this.ngOnInit();
+                setTimeout(() => {
+              this.modifysuccess = '';
+              console.log('After timeout: modifysuccess =', this.modifysuccess);
+                }, 2000);
         },
+        
         (error) => {
           console.error('Erreur lors ...', error);
           this.isLoading = false; // Désactiver le spinner
@@ -217,6 +243,14 @@ export class GestionScolaireComponent {
           this.loadPaiementsAnnuelle();
           this.isLoading=false
 
+          this.deleteMessage = 'Le paiement supprimé avec succès!';
+          //alert('Etablissement supprimé avec succès');
+          this.loadScolaireAnnuelle();
+          //this.ngOnInit() // Actualiser la liste
+          this.isLoading=false
+          setTimeout(() => {
+              this.deleteMessage = ''; // Clear the message after 2 seconds
+            }, 2000);
         },
         (error) => {
           console.error('Erreur lors ...', error);
