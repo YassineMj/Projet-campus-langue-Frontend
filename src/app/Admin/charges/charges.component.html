@@ -1,0 +1,511 @@
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+
+<br />
+<div class="container" style="margin-top: 0%">
+  <div class="row justify-content-center">
+    <!-- Center the row itself -->
+    <div class="col-lg-12 col-md-12">
+      <div
+        style="
+          display: flex;
+          align-items: center; /* Vertically center */
+          justify-content: center; /* Horizontally center */
+          text-align: center; /* Center text within the div */
+          padding-bottom: 3%;
+        "
+      >
+        <img
+          src="assets/images/icon-charges.png"
+          width="8%"
+          alt="Icône"
+          class="icon-img mb-2"
+          style="margin-right: 10px"
+        />
+        <h2 style="margin: 0" class="text-black">les charges scolaire</h2>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <!-- Success message container -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deleteMessage"
+              class="alert alert-success alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-trash"></i>
+              </div>
+              <strong>Succès!</strong>
+              {{ deleteMessage }}
+            </div>
+          </div>
+          <div class="mb-2 d-flex justify-content-between align-items-center">
+            <div class="position-relative">
+              <span class="position-absolute search"
+                ><i class="fa fa-search"></i
+              ></span>
+              <input
+                class="form-control searchform w-100"
+                placeholder="Rechercher..."
+              />
+            </div>
+            <div class="px-2">
+              <button
+                data-bs-toggle="modal"
+                data-bs-target="#addModal"
+                class="btn"
+                style="
+                  margin-right: 7px;
+                  height: 30px;
+                  background-color: #0a9dd2;
+                  color: white;
+                  padding: 0 10px;
+                  font-size: 14px;
+                  display: inline-flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <i class="fa fa-plus" style="margin-right: 8%"></i> Ajouter
+              </button>
+
+              <button
+                class="btn print-btn"
+                style="
+                  height: 30px;
+                  color: white;
+                  font-size: 14px;
+                  display: inline-flex;
+                  justify-content: center;
+                  align-items: center;
+                  border: 2px solid #0a9dd2;
+                  background-color: rgb(255, 255, 255);
+                  transition: all 0.3s ease;
+                  margin-right: 7px;
+                "
+                (click)="printTable()"
+              >
+                <i class="fa fa-print" style="color: #0a9dd2"></i>
+              </button>
+
+              <button
+                class="btn download-btn"
+                style="
+                  height: 30px;
+                  color: white;
+                  padding: 0 10px;
+                  font-size: 14px;
+                  display: inline-flex;
+                  justify-content: center;
+                  align-items: center;
+                  border: 2px solid #0a9dd2;
+                  background-color: rgb(255, 255, 255);
+                  transition: all 0.3s ease;
+                "
+                (click)="downloadAsExcel()"
+              >
+                <i class="fa fa-download" style="color: #0a9dd2"></i>
+              </button>
+              <!-- Modal Add -->
+              <div
+                class="modal fade"
+                id="addModal"
+                tabindex="-1"
+                aria-labelledby="addModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header tophed">
+                      <h1 class="modal-title fs-5" id="addModalLabel">
+                        <i class="fa fa-plus"></i> Ajouter des Informations
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close text-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
+                      <div class="modal-body">
+                        <div class="container-fluid">
+                          <!-- Montant (Normal Input) -->
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="mb-3">
+                                <label for="addMontant" class="form-label">
+                                  Montant <span class="required">*</span>
+                                </label>
+                                <input
+                                  type="number"
+                                  class="form-control"
+                                  id="addMontant"
+                                  name="montant"
+                                  [(ngModel)]="formsData.montant"
+                                  #montant="ngModel"
+                                  required
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      montant.invalid && montant.touched
+                                  }"
+                                  placeholder="Montant"
+                                />
+                                <div
+                                  *ngIf="montant.invalid && montant.touched"
+                                  class="text-danger"
+                                >
+                                  Montant est obligatoire.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Année Scolaire Dropdown -->
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="mb-3">
+                                <label for="addAnnee" class="form-label">
+                                  Année Scolaire <span class="required">*</span>
+                                </label>
+                                <select
+                                  class="form-select"
+                                  id="addAnnee"
+                                  name="annee"
+                                  [(ngModel)]="formsData.annee"
+                                  #anneinput="ngModel"
+                                  required
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      anneinput.invalid && anneinput.touched
+                                  }"
+                                >
+                                  <option value="" disabled selected>
+                                    -- Année Scolaire --
+                                  </option>
+                                  <option value="2024/2025">2024/2025</option>
+                                  <option value="2025/2026">2025/2026</option>
+                                  <option value="2026/2027">2026/2027</option>
+                                  <option value="2027/2028">2027/2028</option>
+                                  <option value="2028/2029">2028/2029</option>
+                                  <option value="2029/2030">2029/2030</option>
+                                  <option value="2030/2031">2030/2031</option>
+                                  <option value="2031/2032">2031/2032</option>
+                                  <option value="2032/2033">2032/2033</option>
+                                  <option value="2033/2034">2033/2034</option>
+                                  <option value="2034/2035">2034/2035</option>
+                                  <option value="2035/2036">2035/2036</option>
+                                  <option value="2036/2037">2036/2037</option>
+                                  <option value="2037/2038">2037/2038</option>
+                                  <option value="2038/2039">2038/2039</option>
+                                  <option value="2039/2040">2039/2040</option>
+                                  <option value="2040/2041">2040/2041</option>
+                                </select>
+                                <div
+                                  *ngIf="anneinput.invalid && anneinput.touched"
+                                  class="text-danger"
+                                >
+                                  Année Scolaire est obligatoire.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Description -->
+                          <div class="mb-3">
+                            <label for="addDescription" class="form-label"
+                              >Description</label
+                            >
+                            <textarea
+                              class="form-control formtexterea"
+                              id="addDescription"
+                              name="description"
+                              [(ngModel)]="formsData.description"
+                              rows="3"
+                              placeholder="Description..."
+                            ></textarea>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="modal-footer justify-content-center foot">
+                        <!-- Success message container -->
+                        <div class="container bootstrap snippets bootdey">
+                          <div
+                            *ngIf="successMessage"
+                            class="alert alert-success alert-white rounded mx-auto w-75"
+                            role="alert"
+                          >
+                            <div class="icon">
+                              <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                            <strong>Succès!</strong> {{ successMessage }}
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          class="btn btn-round colormodalfermer"
+                          data-bs-dismiss="modal"
+                        >
+                          <i class="fa fa-close text-white"></i>
+                        </button>
+
+                        <button
+                          type="submit"
+                          class="btn btn-round colormodalmodifier"
+                          [disabled]="addForm.invalid || isLoading"
+                        >
+                          <ng-container *ngIf="!isLoading">
+                            <i class="fa fa-save text-white"></i>
+                          </ng-container>
+                          <ng-container *ngIf="isLoading">
+                            <i class="fa fa-spinner fa-spin text-white"></i> En
+                            cours...
+                          </ng-container>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table for displaying list of matieres -->
+          <div class="table-responsive table-container">
+            <div *ngIf="isLoading" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+            </div>
+            <table class="table" id="Charges_Scolaire">
+              <thead>
+                <tr>
+                  <th><b>ID</b></th>
+                  <th>
+                    <b>Date </b>
+                  </th>
+                  <th>
+                    <b>Motant </b>
+                  </th>
+                  <th>
+                    <b>Année</b>
+                  </th>
+                  <th>
+                    <b>Description</b>
+                  </th>
+                  <th><b>Actions</b></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of filteredScolaires">
+                  <td>123344</td>
+                  <td>11/08/2001</td>
+                  <td>200dh</td>
+                  <td>2024/2025</td>
+                  <td>desc1</td>
+                  <td class="td-actions">
+                    <!-- Edit Button -->
+                    <button
+                      type="button"
+                      rel="tooltip"
+                      class="btn btn-round btn-just-icon"
+                      (click)="onEdit(item)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editModal"
+                      style="margin-right: 5%"
+                    >
+                      <i class="fa fa-edit" style="font-size: medium"></i>
+                    </button>
+
+                    <!-- Delete Button -->
+                    <button
+                      type="button"
+                      class="btn btn-danger btn-round btn-just-icon"
+                      (click)="confirmDelete(item.id)"
+                      style="margin-right: 5px"
+                    >
+                      <i class="fa fa-trash" style="font-size: medium"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+     <!-- Modal for Editing -->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header hedtopedit">
+        <h1 class="modal-title fs-5" id="editModalLabel">
+          <i class="fa fa-pen"></i> Modifier les Informations
+        </h1>
+        <button
+          type="button"
+          class="btn-close text-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
+        <div class="modal-body">
+          <div class="container-fluid">
+            <!-- Montant -->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="editMontant" class="form-label"
+                    >Montant <span class="required">*</span></label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="editMontant"
+                    name="editMontant"
+                    [(ngModel)]="editData.montant"
+                    #motant="ngModel"
+                    placeholder="Montant"
+                    required
+                    [ngClass]="{ 'is-invalid': motant.invalid && motant.touched }"
+                  />
+                  <div
+                    *ngIf="motant.invalid && motant.touched"
+                    class="text-danger"
+                  >
+                    Montant est obligatoire.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Année Scolaire -->
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <label for="editannee" class="form-label">
+                  Année Scolaire <span class="required">*</span>
+                </label>
+                <select
+                  class="form-select"
+                  id="editannee"
+                  name="annee"
+                  #anne="ngModel"
+                  [(ngModel)]="editData.annee"
+                  required
+                  [ngClass]="{ 'is-invalid': anne.invalid && anne.touched }"
+                >
+                  <option value="" disabled selected>
+                    -- Année Scolaire --
+                  </option>
+                  <option value="2024/2025">2024/2025</option>
+                  <option value="2025/2026">2025/2026</option>
+                  <option value="2026/2027">2026/2027</option>
+                  <option value="2027/2028">2027/2028</option>
+                  <option value="2028/2029">2028/2029</option>
+                  <option value="2029/2030">2029/2030</option>
+                  <option value="2030/2031">2030/2031</option>
+                  <option value="2031/2032">2031/2032</option>
+                  <option value="2032/2033">2032/2033</option>
+                  <option value="2033/2034">2033/2034</option>
+                  <option value="2034/2035">2034/2035</option>
+                  <option value="2035/2036">2035/2036</option>
+                  <option value="2036/2037">2036/2037</option>
+                  <option value="2037/2038">2037/2038</option>
+                  <option value="2038/2039">2038/2039</option>
+                  <option value="2039/2040">2039/2040</option>
+                  <option value="2040/2041">2040/2041</option>
+                </select>
+                <div *ngIf=" anne.invalid && anne.touched " class="text-danger">
+                  Année Scolaire est obligatoire.
+                </div>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label for="editDescription" class="form-label">Description</label>
+                  <textarea
+                    class="form-control formtexterea"
+                    id="editDescription"
+                    name="editDescription"
+                    [(ngModel)]="description"
+                    rows="3"
+                    placeholder="Description..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer justify-content-center">
+          <!-- Success Alert -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="modifysuccess"
+              class="alert alert-success alert-white rounded mx-auto w-75 success-alert"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa fa-pen"></i>
+              </div>
+              <strong>Success!</strong>
+              {{ modifysuccess }}
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-round colormodalfermer"
+            data-bs-dismiss="modal"
+          >
+            <i class="fa fa-close text-white"></i>
+          </button>
+          <button
+            type="submit"
+            class="btn btn-round colormodalmodifier"
+            [disabled]="editForm.invalid || isLoading"
+          >
+            <ng-container *ngIf="!isLoading">
+              <i class="fa fa-save text-white"></i>
+            </ng-container>
+            <ng-container *ngIf="isLoading">
+              <i class="fa fa-spinner fa-spin text-white"></i> En cours...
+            </ng-container>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+          <!-- End of Modal -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

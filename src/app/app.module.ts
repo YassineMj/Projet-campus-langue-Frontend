@@ -21,6 +21,7 @@ import { DetailPaiementComponent } from './Admin/detail-paiement/detail-paiement
 import { ListDePaiementComponent } from './Admin/list-de-paiement/list-de-paiement.component';
 import { BibliothequeComponent } from './Admin/bibliotheque/bibliotheque.component';
 import { GestionScolaireComponent } from './Admin/gestion-scolaire/gestion-scolaire.component';
+import { ChargesComponent } from './Admin/charges/charges.component';
 
 
 
@@ -43,7 +44,8 @@ import { GestionScolaireComponent } from './Admin/gestion-scolaire/gestion-scola
     DetailPaiementComponent,
     ListDePaiementComponent,
     BibliothequeComponent,
-    GestionScolaireComponent
+    GestionScolaireComponent,
+    ChargesComponent
     
     
   ],

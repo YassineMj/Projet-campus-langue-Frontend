@@ -43,8 +43,6 @@ button.btn-round.colormodalmodifier:disabled {
     /* Background turns yellow on hover */
 }
 
-
-
 .table-container {
     scrollbar-width: thin;
     /* Thin scrollbar */
@@ -60,7 +58,6 @@ button.btn-round.colormodalmodifier:disabled {
     color: rgba(0, 85, 255, 0.694);
 }
 
-/* Style the input element */
 input[type="text"] {
     width: 100%;
     /* Make the input element fill its container */
@@ -75,8 +72,6 @@ input[type="text"] {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     /* Add transition */
 }
-
-
 
 .btnAjouter {
     font-size: 15px;
@@ -94,11 +89,8 @@ input[type="text"] {
     background-color: #136861ba;
     color: #ffffff;
 
-
-
 }
 
-/* Custom styles when textarea is focused */
 textarea.formtexterea:focus {
     border-color: #c1dfff;
     /* Yellow border color */
@@ -113,8 +105,6 @@ textarea.formtexterea:focus {
     color: red;
 }
 
-
-/* Style the input element when focused */
 input[type="text"]:focus {
     border-color: #c1dfff;
     /* Change border color on focus */

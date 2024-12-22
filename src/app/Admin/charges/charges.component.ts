@@ -2,26 +2,35 @@ import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
 import * as bootstrap from 'bootstrap';
 
-
 @Component({
-  selector: 'app-bibliotheque',
-  templateUrl: './bibliotheque.component.html',
-  styleUrls: ['./bibliotheque.component.css']
+  selector: 'app-charges',
+  templateUrl: './charges.component.html',
+  styleUrls: ['./charges.component.css']
 })
-export class BibliothequeComponent {
+export class ChargesComponent {
 
-   constructor(private _service: GlobalService) {}
+  constructor(private _service: GlobalService) {}
   
-    filterScolaires(): void {
-      this.filteredScolaires = this.scolaires.filter(s => 
-        s.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        s.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
-       
-      );
-    }
-  
+
+   formsData = {
+    annee: "",
+    description: "",
+    montant : null
+  };
+
+   editData = {
+    annee: "",
+    description: "",
+    montant : null
+  };
     isLoading: boolean = false;
+
+    onEditSubmit(form: any) {
+      console.log('Form Submitted:', form.value);
+    }
+     
   
+    
     loadScolaireAnnuelle(): void {
       this.isLoading = true; // Activer le spinner
       this._service.getScolaires().subscribe(
@@ -101,45 +110,6 @@ export class BibliothequeComponent {
       this.editDescription = item.description;  // Set the current subject's description
       this.id =item.id;
     }
-    
-   onEditSubmit(editForm: any) {
-    if (editForm.valid) {
-      this.isLoading = true;
-      // Update the subject in tableData
-      const updatedSubject = {
-        nom: this.editNom,
-        description: this.editDescription
-      };
-      console.log('Subject updated:', updatedSubject);
-      
-      this._service.updateScolaireAnnuelle(this.id, {
-            nom: this.editNom,
-            description: this.editDescription
-          })
-          .subscribe(
-            (response) => {
-              
-              this.modifysuccess = 'Scolaire Annuelle modifier avec succès!';
-              //alert('Etablissement mis à jour avec succès');
-              this.isLoading = false;
-              this.ngOnInit();
-              editForm.reset();
-                setTimeout(() => {
-              this.modifysuccess = '';
-              console.log('After timeout: modifysuccess =', this.modifysuccess);
-              }, 2000);
-  
-            },
-            (error) => {
-              console.error('Erreur lors de la mise à jour du Scolaire Annuelle :', error);
-              alert('Erreur lors de la mise à jour');
-              this.isLoading = false;
-            }
-          );
-          
-    }
-  }
-  
   
   
   confirmDelete(idE:any): void {
@@ -170,7 +140,7 @@ export class BibliothequeComponent {
 
   printTable(): void {
     // Get the table element by its ID
-    const tableElement = document.getElementById('Scolaire_annuelle');
+    const tableElement = document.getElementById('Charges_Scolaire');
     if (!tableElement) {
       console.error('Table element not found!');
       return;
@@ -202,7 +172,7 @@ export class BibliothequeComponent {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Scolaire annuelle</title>
+          <title>Charges Scolaire</title>
           <style>
             /* General body styling */
             body {
@@ -289,7 +259,7 @@ export class BibliothequeComponent {
         <body>
           <!-- Header -->
           <div class="header">
-            <h1>Scolaire annuelle</h1>
+            <h1>Charges Scolaire</h1>
             <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
           </div>
   
@@ -311,7 +281,7 @@ export class BibliothequeComponent {
   
   // Function to download the list as Excel
   downloadAsExcel(): void {
-    const tableElement = document.getElementById('Scolaire-annuelle') as HTMLTableElement;
+    const tableElement = document.getElementById('Charges_Scolaire') as HTMLTableElement;
   
     if (!tableElement) {
       console.error('Table element not found!');
@@ -354,12 +324,11 @@ export class BibliothequeComponent {
     // Trigger download
     const link = document.createElement('a');
     link.href = excelURL;
-    link.download = 'BiblioTable.xls'; // Use .xls for compatibility
+    link.download = 'Charges_Scolaire.xls'; // Use .xls for compatibility
     link.click();
   
     // Clean up
     URL.revokeObjectURL(excelURL);
-  }
   
-
+  }
 }
