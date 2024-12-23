@@ -218,6 +218,9 @@ export class GlobalService {
     deletePaiementsAnnuelle(id:any):Observable<any>{
       return this.http.delete<any>(`${this.baseUrl}/paiement-ponctuel/${id}`)
     }
+    getPaiementScolaires(annee:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/paiement-ponctuel/etudiants-paiements-an-annee?annee=${annee}`);
+    }
     
     // ----- Charges -----
     addCharge(c:any):Observable<any>{

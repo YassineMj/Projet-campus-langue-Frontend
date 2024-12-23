@@ -20,29 +20,26 @@ export class ListDePaiementComponent implements OnInit {
   constructor(private _service: GlobalService) {}
 
   ngOnInit(): void {
-    //this.loadScolaireAnnuelle()
+    this.loadScolaireAnnuelle()
     this.loadMatieres();
-    this.loadPaiements();    
+    this.loadPaiements();   
+    this.loadPaiementScolaireAnnuelle(); 
   }
 
-  // scolaires:any[]=[]
-  // count:number=0
-  // loadScolaireAnnuelle(): void {
-  //   this.isLoading = true; // Activer le spinner
-  //   this._service.getScolaires().subscribe(
-  //     (data) => {
-  //       this.scolaires = data;
-  //       this.count=this.scolaires.length;
-  //       console.log(this.count);
-
-  //       this.isLoading = false; // Désactiver le spinner
-  //     },
-  //     (error) => {
-  //       console.error('Erreur lors du chargement des informations', error);
-  //       this.isLoading = false; // Désactiver le spinner
-  //     }
-  //   );
-  // }
+  scolaires:any[]=[]
+  loadScolaireAnnuelle(): void {
+    this.isLoading = true; // Activer le spinner
+    this._service.getScolaires().subscribe(
+      (data) => {
+        this.scolaires = data;
+        this.isLoading = false; // Désactiver le spinner
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des informations', error);
+        this.isLoading = false; // Désactiver le spinner
+      }
+    );
+  }
 
   loadMatieres(): void {
     this.isLoading=true
@@ -85,6 +82,7 @@ export class ListDePaiementComponent implements OnInit {
   onDateChange(){
     this.searchTerm=''
     this.loadPaiements()
+    this.loadPaiementScolaireAnnuelle();
   }
 
   filterPaiements(): void {
@@ -228,5 +226,33 @@ export class ListDePaiementComponent implements OnInit {
       f.id?.toString().includes(this.searchTermDetails.toString())
     );
   }
+
+  Paiementscolaires:any[]=[]
+  loadPaiementScolaireAnnuelle(): void {
+    this.isLoading = true; // Activer le spinner
+    this._service.getPaiementScolaires(this.annee).subscribe(
+      (data) => {
+        this.Paiementscolaires = data;
+        this.isLoading = false; // Désactiver le spinner
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des informations', error);
+        this.isLoading = false; // Désactiver le spinner
+      }
+    );
+  }
+
+  getPaiementStatus(etudiantId: number, typeId: number): boolean {
+    const paiementEtudiant = this.Paiementscolaires.find(
+      (p) => p.etudiantId === etudiantId
+    );
+  
+    if (paiementEtudiant && paiementEtudiant.typePaiementStatus[typeId] !== undefined) {
+      return paiementEtudiant.typePaiementStatus[typeId];
+    }
+  
+    return false; // Par défaut, si aucune donnée n'est trouvée
+  }
+  
   
 }
