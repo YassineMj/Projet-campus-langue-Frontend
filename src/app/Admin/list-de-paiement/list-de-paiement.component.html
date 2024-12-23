@@ -173,6 +173,20 @@
                 [attr.colspan]="getVisibleSubjectsCount() * 2 + 1"
               >
                 <b>{{ etudiant.prenom }} {{ etudiant.nom }}</b>
+                <br>
+                <ng-container *ngFor="let s of scolaires">
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'badge-success': getPaiementStatus(etudiant.etudiantId, s.id),
+                      'badge-danger': !getPaiementStatus(etudiant.etudiantId, s.id)
+                    }"
+                  >
+                    {{ s.nom }}
+                  </span>
+                  <br>
+                </ng-container>
+
               </td>
 
               <!-- Boucle sur chaque matière -->
