@@ -22,6 +22,7 @@ import { ListDePaiementComponent } from './Admin/list-de-paiement/list-de-paieme
 import { BibliothequeComponent } from './Admin/bibliotheque/bibliotheque.component';
 import { GestionScolaireComponent } from './Admin/gestion-scolaire/gestion-scolaire.component';
 import { ChargesComponent } from './Admin/charges/charges.component';
+import { NgApexchartsModule } from 'ng-apexcharts'; // Import ng-apexcharts
 
 
 
@@ -54,7 +55,8 @@ import { ChargesComponent } from './Admin/charges/charges.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgApexchartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
