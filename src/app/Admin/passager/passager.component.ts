@@ -20,8 +20,10 @@ export class PassagerComponent implements OnInit {
   id: number | null = null;
   searchTerm: string = '';
   isLoading: boolean = false;
+  datedenaissance:string ='';
 
   data1 = {
+
     nom: "",
     prenom: "",
     etablissement: { id: null },
@@ -33,6 +35,7 @@ export class PassagerComponent implements OnInit {
     nomPere: "",
     telPere: "",
     passage: true
+
   };
 
   data2 = {
@@ -46,8 +49,7 @@ export class PassagerComponent implements OnInit {
     telMere: "",
     nomPere: "",
     telPere: "",
-    passage: true
-  };
+    passage: true  };
 
   ngOnInit(): void {
     this.loadPassages();
