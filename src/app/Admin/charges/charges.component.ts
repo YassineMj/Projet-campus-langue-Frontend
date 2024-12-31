@@ -15,13 +15,15 @@ export class ChargesComponent {
    formsData = {
     annee: "",
     description: "",
-    montant : null
+     montant: null,
+    mois:""
   };
 
    editData = {
     annee: "",
     description: "",
-    montant : null
+     montant: null,
+    mois:""
   };
     isLoading: boolean = false; 
   

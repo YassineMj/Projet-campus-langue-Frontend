@@ -188,6 +188,7 @@
                   <th><b>ID</b></th>
                   <th><b>Nom</b></th>
                   <th><b>Prénom</b></th>
+                  <th><b>Date de naissance</b></th>
                   <th><b>Inscription</b></th>
                   <th><b>Groupe</b></th>
                   <!-- <th><b>Commentaire</b></th> -->
@@ -202,6 +203,7 @@
                   <!-- Display the name and surname -->
                   <td>{{ item.nom }}</td>
                   <td>{{ item.prenom }}</td>
+                  <td>11-08-2001</td>
                   <!-- Dropdown for Inscription -->
 
                   <td>
@@ -360,6 +362,7 @@
                             </div>
                           </div>
                         </div>
+
                         <!-- Etablissement -->
                         <div class="col-md-4">
                           <div class="mb-3">
@@ -400,6 +403,22 @@
 
                       <!-- Second Row: Niveaux, Téléphone, Nom de Père -->
                       <div class="row">
+                        <!-- Date de Naissance -->
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="dateNaissance" class="form-label">
+                              Date de Naissance <span class="required">*</span>
+                            </label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="dateNaissance"
+                              name="dateNaissance"
+                              required
+                            />
+                          </div>
+                        </div>
+
                         <!-- Niveaux -->
                         <div class="col-md-4">
                           <div class="mb-3">
@@ -443,7 +462,7 @@
                         </div>
 
                         <!-- Nom de Père -->
-                        <div class="col-md-4">
+                        <div class="col-md-4" style="margin-top: 1%;">
                           <div class="mb-3">
                             <label for="editNomPere" class="form-label"
                               >Nom de Père</label
@@ -459,6 +478,7 @@
                           </div>
                         </div>
                       </div>
+
                       <hr
                         style="
                           border: none;
@@ -573,7 +593,7 @@
                       [disabled]="true"
                     >
                       <ng-container *ngIf="!isLoading">
-                        <i class="fa fa-save text-white"></i> 
+                        <i class="fa fa-save text-white"></i>
                       </ng-container>
                       <ng-container *ngIf="isLoading">
                         <i class="fa fa-spinner fa-spin text-white"></i> En
