@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div class="col-md-6 mb-4">
+    <div class="col-md-4 mb-4">
       <div class="card draggable" style="border-top: 4px solid #219395">
         <div class="card-body">
           <div class="row">
@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <div class="col-md-6 mb-4">
+    <div class="col-md-4 mb-4">
       <div
         class="card draggable"
         style="border-top: 4px solid rgb(223, 167, 25)"
@@ -117,7 +117,7 @@
     <div class="col-md-4 mb-4">
       <div
         class="card draggable"
-        style="border-top: 4px solid rgb(223, 167, 25)"
+        style="border-top: 4px solid  #219395"
       >
         <div class="card-body">
           <div class="row">
@@ -133,7 +133,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background-color: rgb(223, 167, 25);
+                    background-color:  #219395;
                     border-radius: 50%;
                     width: 40px;
                     height: 40px;
@@ -149,130 +149,287 @@
         </div>
       </div>
     </div>
-
-    <div class="col-md-4 mb-4">
-      <div class="card draggable" style="border-top: 4px solid #219395">
-        <div class="card-body">
-          <div class="row">
-            <div class="col mt-0">
-              <h6 class="card-title">Nombre des groupes</h6>
-            </div>
-            <div class="col-auto">
-              <div class="stat text-primary">
-                <!-- Circle with icon inside -->
-                <div
-                  class="icon-circle"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: #219395;
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                  "
-                >
-                  <i class="fas fa-users" style="color: white"></i>
-                  <!-- Professor icon -->
-                </div>
-              </div>
-            </div>
-          </div>
-          <h1 class="mt-1 mb-3">2.382</h1>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-      <div
-        class="card draggable"
-        style="border-top: 4px solid rgb(223, 167, 25)"
-      >
-        <div class="card-body">
-          <div class="row">
-            <div class="col mt-0">
-              <h6 class="card-title">Nombre des passager</h6>
-            </div>
-            <div class="col-auto">
-              <div class="stat text-primary">
-                <!-- Circle with icon inside -->
-                <div
-                  class="icon-circle"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: rgb(223, 167, 25);
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                  "
-                >
-                  <i class="fas fa-user" style="color: white"></i>
-                  <!-- Student icon -->
-                </div>
-              </div>
-            </div>
-          </div>
-          <h1 class="mt-1 mb-3">2.382</h1>
-        </div>
-      </div>
-    </div>
   </div>
 
   <div class="dashboard-container">
-    <!-- Row 1: Two Columns -->
     <div class="row">
-      <!-- Column 1 -->
-      <div class="col">
-        <!-- Card for Chart 1 -->
-        <div class="card card-chart1">
-          <h3>Utilisateurs</h3>
-          <apx-chart
-            [series]="chartData1.series"
-            [chart]="chartData1.chart"
-            [xaxis]="chartData1.xaxis"
-            [title]="chartData1.title"
-            [colors]="chartData1.colors"
-          ></apx-chart>
-        </div>
-        <!-- Card for Pie Chart -->
-        <div class="card card-pie">
-          <h3>Taux de Complétion des Tâches (Pie)</h3>
-          <apx-chart
-            [series]="pieChartData.series"
-            [chart]="pieChartData.chart"
-            [labels]="pieChartData.labels"
-            [title]="pieChartData.title"
-            [legend]="pieChartData.legend"
-            [colors]="pieChartData.colors"
-          ></apx-chart>
-        </div>
-      </div>
-
-      <!-- Column 2 -->
-      <div class="col">
+      <!-- Column 1 (for Donut Chart) -->
+      <div class="col-7">
         <!-- Card for Donut Chart -->
         <div class="card card-donut">
-          <h3>Taux de Complétion des Tâches (Donut)</h3>
+          <h3>Nombre du Group par Matière</h3>
+          <hr style="border: 7px double rgba(12, 123, 174, 0.763)" />
+          <br /><br />
           <apx-chart
             [series]="donutChartData.series"
             [chart]="donutChartData.chart"
             [labels]="donutChartData.labels"
-            [title]="donutChartData.title"
             [legend]="donutChartData.legend"
             [colors]="donutChartData.colors"
           ></apx-chart>
         </div>
+      </div>
+
+      <!-- Column 2 (for Nombre des Passagers Cards) -->
+      <div class="col-5">
+        <!-- First Nombre des Passagers Card -->
+        <div
+          class="card draggable"
+          style="border-top: 4px solid rgb(223, 167, 25)"
+        >
+          <div class="card-body">
+            <div class="row">
+              <div class="col mt-0">
+                <h5 class="card-title">Nombre des Passagers</h5>
+              </div>
+              <div class="col-auto">
+                <div class="stat text-primary">
+                  <!-- Circle with icon inside -->
+                  <div
+                    class="icon-circle"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      background-color: rgb(223, 167, 25);
+                      border-radius: 50%;
+                      width: 40px;
+                      height: 40px;
+                    "
+                  >
+                    <i class="fas fa-user" style="color: white"></i>
+                    <!-- Student icon -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h1 class="mt-1 mb-3">2.382</h1>
+          </div>
+        </div>
+        <br /><br />
+        <!-- Second Nombre des Passagers Card -->
+        <div class="card draggable mt-4" style="border-top: 4px solid #219395">
+          <div class="card-body">
+            <div class="row">
+              <div class="col mt-0">
+                <h5 class="card-title">Nombre des groupes</h5>
+              </div>
+              <div class="col-auto">
+                <div class="stat text-primary">
+                  <!-- Circle with icon inside -->
+                  <div
+                    class="icon-circle"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      background-color: #219395;
+                      border-radius: 50%;
+                      width: 40px;
+                      height: 40px;
+                    "
+                  >
+                    <i class="fas fa-users" style="color: white"></i>
+                    <!-- Professor icon -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h1 class="mt-1 mb-3">2.382</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <!-- Card for Chart 1 -->
+        <div class="card card-chart1">
+          <h3>Nombre d'inscriptions par année</h3>
+          <apx-chart
+            [series]="chartData1.series"
+            [chart]="chartData1.chart"
+            [xaxis]="chartData1.xaxis"
+            [colors]="chartData1.colors"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Column 1 -->
+      <div class="col">
         <!-- Card for Chart 2 -->
         <div class="card card-chart2">
-          <h3>Revenus</h3>
+          <h3>Chiffre d'affaires par mois</h3>
+          <br />
+          <!-- Dropdown for Months -->
+          <select class="form-select form-select-sm mb-3">
+            <option value="" disabled selected>Choisir une année</option>
+            <option value="2024/2025">2024/2025</option>
+            <option value="2025/2026">2025/2026</option>
+            <option value="2026/2027">2026/2027</option>
+            <option value="2027/2028">2027/2028</option>
+            <option value="2028/2029">2028/2029</option>
+            <option value="2029/2030">2029/2030</option>
+            <option value="2030/2031">2030/2031</option>
+            <option value="2031/2032">2031/2032</option>
+            <option value="2032/2033">2032/2033</option>
+            <option value="2033/2034">2033/2034</option>
+            <option value="2034/2035">2034/2035</option>
+            <option value="2035/2036">2035/2036</option>
+          </select>
+
           <apx-chart
             [series]="chartData2.series"
             [chart]="chartData2.chart"
             [xaxis]="chartData2.xaxis"
-            [title]="chartData2.title"
             [colors]="chartData2.colors"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Card for Table with Dropdowns -->
+      <div class="card card-table">
+        <h3>Liste des Étudiants</h3>
+
+        <!-- Dropdowns for Prof, Année, Mois -->
+        <div class="filter-options mb-3">
+          <label class="form-label">Filtrer par :</label>
+
+          <!-- Dropdowns Inline -->
+          <div class="d-flex mb-3">
+            <!-- Prof Dropdown -->
+            <select class="form-select me-3" id="profDropdown">
+              <option value="prof">Prof</option>
+              <option value="prof1">Prof 1</option>
+              <option value="prof2">Prof 2</option>
+              <option value="prof3">Prof 3</option>
+            </select>
+
+            <!-- Année Dropdown -->
+            <select class="form-select me-3" id="anneeDropdown">
+              <option value="2024/2025">2024/2025</option>
+              <option value="2025/2026">2025/2026</option>
+              <option value="2026/2027">2026/2027</option>
+              <option value="2027/2028">2027/2028</option>
+            </select>
+
+            <!-- Mois Dropdown -->
+            <select class="form-select" id="moisDropdown">
+              <option value="janvier">Janvier</option>
+              <option value="fevrier">Février</option>
+              <option value="mars">Mars</option>
+              <option value="avril">Avril</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Table displaying Nom, Prénom, Etablissement, Niveaux -->
+        <div
+          class="table-responsive"
+          style="max-height: 500px; overflow-y: auto"
+        >
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Etablissement</th>
+                <th>Niveau</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Dupont</td>
+                <td>Jean</td>
+                <td>Etablissement 1</td>
+                <td>Prof</td>
+              </tr>
+              <tr>
+                <td>Lemoine</td>
+                <td>Sophie</td>
+                <td>Etablissement 2</td>
+                <td>Année</td>
+              </tr>
+              <tr>
+                <td>Martin</td>
+                <td>Pierre</td>
+                <td>Etablissement 3</td>
+                <td>Mois</td>
+              </tr>
+              <tr>
+                <td>Martin</td>
+                <td>Pierre</td>
+                <td>Etablissement 3</td>
+                <td>Mois</td>
+              </tr>
+              <tr>
+                <td>Martin</td>
+                <td>Pierre</td>
+                <td>Etablissement 3</td>
+                <td>Mois</td>
+              </tr>
+              <tr>
+                <td>Martin</td>
+                <td>Pierre</td>
+                <td>Etablissement 3</td>
+                <td>Mois</td>
+              </tr>
+              <tr>
+                <td>Martin</td>
+                <td>Pierre</td>
+                <td>Etablissement 3</td>
+                <td>Mois</td>
+              </tr>
+              <!-- Add more rows as needed -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Total Étudiants Section -->
+        <div class="total-etudiants mt-4">
+          <div class="border p-3">
+            <h4>Total Étudiants (Prof): 3</h4>
+          </div>
+          <div class="border p-3">
+            <h4>Total des Étudiants par Matière (Prof): 3</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Column 1 -->
+      <div class="col">
+        <!-- Card for Chart 2 -->
+        <div class="card card-chart2">
+          <h3>Les charges par année</h3>
+          <br />
+          <!-- Dropdown for Months -->
+          <select class="form-select form-select-sm mb-3">
+            <option value="" disabled selected>Choisir une année</option>
+            <option value="2024/2025">2024/2025</option>
+            <option value="2025/2026">2025/2026</option>
+            <option value="2026/2027">2026/2027</option>
+            <option value="2027/2028">2027/2028</option>
+            <option value="2028/2029">2028/2029</option>
+            <option value="2029/2030">2029/2030</option>
+            <option value="2030/2031">2030/2031</option>
+            <option value="2031/2032">2031/2032</option>
+            <option value="2032/2033">2032/2033</option>
+            <option value="2033/2034">2033/2034</option>
+            <option value="2034/2035">2034/2035</option>
+            <option value="2035/2036">2035/2036</option>
+          </select>
+
+          <apx-chart
+            [series]="chartData3.series"
+            [chart]="chartData3.chart"
+            [xaxis]="chartData3.xaxis"
+            [colors]="chartData3.colors"
           ></apx-chart>
         </div>
       </div>

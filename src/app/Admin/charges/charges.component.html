@@ -226,6 +226,51 @@
                             </div>
                           </div>
 
+                          <!-- Mois Dropdown -->
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="mb-3">
+                                <label for="addMois" class="form-label">
+                                  Mois <span class="required">*</span>
+                                </label>
+                                <select
+                                  class="form-select"
+                                  id="addMois"
+                                  name="mois"
+                                  [(ngModel)]="formsData.mois"
+                                  #moisinput="ngModel"
+                                  required
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      moisinput.invalid && moisinput.touched
+                                  }"
+                                >
+                                  <option value="" disabled selected>
+                                    -- Mois --
+                                  </option>
+                                  <option value="Janvier">Janvier</option>
+                                  <option value="Février">Février</option>
+                                  <option value="Mars">Mars</option>
+                                  <option value="Avril">Avril</option>
+                                  <option value="Mai">Mai</option>
+                                  <option value="Juin">Juin</option>
+                                  <option value="Juillet">Juillet</option>
+                                  <option value="Août">Août</option>
+                                  <option value="Septembre">Septembre</option>
+                                  <option value="Octobre">Octobre</option>
+                                  <option value="Novembre">Novembre</option>
+                                  <option value="Décembre">Décembre</option>
+                                </select>
+                                <div
+                                  *ngIf="moisinput.invalid && moisinput.touched"
+                                  class="text-danger"
+                                >
+                                  Le Mois est obligatoire.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
                           <!-- Description -->
                           <div class="mb-3">
                             <label for="addDescription" class="form-label"
@@ -317,11 +362,11 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of filteredCharges">
-                  <td>{{item.id}}</td>
-                  <td>{{item.dateAuto}}</td>
-                  <td>{{item.montant}}</td>
-                  <td>{{item.annee}}</td>
-                  <td>{{item.description}}</td>                  
+                  <td>{{ item.id }}</td>
+                  <td>{{ item.dateAuto }}</td>
+                  <td>{{ item.montant }}</td>
+                  <td>{{ item.annee }}</td>
+                  <td>{{ item.description }}</td>
                   <td class="td-actions">
                     <!-- Edit Button -->
                     <button
@@ -351,159 +396,210 @@
             </table>
           </div>
 
-     <!-- Modal for Editing -->
-<div
-  class="modal fade"
-  id="editModal"
-  tabindex="-1"
-  aria-labelledby="editModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header hedtopedit">
-        <h1 class="modal-title fs-5" id="editModalLabel">
-          <i class="fa fa-pen"></i> Modifier les Informations
-        </h1>
-        <button
-          type="button"
-          class="btn-close text-white"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
-        <div class="modal-body">
-          <div class="container-fluid">
-            <!-- Montant -->
-            <div class="row">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="editMontant" class="form-label"
-                    >Montant <span class="required">*</span></label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="editMontant"
-                    name="editMontant"
-                    [(ngModel)]="editData.montant"
-                    #motant="ngModel"
-                    placeholder="Montant"
-                    required
-                    [ngClass]="{ 'is-invalid': motant.invalid && motant.touched }"
-                  />
-                  <div
-                    *ngIf="motant.invalid && motant.touched"
-                    class="text-danger"
-                  >
-                    Montant est obligatoire.
+          <!-- Modal for Editing -->
+          <div
+            class="modal fade"
+            id="editModal"
+            tabindex="-1"
+            aria-labelledby="editModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header hedtopedit">
+                  <h1 class="modal-title fs-5" id="editModalLabel">
+                    <i class="fa fa-pen"></i> Modifier les Informations
+                  </h1>
+                  <button
+                    type="button"
+                    class="btn-close text-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <form #editForm="ngForm" (ngSubmit)="onEditSubmit(editForm)">
+                  <div class="modal-body">
+                    <div class="container-fluid">
+                      <!-- Montant -->
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="editMontant" class="form-label"
+                              >Montant <span class="required">*</span></label
+                            >
+                            <input
+                              type="number"
+                              class="form-control"
+                              id="editMontant"
+                              name="editMontant"
+                              [(ngModel)]="editData.montant"
+                              #motant="ngModel"
+                              placeholder="Montant"
+                              required
+                              [ngClass]="{
+                                'is-invalid': motant.invalid && motant.touched
+                              }"
+                            />
+                            <div
+                              *ngIf="motant.invalid && motant.touched"
+                              class="text-danger"
+                            >
+                              Montant est obligatoire.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Année Scolaire -->
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <label for="editannee" class="form-label">
+                            Année Scolaire <span class="required">*</span>
+                          </label>
+                          <select
+                            class="form-select"
+                            id="editannee"
+                            name="annee"
+                            #anne="ngModel"
+                            [(ngModel)]="editData.annee"
+                            required
+                            [ngClass]="{
+                              'is-invalid': anne.invalid && anne.touched
+                            }"
+                          >
+                            <option value="" disabled selected>
+                              -- Année Scolaire --
+                            </option>
+                            <option value="2024/2025">2024/2025</option>
+                            <option value="2025/2026">2025/2026</option>
+                            <option value="2026/2027">2026/2027</option>
+                            <option value="2027/2028">2027/2028</option>
+                            <option value="2028/2029">2028/2029</option>
+                            <option value="2029/2030">2029/2030</option>
+                            <option value="2030/2031">2030/2031</option>
+                            <option value="2031/2032">2031/2032</option>
+                            <option value="2032/2033">2032/2033</option>
+                            <option value="2033/2034">2033/2034</option>
+                            <option value="2034/2035">2034/2035</option>
+                            <option value="2035/2036">2035/2036</option>
+                            <option value="2036/2037">2036/2037</option>
+                            <option value="2037/2038">2037/2038</option>
+                            <option value="2038/2039">2038/2039</option>
+                            <option value="2039/2040">2039/2040</option>
+                            <option value="2040/2041">2040/2041</option>
+                          </select>
+                          <div
+                            *ngIf="anne.invalid && anne.touched"
+                            class="text-danger"
+                          >
+                            Année Scolaire est obligatoire.
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Mois -->
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <label for="editmois" class="form-label">
+                            Mois <span class="required">*</span>
+                          </label>
+                          <select
+                            class="form-select"
+                            id="editmois"
+                            name="mois"
+                            #mois="ngModel"
+                            [(ngModel)]="editData.mois"
+                            required
+                            [ngClass]="{
+                              'is-invalid': mois.invalid && mois.touched
+                            }"
+                          >
+                            <option value="" disabled selected>
+                              -- Mois --
+                            </option>
+                            <option value="Janvier">Janvier</option>
+                            <option value="Février">Février</option>
+                            <option value="Mars">Mars</option>
+                            <option value="Avril">Avril</option>
+                            <option value="Mai">Mai</option>
+                            <option value="Juin">Juin</option>
+                            <option value="Juillet">Juillet</option>
+                            <option value="Août">Août</option>
+                            <option value="Septembre">Septembre</option>
+                            <option value="Octobre">Octobre</option>
+                            <option value="Novembre">Novembre</option>
+                            <option value="Décembre">Décembre</option>
+                          </select>
+                          <div
+                            *ngIf="mois.invalid && mois.touched"
+                            class="text-danger"
+                          >
+                            Le Mois est obligatoire.
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Description -->
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="mb-3">
+                            <label for="editDescription" class="form-label"
+                              >Description</label
+                            >
+                            <textarea
+                              class="form-control formtexterea"
+                              id="editDescription"
+                              name="editDescription"
+                              [(ngModel)]="editData.description"
+                              rows="3"
+                              placeholder="Description..."
+                            ></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
 
-            <!-- Année Scolaire -->
-            <div class="row">
-              <div class="col-md-12 mb-3">
-                <label for="editannee" class="form-label">
-                  Année Scolaire <span class="required">*</span>
-                </label>
-                <select
-                  class="form-select"
-                  id="editannee"
-                  name="annee"
-                  #anne="ngModel"
-                  [(ngModel)]="editData.annee"
-                  required
-                  [ngClass]="{ 'is-invalid': anne.invalid && anne.touched }"
-                >
-                  <option value="" disabled selected>
-                    -- Année Scolaire --
-                  </option>
-                  <option value="2024/2025">2024/2025</option>
-                  <option value="2025/2026">2025/2026</option>
-                  <option value="2026/2027">2026/2027</option>
-                  <option value="2027/2028">2027/2028</option>
-                  <option value="2028/2029">2028/2029</option>
-                  <option value="2029/2030">2029/2030</option>
-                  <option value="2030/2031">2030/2031</option>
-                  <option value="2031/2032">2031/2032</option>
-                  <option value="2032/2033">2032/2033</option>
-                  <option value="2033/2034">2033/2034</option>
-                  <option value="2034/2035">2034/2035</option>
-                  <option value="2035/2036">2035/2036</option>
-                  <option value="2036/2037">2036/2037</option>
-                  <option value="2037/2038">2037/2038</option>
-                  <option value="2038/2039">2038/2039</option>
-                  <option value="2039/2040">2039/2040</option>
-                  <option value="2040/2041">2040/2041</option>
-                </select>
-                <div *ngIf=" anne.invalid && anne.touched " class="text-danger">
-                  Année Scolaire est obligatoire.
-                </div>
-              </div>
-            </div>
-
-            <!-- Description -->
-            <div class="row">
-              <div class="col-md-12">
-                <div class="mb-3">
-                  <label for="editDescription" class="form-label">Description</label>
-                  <textarea
-                    class="form-control formtexterea"
-                    id="editDescription"
-                    name="editDescription"
-                    [(ngModel)]="editData.description"
-                    rows="3"
-                    placeholder="Description..."
-                  ></textarea>
-                </div>
+                  <div class="modal-footer justify-content-center">
+                    <!-- Success Alert -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="modifysuccess"
+                        class="alert alert-success alert-white rounded mx-auto w-75 success-alert"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa fa-pen"></i>
+                        </div>
+                        <strong>Success!</strong>
+                        {{ modifysuccess }}
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-round colormodalfermer"
+                      data-bs-dismiss="modal"
+                    >
+                      <i class="fa fa-close text-white"></i>
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-round colormodalmodifier"
+                      [disabled]="editForm.invalid || isLoading"
+                    >
+                      <ng-container *ngIf="!isLoading">
+                        <i class="fa fa-save text-white"></i>
+                      </ng-container>
+                      <ng-container *ngIf="isLoading">
+                        <i class="fa fa-spinner fa-spin text-white"></i> En
+                        cours...
+                      </ng-container>
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="modal-footer justify-content-center">
-          <!-- Success Alert -->
-          <div class="container bootstrap snippets bootdey">
-            <div
-              *ngIf="modifysuccess"
-              class="alert alert-success alert-white rounded mx-auto w-75 success-alert"
-              role="alert"
-            >
-              <div class="icon">
-                <i class="fa fa-pen"></i>
-              </div>
-              <strong>Success!</strong>
-              {{ modifysuccess }}
-            </div>
-          </div>
-          <button
-            type="button"
-            class="btn btn-round colormodalfermer"
-            data-bs-dismiss="modal"
-          >
-            <i class="fa fa-close text-white"></i>
-          </button>
-          <button
-            type="submit"
-            class="btn btn-round colormodalmodifier"
-            [disabled]="editForm.invalid || isLoading"
-          >
-            <ng-container *ngIf="!isLoading">
-              <i class="fa fa-save text-white"></i>
-            </ng-container>
-            <ng-container *ngIf="isLoading">
-              <i class="fa fa-spinner fa-spin text-white"></i> En cours...
-            </ng-container>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
 
           <!-- End of Modal -->
         </div>

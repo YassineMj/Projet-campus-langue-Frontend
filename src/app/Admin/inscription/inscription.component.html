@@ -195,27 +195,24 @@
                   Niveau est obligatoire.
                 </div>
               </div>
-              <div class="col-md-4">
-                                <div class="mb-3">
-                                  <label
-                                    for="addDateNaissance"
-                                    class="form-label"
-                                  >
-                                    Date de naissance
-                                    
-                                  </label>
-                                  <input
-                                    type="date"
-                                    class="form-control"
-                                    id="addDateNaissance"
-                                    name="dateNaissance"
-                                    required
-                                  />
-                                </div>
-              </div>
-                  <br/>
-            </div>
+              <br />
 
+              <div class="col-md-4" style="margin-top: 1%">
+                <div class="mb-3">
+                  <label for="addDateNaissance" class="form-label">
+                    Date de naissance
+                  </label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="addDateNaissance"
+                    name="dateNaissance"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+            <hr />
             <div class="row mb-3">
               <!-- Nom de mère et téléphone de mère -->
               <div class="col-md-6">
@@ -331,7 +328,6 @@
                   required
                   #editCoursInput="ngModel"
                   (change)="onCoursChange()"
-
                 >
                   <option value="" disabled selected>Choisir un cours</option>
                   <option *ngFor="let course of cours" [value]="course.id">
@@ -695,7 +691,6 @@
                           </h1>
                           <br />
                           <br />
-
                           <!-- Close button that dismisses the current modal -->
                           <!-- <button
                             type="button"
@@ -704,7 +699,6 @@
                             aria-label="Close"
                           ></button> -->
                         </div>
-
                         <div class="modal-body">
                           <div class="container-fluid">
                             <div class="row mb-2 date-highlight">
@@ -760,6 +754,7 @@
                                 <b>Nom de Mère:</b> {{ selectedItem.nomMere }}
                               </div>
                             </div>
+
                             <br />
 
                             <div class="row mb-2">
@@ -767,7 +762,10 @@
                                 <b>Téléphone Mère:</b>
                                 {{ selectedItem.telMere }}
                               </div>
-                              <div class="col-6"></div>
+                              <div class="col-6">
+                                <b>Date de naissance:</b>
+                                11-08-2001
+                              </div>
                             </div>
                             <br />
 
@@ -1099,7 +1097,6 @@
                                     placeholder="Saisir l'emploi du temps..."
                                   ></textarea>
                                 </div>
-
                               </div>
 
                               <div class="modal-footer justify-content-center">
