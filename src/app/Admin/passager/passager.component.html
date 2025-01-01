@@ -310,6 +310,7 @@
                                     class="form-control"
                                     id="addDateNaissance"
                                     name="dateNaissance"
+                                    [(ngModel)]="data1.dateN"
                                     required
                                   />
                                 </div>
@@ -502,7 +503,7 @@
                   <td>{{ item.prenom }}</td>
                   <td>{{ item.etablissement.nom }}</td>
                   <td>{{ item.niveau.nom }}</td>
-                  <td>11/08/2002</td>
+                  <td>{{item.dateN}}</td>
 
                   <!-- <td>{{ item.commentaire }}</td> -->
                   <td class="td-actions text-right d-flex justify-content-end">
@@ -616,7 +617,7 @@
                         <b>Téléphone:</b> {{ selectedItem.telephone }}
                       </div>
                         <div class="col-6">
-                        <b>Date de naissance:</b> 11/08/2001
+                        <b>Date de naissance:</b> {{selectedItem.dateN}}
                       </div>
                     </div>
                     <br />
@@ -862,6 +863,8 @@
                                     class="form-control"
                                     id="addDateNaissance"
                                     name="dateNaissance"
+                                    [(ngModel)]="data2.dateN"
+
                                     required
                                   />
                                 </div>

@@ -119,6 +119,7 @@ export class InscriptionComponent implements OnInit {
     nomPere: "",
     telPere: "",
     passage: false,
+    dateN:""
     
   };
 
@@ -242,6 +243,7 @@ formDataIns = {
                 telephone: "",
                 commentaire: "",
                 nomMere: "",
+                dateN:"",
                 telMere: "",
                 nomPere: "",
                 telPere: "",

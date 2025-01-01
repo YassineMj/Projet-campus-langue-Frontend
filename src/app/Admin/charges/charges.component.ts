@@ -15,14 +15,14 @@ export class ChargesComponent {
    formsData = {
     annee: "",
     description: "",
-     montant: null,
+    montant: null,
     mois:""
   };
 
    editData = {
     annee: "",
     description: "",
-     montant: null,
+    montant: null,
     mois:""
   };
     isLoading: boolean = false; 
@@ -35,7 +35,8 @@ export class ChargesComponent {
           this.charges = data;
           this.charges = data.map(c => ({
             ...c,
-            dateAuto: this.formatDate(new Date(c.dateAuto))
+            dateAuto: this.formatDate(new Date(c.dateAuto)),
+            mois: this.getMois(c.mois)
           }));
           this.filteredCharges=this.charges;
           this.isLoading = false; // Désactiver le spinner
@@ -61,12 +62,21 @@ export class ChargesComponent {
       return `${jour}-${mois}-${annee} | ${heures}:${minutes}`;
     }
 
+    getMois(mois: number): string {
+      const moisNoms = [
+        'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
+        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+      ];
+      return moisNoms[mois - 1] || 'Inconnu';
+    }
+
     filterCharge(): void {
       this.filteredCharges = this.charges.filter(c => 
         c.id?.toString().includes(this.searchTerm.toLowerCase()) ||
         c.annee?.toString().includes(this.searchTerm.toLowerCase()) ||
         c.montant?.toString().includes(this.searchTerm.toLowerCase()) ||
         c.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        c.mois?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         c.dateAuto?.toString().includes(this.searchTerm.toLowerCase())
       );
     }
@@ -88,7 +98,8 @@ export class ChargesComponent {
         const newSubject = {
           montant: this.formsData.montant,
           description: this.formsData.description,
-          annee:this.formsData.annee
+          annee:this.formsData.annee,
+          mois:this.formsData.mois
         };      
         console.log('New subject added:', newSubject);
         this._service.addCharge(newSubject).subscribe(
@@ -115,6 +126,8 @@ export class ChargesComponent {
       this.editData.montant = item.montant;  // Set the current subject's name
       this.editData.description = item.description;  // Set the current subject's description
       this.editData.annee = item.annee;
+      this.editData.mois = item.mois;
+
       this.id=item.id
     }
   

@@ -34,7 +34,8 @@ export class PassagerComponent implements OnInit {
     telMere: "",
     nomPere: "",
     telPere: "",
-    passage: true
+    passage: true,
+    dateN:""
 
   };
 
@@ -49,7 +50,9 @@ export class PassagerComponent implements OnInit {
     telMere: "",
     nomPere: "",
     telPere: "",
-    passage: true  };
+    passage: true,
+    dateN:""
+  };
 
   ngOnInit(): void {
     this.loadPassages();
@@ -153,7 +156,8 @@ export class PassagerComponent implements OnInit {
       telMere: "",
       nomPere: "",
       telPere: "",
-      passage: true
+      passage: true,
+      dateN:""
     };
     this.id = null;
   }
@@ -240,7 +244,8 @@ export class PassagerComponent implements OnInit {
             telMere: "",
             nomPere: "",
             telPere: "",
-            passage: true
+            passage: true,
+            dateN:""
           };
           setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds

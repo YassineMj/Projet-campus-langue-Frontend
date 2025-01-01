@@ -104,7 +104,7 @@
                 (change)="onDateChange()"
               >
                 <option value="" disabled>Mois</option>
-                <option value="01">Janvier</option>
+                <option value="1" selected>Janvier</option>
                 <option value="02">Février</option>
                 <option value="03">Mars</option>
                 <option value="04">Avril</option>
@@ -203,7 +203,7 @@
                   <!-- Display the name and surname -->
                   <td>{{ item.nom }}</td>
                   <td>{{ item.prenom }}</td>
-                  <td>11-08-2001</td>
+                  <td>{{item.dateN}}</td>
                   <!-- Dropdown for Inscription -->
 
                   <td>
@@ -403,7 +403,6 @@
 
                       <!-- Second Row: Niveaux, Téléphone, Nom de Père -->
                       <div class="row">
-                        <!-- Date de Naissance -->
                         <div class="col-md-4">
                           <div class="mb-3">
                             <label for="dateNaissance" class="form-label">
@@ -414,6 +413,7 @@
                               class="form-control"
                               id="dateNaissance"
                               name="dateNaissance"
+                              [(ngModel)]="data2.dateN"
                               required
                             />
                           </div>

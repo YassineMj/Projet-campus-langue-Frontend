@@ -235,4 +235,37 @@ export class GlobalService {
     deleteCharge(id:any):Observable<any>{
       return this.http.delete<any>(`${this.baseUrl}/charges/${id}`)
     }
+
+    // ----- Statistiques -----
+    getResume(): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/resume`);
+    }
+    getGroupesParLangue(): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/groupes-par-langue`);
+    }
+    getAnnulle(annee:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/paiements-ponctuels?annee=${annee}`);
+    }
+    inscriptionsParAnne(): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/inscriptions-par-annee`);
+    }
+    paiementsPonctuelsParAnnee(annee:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/paiements-ponctuels-par-mois?annee=${annee}`);
+    }
+    paiementsInscriptionsParAnnee(annee:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/paiements-inscription-par-mois?annee=${annee}`);
+    }
+    chargesParAnnee(annee: any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/charges-par-mois?annee=${annee}`);
+    }
+    netParAnnee(annee: any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/net-par-mois?annee=${annee}`);
+    }
+    getListEtud(annee: any,mois:any,prof:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/etudiants?idProf=${prof}&mois=${mois}&annee=${annee}`);
+    }
+    getNbrEtud(annee: any,mois:any,prof:any): Observable<any[]> {
+      return this.http.get<any[]>(`${this.baseUrl}/statistiques/nombre-etudiants?idProf=${prof}&mois=${mois}&annee=${annee}`);
+    }
+
 }

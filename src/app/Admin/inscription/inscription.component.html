@@ -207,6 +207,8 @@
                     class="form-control"
                     id="addDateNaissance"
                     name="dateNaissance"
+                    [(ngModel)]="formDataEtu.dateN"
+
                     required
                   />
                 </div>
@@ -764,7 +766,7 @@
                               </div>
                               <div class="col-6">
                                 <b>Date de naissance:</b>
-                                11-08-2001
+                                {{ selectedItem.dateN }}
                               </div>
                             </div>
                             <br />
