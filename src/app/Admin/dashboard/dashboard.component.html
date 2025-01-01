@@ -7,6 +7,7 @@
 
 <div class="row" style="padding-top: 3%">
   <div class="row">
+
     <div class="col-12 d-flex justify-content-center mb-4">
       <!-- Card 1 -->
       <div
@@ -45,237 +46,572 @@
       </div>
     </div>
 
-    <div class="col-md-6 mb-4">
-      <div class="card draggable" style="border-top: 4px solid #219395">
-        <div class="card-body">
-          <div class="row">
-            <div class="col mt-0">
-              <h5 class="card-title">Nombre des profs</h5>
-            </div>
-            <div class="col-auto">
-              <div class="stat text-primary">
-                <!-- Circle with icon inside -->
-                <div
-                  class="icon-circle"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: #219395;
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                  "
-                >
-                  <i class="fas fa-chalkboard-teacher" style="color: white"></i>
-                  <!-- Professor icon -->
+    <div *ngIf="loadingResume" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
                 </div>
               </div>
-            </div>
-          </div>
-          <h1 class="mt-1 mb-3">2.382</h1>
-        </div>
-      </div>
     </div>
 
-    <div class="col-md-6 mb-4">
-      <div
-        class="card draggable"
-        style="border-top: 4px solid rgb(223, 167, 25)"
-      >
-        <div class="card-body">
-          <div class="row">
-            <div class="col mt-0">
-              <h5 class="card-title">Nombre des cours</h5>
-            </div>
-            <div class="col-auto">
-              <div class="stat text-primary">
-                <!-- Circle with icon inside -->
-                <div
-                  class="icon-circle"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: rgb(223, 167, 25);
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                  "
-                >
-                  <i class="fas fa-book" style="color: white"></i>
-                  <!-- Student icon -->
+    <ng-container *ngIf="!loadingResume">
+      
+      <div class="col-md-4 mb-4">
+            <div class="card draggable" style="border-top: 4px solid #219395">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col mt-0">
+                    <h5 class="card-title">Nombre total des profs</h5>
+                  </div>
+                  <div class="col-auto">
+                    <div class="stat text-primary">
+                      <!-- Circle with icon inside -->
+                      <div
+                        class="icon-circle"
+                        style="
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          background-color: #219395;
+                          border-radius: 50%;
+                          width: 40px;
+                          height: 40px;
+                        "
+                      >
+                        <i class="fas fa-chalkboard-teacher" style="color: white"></i>
+                        <!-- Professor icon -->
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <h1 class="mt-1 mb-3">{{resume.nombreProfs}}</h1>
               </div>
             </div>
-          </div>
-          <h1 class="mt-1 mb-3">2.382</h1>
-        </div>
       </div>
+
+      <div class="col-md-4 mb-4">
+            <div
+              class="card draggable"
+              style="border-top: 4px solid rgb(223, 167, 25)"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="col mt-0">
+                    <h5 class="card-title">Nombre total des cours</h5>
+                  </div>
+                  <div class="col-auto">
+                    <div class="stat text-primary">
+                      <!-- Circle with icon inside -->
+                      <div
+                        class="icon-circle"
+                        style="
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          background-color: rgb(223, 167, 25);
+                          border-radius: 50%;
+                          width: 40px;
+                          height: 40px;
+                        "
+                      >
+                        <i class="fas fa-book" style="color: white"></i>
+                        <!-- Student icon -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h1 class="mt-1 mb-3">{{resume.nombreCours}}</h1>
+              </div>
+            </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+            <div
+              class="card draggable"
+              style="border-top: 4px solid  #219395"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="col mt-0">
+                    <h6 class="card-title">Nombre total des étudiant</h6>
+                  </div>
+                  <div class="col-auto">
+                    <div class="stat text-primary">
+                      <!-- Circle with icon inside -->
+                      <div
+                        class="icon-circle"
+                        style="
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          background-color:  #219395;
+                          border-radius: 50%;
+                          width: 40px;
+                          height: 40px;
+                        "
+                      >
+                        <i class="fas fa-user-graduate" style="color: white"></i>
+                        <!-- Student icon -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <h1 class="mt-1 mb-3">{{resume.nombreEtudiants}}</h1>
+              </div>
+            </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+              <div
+                class="card draggable"
+                style="border-top: 4px solid rgb(223, 167, 25)"
+              >
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col mt-0">
+                      <h5 class="card-title">Nombre total des Passagers</h5>
+                    </div>
+                    <div class="col-auto">
+                      <div class="stat text-primary">
+                        <!-- Circle with icon inside -->
+                        <div
+                          class="icon-circle"
+                          style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: rgb(223, 167, 25);
+                            border-radius: 50%;
+                            width: 40px;
+                            height: 40px;
+                          "
+                        >
+                          <i class="fas fa-user" style="color: white"></i>
+                          <!-- Student icon -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h1 class="mt-1 mb-3">{{resume.nombreEtudiantsPassage}}</h1>
+                </div>
+              </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+              <div class="card draggable" style="border-top: 4px solid #219395">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col mt-0">
+                      <h5 class="card-title">Nombre total des groupes</h5>
+                    </div>
+                    <div class="col-auto">
+                      <div class="stat text-primary">
+                        <!-- Circle with icon inside -->
+                        <div
+                          class="icon-circle"
+                          style="
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: #219395;
+                            border-radius: 50%;
+                            width: 40px;
+                            height: 40px;
+                          "
+                        >
+                          <i class="fas fa-users" style="color: white"></i>
+                          <!-- Professor icon -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <h1 class="mt-1 mb-3">{{resume.nombreGroupes}}</h1>
+                </div>
+              </div>
+      </div>
+
+
+
+      <div class="dashboard-container">
+          
+        <div class="row">
+            <!-- Column 1 (for Donut Chart) -->
+            <div class="col-6">
+              <!-- Card for Donut Chart -->
+              <div class="card card-donut">
+                <h3>Nombre du Group par Matière</h3>
+                <hr style="border: 7px double rgba(12, 123, 174, 0.763)" />
+                <br /><br />
+                <apx-chart
+                  [series]="chartDataGroupesParMatiere.series"
+                  [chart]="chartDataGroupesParMatiere.chart"
+                  [labels]="chartDataGroupesParMatiere.labels"
+                  [legend]="chartDataGroupesParMatiere.legend"
+                  [colors]="chartDataGroupesParMatiere.colors"
+                ></apx-chart>
+              </div>
+            </div>
+            <!-- Column 2 -->
+            <div class="col-6">
+              <div class="card card-donut">
+                <h3>Paiements du Scolaire annuelle par année</h3>
+                    <select class="form-select form-select-sm mb-3" [(ngModel)]="chartDataAnnuelleDate" (change)="getAnnulle()" >
+                      <option value="" disabled selected >Choisir une année</option>
+                      <option value="2024/2025">2024/2025</option>
+                      <option value="2025/2026">2025/2026</option>
+                      <option value="2026/2027">2026/2027</option>
+                      <option value="2027/2028">2027/2028</option>
+                      <option value="2028/2029">2028/2029</option>
+                      <option value="2029/2030">2029/2030</option>
+                      <option value="2030/2031">2030/2031</option>
+                      <option value="2031/2032">2031/2032</option>
+                      <option value="2032/2033">2032/2033</option>
+                      <option value="2033/2034">2033/2034</option>
+                      <option value="2034/2035">2034/2035</option>
+                      <option value="2035/2036">2035/2036</option>
+                      <option value="2036/2037">2036/2037</option>
+                      <option value="2037/2038">2037/2038</option>
+                      <option value="2038/2039">2038/2039</option>
+                      <option value="2039/2040">2039/2040</option>
+                      <option value="2040/2041">2040/2041</option>
+                    </select>
+                <hr style="border: 7px double rgba(12, 123, 174, 0.763)" />
+                <div *ngIf="loadingAnnuelle" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+    </div>
+                <apx-chart *ngIf="!loadingAnnuelle"
+                  [series]="chartDataAnnuelle.series"
+                  [chart]="chartDataAnnuelle.chart"
+                  [labels]="chartDataAnnuelle.labels"
+                  [legend]="chartDataAnnuelle.legend"
+                  [colors]="chartDataAnnuelle.colors"
+                ></apx-chart>
+              </div>
+              
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+              <!-- Card for Chart 1 -->
+              <div class="card card-chart1">
+                <h3>Nombre d'inscriptions par année</h3>
+                                <div *ngIf="loadingInscriptionsParAnnee" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+    </div>
+                <apx-chart *ngIf="!loadingInscriptionsParAnnee"
+                  [series]="chartDataInscriptionsParAnnee.series"
+                  [chart]="chartDataInscriptionsParAnnee.chart"
+                  [xaxis]="chartDataInscriptionsParAnnee.xaxis"
+                  [colors]="chartDataInscriptionsParAnnee.colors"
+                ></apx-chart>
+              </div>
+            </div>
+        </div>  
+
+        <div class="row">
+            <!-- Column 1 -->
+            <div class="col">
+              <!-- Card for Chart 2 -->
+              <div class="card card-chart2">
+                <h3>Chiffre des Paiements Ponctuels par année</h3>
+                <br />
+                <!-- Dropdown for Months -->
+                <select class="form-select form-select-sm mb-3" [(ngModel)]="anneePaiementsPonctuels" (change)="getPaiementsPonctuelsParAnnee()" >
+                  <option value="" disabled selected>Choisir une année</option>
+                  <option value="2024/2025">2024/2025</option>
+                  <option value="2025/2026">2025/2026</option>
+                  <option value="2026/2027">2026/2027</option>
+                  <option value="2027/2028">2027/2028</option>
+                  <option value="2028/2029">2028/2029</option>
+                  <option value="2029/2030">2029/2030</option>
+                  <option value="2030/2031">2030/2031</option>
+                  <option value="2031/2032">2031/2032</option>
+                  <option value="2032/2033">2032/2033</option>
+                  <option value="2033/2034">2033/2034</option>
+                  <option value="2034/2035">2034/2035</option>
+                  <option value="2035/2036">2035/2036</option>
+                </select>
+                <div *ngIf="loadingPaiementsPonctuels" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
     </div>
 
-    <div class="col-md-4 mb-4">
-      <div
-        class="card draggable"
-        style="border-top: 4px solid rgb(223, 167, 25)"
-      >
-        <div class="card-body">
-          <div class="row">
-            <div class="col mt-0">
-              <h6 class="card-title">Nombre des étudiant</h6>
-            </div>
-            <div class="col-auto">
-              <div class="stat text-primary">
-                <!-- Circle with icon inside -->
-                <div
-                  class="icon-circle"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: rgb(223, 167, 25);
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                  "
-                >
-                  <i class="fas fa-user-graduate" style="color: white"></i>
-                  <!-- Student icon -->
-                </div>
+                <apx-chart *ngIf="!loadingPaiementsPonctuels"
+                  [series]="chartDataPaiementsPonctuelsParAnnee.series"
+                  [chart]="chartDataPaiementsPonctuelsParAnnee.chart"
+                  [xaxis]="chartDataPaiementsPonctuelsParAnnee.xaxis"
+                  [colors]="chartDataPaiementsPonctuelsParAnnee.colors"
+                ></apx-chart>
               </div>
             </div>
-          </div>
-          <h1 class="mt-1 mb-3">2.382</h1>
         </div>
-      </div>
+
+        <div class="row">
+            <!-- Column 1 -->
+            <div class="col">
+              <!-- Card for Chart 2 -->
+              <div class="card card-chart2">
+                <h3>Chiffre des Paiements Inscriptions par année</h3>
+                <br />
+                <!-- Dropdown for Months -->
+                <select class="form-select form-select-sm mb-3" [(ngModel)]="anneePaiementsInscriptions" (change)="getPaiementsInscriptionsParAnnee()">
+                  <option value="" disabled selected>Choisir une année</option>
+                  <option value="2024/2025">2024/2025</option>
+                      <option value="2025/2026">2025/2026</option>
+                      <option value="2026/2027">2026/2027</option>
+                      <option value="2027/2028">2027/2028</option>
+                      <option value="2028/2029">2028/2029</option>
+                      <option value="2029/2030">2029/2030</option>
+                      <option value="2030/2031">2030/2031</option>
+                      <option value="2031/2032">2031/2032</option>
+                      <option value="2032/2033">2032/2033</option>
+                      <option value="2033/2034">2033/2034</option>
+                      <option value="2034/2035">2034/2035</option>
+                      <option value="2035/2036">2035/2036</option>
+                      <option value="2036/2037">2036/2037</option>
+                      <option value="2037/2038">2037/2038</option>
+                      <option value="2038/2039">2038/2039</option>
+                      <option value="2039/2040">2039/2040</option>
+                      <option value="2040/2041">2040/2041</option>
+                </select>
+<div *ngIf="loadingPaiementsInscriptions" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
     </div>
 
-    <div class="col-md-4 mb-4">
-      <div class="card draggable" style="border-top: 4px solid #219395">
-        <div class="card-body">
-          <div class="row">
-            <div class="col mt-0">
-              <h6 class="card-title">Nombre des groupes</h6>
-            </div>
-            <div class="col-auto">
-              <div class="stat text-primary">
-                <!-- Circle with icon inside -->
-                <div
-                  class="icon-circle"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: #219395;
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                  "
-                >
-                  <i class="fas fa-users" style="color: white"></i>
-                  <!-- Professor icon -->
-                </div>
+                <apx-chart *ngIf="!loadingPaiementsInscriptions"
+                  [series]="chartDataPaiementsInscriptionsParAnnee.series"
+                  [chart]="chartDataPaiementsInscriptionsParAnnee.chart"
+                  [xaxis]="chartDataPaiementsInscriptionsParAnnee.xaxis"
+                  [colors]="chartDataPaiementsInscriptionsParAnnee.colors"
+                ></apx-chart>
               </div>
             </div>
-          </div>
-          <h1 class="mt-1 mb-3">2.382</h1>
         </div>
-      </div>
+
+        <div class="row">
+            <!-- Charges Par Annee -->
+            <div class="col">
+              <div class="card card-chart2">
+                <h3>Chiffre des Charges par année</h3>
+                <br />
+                <select class="form-select form-select-sm mb-3" [(ngModel)]="anneeCharges" (change)="getChargesParAnnee()">
+                  <option value="" disabled selected>Choisir une année</option>
+                  <option value="2024/2025">2024/2025</option>
+                      <option value="2025/2026">2025/2026</option>
+                      <option value="2026/2027">2026/2027</option>
+                      <option value="2027/2028">2027/2028</option>
+                      <option value="2028/2029">2028/2029</option>
+                      <option value="2029/2030">2029/2030</option>
+                      <option value="2030/2031">2030/2031</option>
+                      <option value="2031/2032">2031/2032</option>
+                      <option value="2032/2033">2032/2033</option>
+                      <option value="2033/2034">2033/2034</option>
+                      <option value="2034/2035">2034/2035</option>
+                      <option value="2035/2036">2035/2036</option>
+                      <option value="2036/2037">2036/2037</option>
+                      <option value="2037/2038">2037/2038</option>
+                      <option value="2038/2039">2038/2039</option>
+                      <option value="2039/2040">2039/2040</option>
+                      <option value="2040/2041">2040/2041</option>
+                  <!-- Ajoutez d'autres options ici -->
+                </select>
+<div *ngIf="loadingCharges" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
     </div>
 
-    <div class="col-md-4 mb-4">
-      <div
-        class="card draggable"
-        style="border-top: 4px solid rgb(223, 167, 25)"
-      >
-        <div class="card-body">
-          <div class="row">
-            <div class="col mt-0">
-              <h6 class="card-title">Nombre des passager</h6>
-            </div>
-            <div class="col-auto">
-              <div class="stat text-primary">
-                <!-- Circle with icon inside -->
-                <div
-                  class="icon-circle"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: rgb(223, 167, 25);
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                  "
-                >
-                  <i class="fas fa-user" style="color: white"></i>
-                  <!-- Student icon -->
-                </div>
+                <apx-chart *ngIf="!loadingCharges"
+                  [series]="chartDataChargesParAnnee.series"
+                  [chart]="chartDataChargesParAnnee.chart"
+                  [xaxis]="chartDataChargesParAnnee.xaxis"
+                  [colors]="chartDataChargesParAnnee.colors"
+                ></apx-chart>
               </div>
             </div>
-          </div>
-          <h1 class="mt-1 mb-3">2.382</h1>
+        </div>
+
+        <div class="row">
+            <!-- Net Par Annee -->
+            <div class="col">
+              <div class="card card-chart2">
+                <h3>Chiffre d'affaires par année</h3>
+                <br />
+                <select class="form-select form-select-sm mb-3" [(ngModel)]="anneeNet" (change)="getNetParAnnee()">
+                  <option value="" disabled selected>Choisir une année</option>
+                  <option value="2024/2025">2024/2025</option>
+                      <option value="2025/2026">2025/2026</option>
+                      <option value="2026/2027">2026/2027</option>
+                      <option value="2027/2028">2027/2028</option>
+                      <option value="2028/2029">2028/2029</option>
+                      <option value="2029/2030">2029/2030</option>
+                      <option value="2030/2031">2030/2031</option>
+                      <option value="2031/2032">2031/2032</option>
+                      <option value="2032/2033">2032/2033</option>
+                      <option value="2033/2034">2033/2034</option>
+                      <option value="2034/2035">2034/2035</option>
+                      <option value="2035/2036">2035/2036</option>
+                      <option value="2036/2037">2036/2037</option>
+                      <option value="2037/2038">2037/2038</option>
+                      <option value="2038/2039">2038/2039</option>
+                      <option value="2039/2040">2039/2040</option>
+                      <option value="2040/2041">2040/2041</option>
+                </select>
+<div *ngIf="loadingNet" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+    </div>
+
+                <apx-chart *ngIf="!loadingNet"
+                  [series]="chartDataNetParAnnee.series"
+                  [chart]="chartDataNetParAnnee.chart"
+                  [xaxis]="chartDataNetParAnnee.xaxis"
+                  [colors]="chartDataNetParAnnee.colors"
+                ></apx-chart>
+              </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Card for Table with Dropdowns -->
+            <div class="card card-table">
+              <h3>Liste des Étudiants</h3>
+
+              <!-- Dropdowns for Prof, Année, Mois -->
+              <div class="filter-options mb-3">
+                <label class="form-label">Filtrer par :</label>
+
+                <!-- Dropdowns Inline -->
+                <div class="d-flex mb-3">
+                  <!-- Prof Dropdown -->
+                  <select
+                                        id="profDropdown"
+                                        class="form-select me-3"
+                                        [(ngModel)]="profId"
+                                        (change)="getListEtud()"
+                                        required
+                                        #profInput="ngModel"
+                                      >
+                                        <!-- Placeholder Option -->
+                                        <option value="" disabled [ngValue]="null">
+                                          -- Sélectionnez un professeur --
+                                        </option>
+                                        <option
+                                          *ngFor="let professor of profsList"
+                                          [value]="professor.id"
+                                        >
+                                          {{ professor.nom }} {{ professor.prenom }}
+                                        </option>
+                  </select>
+
+                  <!-- Année Dropdown -->
+                  <select class="form-select me-3" id="anneeDropdown" [(ngModel)]="annee" (change)="getListEtud()">
+                    <option value="2024/2025">2024/2025</option>
+                      <option value="2025/2026">2025/2026</option>
+                      <option value="2026/2027">2026/2027</option>
+                      <option value="2027/2028">2027/2028</option>
+                      <option value="2028/2029">2028/2029</option>
+                      <option value="2029/2030">2029/2030</option>
+                      <option value="2030/2031">2030/2031</option>
+                      <option value="2031/2032">2031/2032</option>
+                      <option value="2032/2033">2032/2033</option>
+                      <option value="2033/2034">2033/2034</option>
+                      <option value="2034/2035">2034/2035</option>
+                      <option value="2035/2036">2035/2036</option>
+                      <option value="2036/2037">2036/2037</option>
+                      <option value="2037/2038">2037/2038</option>
+                      <option value="2038/2039">2038/2039</option>
+                      <option value="2039/2040">2039/2040</option>
+                      <option value="2040/2041">2040/2041</option>
+                  </select>
+
+                  <!-- Mois Dropdown -->
+                  <select class="form-select" id="moisDropdown"  [(ngModel)]="mois" (change)="getListEtud()">
+                    <option value="1">Janvier</option>
+                        <option value="2">Février</option>
+                        <option value="3">Mars</option>
+                        <option value="4">Avril</option>
+                        <option value="5">Mai</option>
+                        <option value="6">Juin</option>
+                        <option value="7">Juillet</option>
+                        <option value="8">Août</option>
+                        <option value="9">Septembre</option>
+                        <option value="10">Octobre</option>
+                        <option value="11">Novembre</option>
+                        <option value="12">Décembre</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Table displaying Nom, Prénom, Etablissement, Niveaux -->
+              <div
+                class="table-responsive"
+                style="max-height: 500px; overflow-y: auto"
+              >
+              <div *ngIf="loadingEtu" style="text-align: center">
+              <div>
+                <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Chargement...</span>
+                </div>
+              </div>
+    </div>
+                <table class="table table-striped mt-3" *ngIf="!loadingEtu">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nom</th>
+                      <th>Prénom</th>
+                      <th>Etablissement</th>
+                      <th>Niveau</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let e of listEtu">
+                      <td>{{e.id}}</td>
+                      <td>{{e.nom}}</td>
+                      <td>{{e.prenom}}</td>
+                      <td>{{e.etablissement}}</td>
+                      <td>{{e.niveau}}</td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Total Étudiants Section -->
+              <div class="total-etudiants mt-4">
+                <div class="border p-3" *ngFor="let n of nbrEtud">
+                  <h4>{{n.cours}}: {{n.nombreEtudiants}}</h4>
+                </div>
+                
+              </div>
+            </div>
         </div>
       </div>
-    </div>
+    </ng-container>
+    
+    
   </div>
 
-  <div class="dashboard-container">
-    <!-- Row 1: Two Columns -->
-    <div class="row">
-      <!-- Column 1 -->
-      <div class="col">
-        <!-- Card for Chart 1 -->
-        <div class="card card-chart1">
-          <h3>Utilisateurs</h3>
-          <apx-chart
-            [series]="chartData1.series"
-            [chart]="chartData1.chart"
-            [xaxis]="chartData1.xaxis"
-            [title]="chartData1.title"
-            [colors]="chartData1.colors"
-          ></apx-chart>
-        </div>
-        <!-- Card for Pie Chart -->
-        <div class="card card-pie">
-          <h3>Taux de Complétion des Tâches (Pie)</h3>
-          <apx-chart
-            [series]="pieChartData.series"
-            [chart]="pieChartData.chart"
-            [labels]="pieChartData.labels"
-            [title]="pieChartData.title"
-            [legend]="pieChartData.legend"
-            [colors]="pieChartData.colors"
-          ></apx-chart>
-        </div>
-      </div>
-
-      <!-- Column 2 -->
-      <div class="col">
-        <!-- Card for Donut Chart -->
-        <div class="card card-donut">
-          <h3>Taux de Complétion des Tâches (Donut)</h3>
-          <apx-chart
-            [series]="donutChartData.series"
-            [chart]="donutChartData.chart"
-            [labels]="donutChartData.labels"
-            [title]="donutChartData.title"
-            [legend]="donutChartData.legend"
-            [colors]="donutChartData.colors"
-          ></apx-chart>
-        </div>
-        <!-- Card for Chart 2 -->
-        <div class="card card-chart2">
-          <h3>Revenus</h3>
-          <apx-chart
-            [series]="chartData2.series"
-            [chart]="chartData2.chart"
-            [xaxis]="chartData2.xaxis"
-            [title]="chartData2.title"
-            [colors]="chartData2.colors"
-          ></apx-chart>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>

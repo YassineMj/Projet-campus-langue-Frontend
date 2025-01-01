@@ -38,7 +38,8 @@ export class ListEtudiantComponent {
     telMere: "",
     nomPere: "",
     telPere: "",
-    passage: false
+    passage: false,
+    dateN:""
   };
 
   ngOnInit(): void {
@@ -83,6 +84,7 @@ export class ListEtudiantComponent {
           id:etu.id,
           nom: etu.nom,
           prenom: etu.prenom,
+          dateN:etu.dateN,
           lesLangues:etu.lesLangues,
           groupes: this.getFilteredGroupes(etu.lesGroupes),
         }));
@@ -138,8 +140,7 @@ export class ListEtudiantComponent {
   
       // Vérifier les autres champs
       const matchOtherFields =
-        e.id.toString().includes(searchTerm);
-  
+        e.id.toString().includes(searchTerm)  
       // Retourner true si une des conditions correspond
       return fullName.includes(searchTerm) || reverseFullName.includes(searchTerm) || matchOtherFields;
     });
@@ -165,7 +166,8 @@ export class ListEtudiantComponent {
           telMere: data.telMere,
           nomPere: data.nomPere,
           telPere: data.telPere,
-          passage: false
+          passage: false,
+          dateN:data.dateN
         };  
        },
       (error) => {

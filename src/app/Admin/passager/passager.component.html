@@ -295,6 +295,26 @@
                                   />
                                 </div>
                               </div>
+
+                              <div class="col-md-4">
+                                <div class="mb-3">
+                                  <label
+                                    for="addDateNaissance"
+                                    class="form-label"
+                                  >
+                                    Date de naissance
+                                    
+                                  </label>
+                                  <input
+                                    type="date"
+                                    class="form-control"
+                                    id="addDateNaissance"
+                                    name="dateNaissance"
+                                    [(ngModel)]="data1.dateN"
+                                    required
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
 
@@ -467,6 +487,7 @@
                   <th><b>Prénom</b></th>
                   <th><b>Etablissement</b></th>
                   <th><b>Niveaux</b></th>
+                  <th><b>Date de naissance </b></th>
                   <!-- <th><b>Commentaire</b></th> -->
                   <th class="text-right"><b>Actions</b></th>
                   <!-- Align header to right -->
@@ -482,6 +503,8 @@
                   <td>{{ item.prenom }}</td>
                   <td>{{ item.etablissement.nom }}</td>
                   <td>{{ item.niveau.nom }}</td>
+                  <td>{{item.dateN}}</td>
+
                   <!-- <td>{{ item.commentaire }}</td> -->
                   <td class="td-actions text-right d-flex justify-content-end">
                     <!-- Edit Button -->
@@ -588,9 +611,13 @@
                       </div>
                     </div>
                     <br />
-                    <div>
+                    <div class="row mb-2">
+
                       <div class="col-6">
                         <b>Téléphone:</b> {{ selectedItem.telephone }}
+                      </div>
+                        <div class="col-6">
+                        <b>Date de naissance:</b> {{selectedItem.dateN}}
                       </div>
                     </div>
                     <br />
@@ -683,6 +710,7 @@
                     aria-label="Close"
                   ></button>
                 </div>
+
                 <!-- Form for Editing -->
                 <form #editForm="ngForm" (ngSubmit)="onSubmitMis(editForm)">
                   <div class="modal-body">
@@ -773,6 +801,7 @@
                             </div>
                           </div>
                         </div>
+
                       </div>
                       <br />
 
@@ -820,22 +849,27 @@
                           </div>
                         </div>
 
-                        <!-- Nom de Père -->
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="editNomPere" class="form-label"
-                              >Nom de Père</label
-                            >
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="editNomPere"
-                              name="nomPere"
-                              [(ngModel)]="data2.nomPere"
-                              placeholder="Nom de Père"
-                            />
-                          </div>
-                        </div>
+                           <div class="col-md-4">
+                                <div class="mb-3">
+                                  <label
+                                    for="addDateNaissance"
+                                    class="form-label"
+                                  >
+                                    Date de naissance
+                                    
+                                  </label>
+                                  <input
+                                    type="date"
+                                    class="form-control"
+                                    id="addDateNaissance"
+                                    name="dateNaissance"
+                                    [(ngModel)]="data2.dateN"
+
+                                    required
+                                  />
+                                </div>
+                              </div>
+                      
                       </div>
                       <hr
                         style="
@@ -897,6 +931,22 @@
                               name="telephoneMere"
                               [(ngModel)]="data2.telMere"
                               placeholder="Téléphone Mère"
+                            />
+                          </div>
+                        </div>
+                          <!-- Nom de Père -->
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="editNomPere" class="form-label"
+                              >Nom de Père</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="editNomPere"
+                              name="nomPere"
+                              [(ngModel)]="data2.nomPere"
+                              placeholder="Nom de Père"
                             />
                           </div>
                         </div>

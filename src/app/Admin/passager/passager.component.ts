@@ -20,8 +20,10 @@ export class PassagerComponent implements OnInit {
   id: number | null = null;
   searchTerm: string = '';
   isLoading: boolean = false;
+  datedenaissance:string ='';
 
   data1 = {
+
     nom: "",
     prenom: "",
     etablissement: { id: null },
@@ -32,7 +34,9 @@ export class PassagerComponent implements OnInit {
     telMere: "",
     nomPere: "",
     telPere: "",
-    passage: true
+    passage: true,
+    dateN:""
+
   };
 
   data2 = {
@@ -46,7 +50,8 @@ export class PassagerComponent implements OnInit {
     telMere: "",
     nomPere: "",
     telPere: "",
-    passage: true
+    passage: true,
+    dateN:""
   };
 
   ngOnInit(): void {
@@ -151,7 +156,8 @@ export class PassagerComponent implements OnInit {
       telMere: "",
       nomPere: "",
       telPere: "",
-      passage: true
+      passage: true,
+      dateN:""
     };
     this.id = null;
   }
@@ -238,7 +244,8 @@ export class PassagerComponent implements OnInit {
             telMere: "",
             nomPere: "",
             telPere: "",
-            passage: true
+            passage: true,
+            dateN:""
           };
           setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
