@@ -19,8 +19,13 @@ export class ProfesseursComponent implements OnInit {
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
-        console.error('Erreur lors du chargement des professeurs', error);
+        
         this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage ='Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -107,6 +112,7 @@ export class ProfesseursComponent implements OnInit {
             }, 3000);
           },
           (error) => {
+            this.isLoading = false; // Désactiver le mode de chargement
             // Handle error cases
             if (error.status === 500) {
               this.deletesMessage =
@@ -115,6 +121,7 @@ export class ProfesseursComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             } else {
               this.deletesMessage =
                 'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -122,8 +129,9 @@ export class ProfesseursComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             }
-            this.isLoading = false; // Désactiver le mode de chargement
+            
           }
         );
     } else {
@@ -189,6 +197,8 @@ export class ProfesseursComponent implements OnInit {
               }, 2000);
             },
             (error) => {
+              this.isLoading = false;
+
               // Handle error cases
               if (error.status === 500) {
                 this.deletesMessage =
@@ -197,6 +207,7 @@ export class ProfesseursComponent implements OnInit {
                 setTimeout(() => {
                   this.deletesMessage = ''; // Correct variable name
                 }, 3000);
+                return
               } else {
                 this.deletesMessage =
                   'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -204,8 +215,8 @@ export class ProfesseursComponent implements OnInit {
                 setTimeout(() => {
                   this.deletesMessage = ''; // Correct variable name
                 }, 3000);
+                return
               }
-              this.isLoading = false;
             }
           );
       }
@@ -227,6 +238,7 @@ export class ProfesseursComponent implements OnInit {
           //this.ngOnInit() // Actualiser la liste
         },
         (error) => {
+          this.isLoading = false;
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -235,6 +247,7 @@ export class ProfesseursComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -242,8 +255,8 @@ export class ProfesseursComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return
           }
-          this.isLoading = false;
         }
       );
     }
