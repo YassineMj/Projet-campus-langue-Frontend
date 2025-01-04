@@ -7,59 +7,67 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-detail-paiement',
   templateUrl: './detail-paiement.component.html',
-  styleUrls: ['./detail-paiement.component.css']
+  styleUrls: ['./detail-paiement.component.css'],
 })
 export class DetailPaiementComponent {
-
-   @Input() idEtu!: any;
+  @Input() idEtu!: any;
 
   isLoading: boolean = false;
   deleteMessage: string = ''; // This will hold the success message
   successMessage: string = ''; // This will hold the success message
   modifysuccess: string = '';
   hideSuccessMessage(): void {
-    this.successMessage = ''; // Clear the message, hiding the alert
+    this.successMessage = '';
+    this.deletesMessage = ''; // Clear the message, hiding the alert
   }
-  
+
   selectedItemInscription: any = {
-    annee:"",
-    cours:"",
-    dateInscription:"",
-    edt:"",
-    groupe:"",
-    id:null,
-    langue:"",
-    mois:"",
-    prof:"",
-    tarif:null
+    annee: '',
+    cours: '',
+    dateInscription: '',
+    edt: '',
+    groupe: '',
+    id: null,
+    langue: '',
+    mois: '',
+    prof: '',
+    tarif: null,
   };
 
-
-  constructor(private activeRoute: ActivatedRoute,private _service: GlobalService) {
+  constructor(
+    private activeRoute: ActivatedRoute,
+    private _service: GlobalService
+  ) {
     this.activeRoute.params.subscribe((params) => {
       this.idEtu = params['idEtu'];
     });
   }
 
- 
+  etudiant: any;
 
-
-  etudiant:any
-
-  inscriptions:any[]=[]
-  filteredInscriptions:any[]=[]
+  inscriptions: any[] = [];
+  filteredInscriptions: any[] = [];
   searchTermInscription: string = '';
+  deletesMessage: string = '';
 
-  paiements:any[]=[]
-  filteredPaiements:any[]=[]
+  paiements: any[] = [];
+  filteredPaiements: any[] = [];
   searchTermPaiement: string = '';
-  
 
-
-    getMois(mois: number): string {
+  getMois(mois: number): string {
     const moisNoms = [
-      'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
-      'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
+      'Janvier',
+      'Février',
+      'Mars',
+      'Avril',
+      'Mai',
+      'Juin',
+      'Juillet',
+      'Août',
+      'Septembre',
+      'Octobre',
+      'Novembre',
+      'Décembre',
     ];
     return moisNoms[mois - 1] || 'Inconnu';
   }
@@ -69,47 +77,47 @@ export class DetailPaiementComponent {
   }
 
   ngOnInit(): void {
-
     this.loadDetails();
-    
   }
 
-  loadDetails(){
+  loadDetails() {
     this.isLoading = true;
 
     this._service.getEtudiantById(this.idEtu).subscribe(
       (data) => {
-        this.etudiant=data
-        
+        this.etudiant = data;
+
         this._service.getInscriptionsByIdEtudiant(this.idEtu).subscribe(
-          (data:any) => {
-            this.inscriptions=data.inscriptions
-            this.inscriptions = this.inscriptions.map(i => ({
+          (data: any) => {
+            this.inscriptions = data.inscriptions;
+            this.inscriptions = this.inscriptions.map((i) => ({
               ...i,
-              mois: this.getMois(i.mois)
+              mois: this.getMois(i.mois),
             }));
-            this.filteredInscriptions=this.inscriptions;
-           },
+            this.filteredInscriptions = this.inscriptions;
+          },
           (error) => {
             alert('Erreur lors de chargement des inscriptions.');
-          })
+          }
+        );
 
-          this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
-            (data:any) => {
-              this.paiements=data 
-              this.paiements = this.paiements.map(i => ({
-                ...i,
-                mois: this.getMois(i.mois)
-              }));
-              this.filteredPaiements=this.paiements;
-             },
-            (error) => {
-              alert('Erreur lors de chargement des paiements.');
-            })
+        this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
+          (data: any) => {
+            this.paiements = data;
+            this.paiements = this.paiements.map((i) => ({
+              ...i,
+              mois: this.getMois(i.mois),
+            }));
+            this.filteredPaiements = this.paiements;
+          },
+          (error) => {
+            alert('Erreur lors de chargement des paiements.');
+          }
+        );
 
-          this.isLoading = false;
-       },
-    
+        this.isLoading = false;
+      },
+
       (error) => {
         alert('Erreur lors de chargement du Etudiant.');
         this.isLoading = false;
@@ -118,142 +126,187 @@ export class DetailPaiementComponent {
   }
 
   filterInscription(): void {
-    this.filteredInscriptions = this.inscriptions.filter(i => 
-      i.annee.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
-      i.dateInscription.toString().includes(this.searchTermInscription.toLowerCase()) ||
-      i.mois.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
-      i.prof.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
-      i.langue.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
-      i.groupe.toLowerCase().includes(this.searchTermInscription.toLowerCase()) ||
-      i.cours.toLowerCase().includes(this.searchTermInscription.toLowerCase())
+    this.filteredInscriptions = this.inscriptions.filter(
+      (i) =>
+        i.annee
+          .toLowerCase()
+          .includes(this.searchTermInscription.toLowerCase()) ||
+        i.dateInscription
+          .toString()
+          .includes(this.searchTermInscription.toLowerCase()) ||
+        i.mois
+          .toLowerCase()
+          .includes(this.searchTermInscription.toLowerCase()) ||
+        i.prof
+          .toLowerCase()
+          .includes(this.searchTermInscription.toLowerCase()) ||
+        i.langue
+          .toLowerCase()
+          .includes(this.searchTermInscription.toLowerCase()) ||
+        i.groupe
+          .toLowerCase()
+          .includes(this.searchTermInscription.toLowerCase()) ||
+        i.cours.toLowerCase().includes(this.searchTermInscription.toLowerCase())
     );
-      
   }
 
   filterPaiements(): void {
-    this.filteredPaiements = this.paiements.filter(i => 
-      i.idInscription.toString().includes(this.searchTermPaiement.toLowerCase()) ||
-      i.mois.toLowerCase().includes(this.searchTermPaiement.toLowerCase()) ||
-      i.montant.toString().includes(this.searchTermPaiement.toLowerCase()) ||
-      i.matiere.toLowerCase().includes(this.searchTermPaiement.toLowerCase()) ||
-      i.datePaiement.toLowerCase().includes(this.searchTermPaiement.toLowerCase()) ||
-      i.descriptionPaiement.toLowerCase().includes(this.searchTermPaiement.toLowerCase()) ||
-      i.anne.toLowerCase().includes(this.searchTermPaiement.toLowerCase())
+    this.filteredPaiements = this.paiements.filter(
+      (i) =>
+        i.idInscription
+          .toString()
+          .includes(this.searchTermPaiement.toLowerCase()) ||
+        i.mois.toLowerCase().includes(this.searchTermPaiement.toLowerCase()) ||
+        i.montant.toString().includes(this.searchTermPaiement.toLowerCase()) ||
+        i.matiere
+          .toLowerCase()
+          .includes(this.searchTermPaiement.toLowerCase()) ||
+        i.datePaiement
+          .toLowerCase()
+          .includes(this.searchTermPaiement.toLowerCase()) ||
+        i.descriptionPaiement
+          .toLowerCase()
+          .includes(this.searchTermPaiement.toLowerCase()) ||
+        i.anne.toLowerCase().includes(this.searchTermPaiement.toLowerCase())
     );
-      
   }
 
   openDetailsInscriptionModal(item: any): void {
-    this.selectedItemInscription = item; 
+    this.selectedItemInscription = item;
     console.log(item);
-    
-    }
+  }
 
+  // Method to hide the success message when the close button is clicked
 
   // Déclaration des variables liées au formulaire
   description: string = '';
   montant: number | null = null;
-  isLoadingPai=false;
+  isLoadingPai = false;
 
   onSubmitPaiement(): void {
     // if (!this.selectedItemInscription?.id || !this.montant) {
     //   this.errorMessage = "Veuillez renseigner tous les champs obligatoires.";
     //   return;
     // }
-  
+
     this.isLoadingPai = true;
     console.log(this.isLoadingPai);
-    
+
     const dataPaiement = {
       inscriptionId: this.selectedItemInscription.id,
       montantPaye: this.montant,
-      description: this.description || ""
+      description: this.description || '',
     };
-  
+
     this._service.addPaiement(dataPaiement).subscribe({
       next: (data) => {
-          this.successMessage = 'Paiement ajouté avec succès'; // Set success message
-          this.ngOnInit();
-          this.isLoading = false;
-          setTimeout(() => {
+        this.successMessage = 'Paiement ajouté avec succès'; // Set success message
+        this.ngOnInit();
+        this.isLoading = false;
+        setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
         }, 2000);
         // Réinitialisation des champs
         this.montant = null;
-        this.description = "";
-  
+        this.description = '';
+
         // Affichage du message de succès
-        this.successMessage = "Paiement enregistré avec succès.";
+        this.successMessage = 'Paiement enregistré avec succès.';
         this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
-          (data:any) => {
-            this.paiements=data 
-            this.paiements = this.paiements.map(i => ({
+          (data: any) => {
+            this.paiements = data;
+            this.paiements = this.paiements.map((i) => ({
               ...i,
-              mois: this.getMois(i.mois)
+              mois: this.getMois(i.mois),
             }));
-            this.filteredPaiements=this.paiements;
-           },
+            this.filteredPaiements = this.paiements;
+          },
           (error) => {
             alert('Erreur lors de chargement des paiements.');
-          })
+          }
+        );
         this.isLoadingPai = false;
 
         setTimeout(() => {
           this.successMessage = ''; // Hide the success message after 5 seconds
         }, 3000);
       },
-      error: (error) => {  
-        // Affichage d'une erreur utilisateur claire
-        //this.errorMessage = "Une erreur est survenue lors de l'enregistrement du paiement.";
-        console.error("Erreur :", error);
+      error: (error) => {
+        // Handle error cases
+        if (error.status === 500) {
+          this.deletesMessage =
+            ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+          // Clear the error message after 3 seconds
+          setTimeout(() => {
+            this.deletesMessage = ''; // Correct variable name
+          }, 3000);
+        } else {
+          this.deletesMessage =
+            'Problème de connexion. Veuillez vérifier votre réseau.';
+          // Clear the error message after 3 seconds
+          setTimeout(() => {
+            this.deletesMessage = ''; // Correct variable name
+          }, 3000);
+        }
         this.isLoadingPai = false;
-
-      }
+      },
     });
-
   }
-  
-  deletePaiement(id:any){
+
+  deletePaiement(id: any) {
     if (id) {
       this.isLoading = true;
       this._service.deletePaiement(id).subscribe(
         () => {
-         this.deleteMessage = 'Paiement supprimé avec succès!';
+          this.deleteMessage = 'Paiement supprimé avec succès!';
           //alert('Cours supprimé avec succès!');
           this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
             (data: any) => {
               this.paiements = data;
-          
+
               // Test avant de transformer les paiements
               if (Array.isArray(this.paiements) && this.paiements.length > 0) {
-                this.paiements = this.paiements.map(i => ({
+                this.paiements = this.paiements.map((i) => ({
                   ...i,
-                  mois: this.getMois(i.mois) // Transformation uniquement si le test est validé
+                  mois: this.getMois(i.mois), // Transformation uniquement si le test est validé
                 }));
               } else {
                 console.warn('Aucun paiement trouvé ou données invalides.');
               }
-          
+
               this.filteredPaiements = this.paiements;
               console.log(this.filteredPaiements);
             },
             (error) => {
-              alert('Erreur lors du chargement des paiements.');
+              // Handle error cases
+              if (error.status === 500) {
+                this.deletesMessage =
+                  'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+                // Clear the error message after 3 seconds
+                setTimeout(() => {
+                  this.deletesMessage = ''; // Correct variable name
+                }, 3000);
+              } else {
+                this.deletesMessage =
+                  'Problème de connexion. Veuillez vérifier votre réseau.';
+                // Clear the error message after 3 seconds
+                setTimeout(() => {
+                  this.deletesMessage = ''; // Correct variable name
+                }, 3000);
+              }
             }
           );
-          
 
           this.isLoading = false;
 
           setTimeout(() => {
-          this.deleteMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
-            
+            this.deleteMessage = ''; // Hide the success message after 5 seconds
+          }, 2000);
         },
         (error) => {
-          if(error.status==204){
+          if (error.status == 204) {
             this.loadDetails();
-            return
+            return;
           }
           alert('Erreur lors de la suppression du paiement.');
           this.isLoading = false;
@@ -262,85 +315,99 @@ export class DetailPaiementComponent {
     }
   }
 
-  idPaiement:any;
-  openUpdateModal(item:any){
-    this.idPaiement=item.idPaiement
-    this.montant=item.montant
-    this.description=item.descriptionPaiement
+  idPaiement: any;
+  openUpdateModal(item: any) {
+    this.idPaiement = item.idPaiement;
+    this.montant = item.montant;
+    this.description = item.descriptionPaiement;
   }
 
-  isLoadingUpdate = false
-  
-  onSubmitUpdate(){
-    this.isLoadingUpdate=true
+  isLoadingUpdate = false;
+
+  onSubmitUpdate() {
+    this.isLoadingUpdate = true;
     const dataPaiement = {
       montantPaye: this.montant,
-      description: this.description || ""
+      description: this.description || '',
     };
-    this._service.updatePaiement(dataPaiement,this.idPaiement).subscribe(
-      (data)=>{
-        this.montant=null
-        this.description=''
+    this._service
+      .updatePaiement(dataPaiement, this.idPaiement)
+      .subscribe((data) => {
+        this.montant = null;
+        this.description = '';
 
         this._service.getPaiementsByIdEtudiant(this.idEtu).subscribe(
           (data: any) => {
-       
-            this.paiements=data 
-            this.paiements = this.paiements.map(i => ({
+            this.paiements = data;
+            this.paiements = this.paiements.map((i) => ({
               ...i,
-              mois: this.getMois(i.mois)
+              mois: this.getMois(i.mois),
             }));
             this.filteredPaiements = this.paiements;
-                 this.modifysuccess = 'Montant modifier avec succès!';
-          //alert('Cours mis à jour avec succès!');
-          this.ngOnInit();
-          this.isLoading = false;
-          setTimeout(() => {
-          this.modifysuccess = ''; // Hide the success message after 5 seconds
-        }, 2000);
-           },
+            this.modifysuccess = 'Montant modifier avec succès!';
+            //alert('Cours mis à jour avec succès!');
+            this.ngOnInit();
+            this.isLoading = false;
+            setTimeout(() => {
+              this.modifysuccess = ''; // Hide the success message after 5 seconds
+            }, 2000);
+          },
           (error) => {
-            alert('Erreur lors de chargement des paiements.');
-          })
+            // Handle error cases
+            if (error.status === 500) {
+              this.deletesMessage =
+                ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            } else {
+              this.deletesMessage =
+                'Problème de connexion. Veuillez vérifier votre réseau.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            }
+          }
+        );
 
-          this.isLoadingUpdate=false
-      }
-    )
-  }
-  
-  
-printTable(): void {
-  // Get the table element by its ID
-  const tableElement = document.getElementById('DetailDetudiant');
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
-  }
-
-  // Clone the table to modify it for printing
-  const tableClone = tableElement.cloneNode(true) as HTMLElement;
-
-  // Remove the "Actions" column (last column) from the cloned table
-  const headerRow = tableClone.querySelector('thead tr');
-  const bodyRows = tableClone.querySelectorAll('tbody tr');
-
-  if (headerRow) {
-    headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
+        this.isLoadingUpdate = false;
+      });
   }
 
-  bodyRows.forEach(row => {
-    row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
-  });
+  printTable(): void {
+    // Get the table element by its ID
+    const tableElement = document.getElementById('DetailDetudiant');
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
 
-  // Create a new window for printing
-  const printWindow = window.open('', '', 'width=900,height=650');
-  if (!printWindow) {
-    console.error('Failed to open print window.');
-    return;
-  }
+    // Clone the table to modify it for printing
+    const tableClone = tableElement.cloneNode(true) as HTMLElement;
 
-  // Add styled content to the new window
-  printWindow.document.write(`
+    // Remove the "Actions" column (last column) from the cloned table
+    const headerRow = tableClone.querySelector('thead tr');
+    const bodyRows = tableClone.querySelectorAll('tbody tr');
+
+    if (headerRow) {
+      headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
+    }
+
+    bodyRows.forEach((row) => {
+      row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
+    });
+
+    // Create a new window for printing
+    const printWindow = window.open('', '', 'width=900,height=650');
+    if (!printWindow) {
+      console.error('Failed to open print window.');
+      return;
+    }
+
+    // Add styled content to the new window
+    printWindow.document.write(`
     <html>
       <head>
         <title>Detail D'etudiant</title>
@@ -445,22 +512,24 @@ printTable(): void {
     </html>
   `);
 
-  // Close the document and trigger the print dialog
-  printWindow.document.close();
-  printWindow.print();
-}
-
-  downloadAsExcel(): void {
-  const tableElement = document.getElementById('DetailDetudiant') as HTMLTableElement;
-
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
+    // Close the document and trigger the print dialog
+    printWindow.document.close();
+    printWindow.print();
   }
 
-  const tableHTML = tableElement.outerHTML;
+  downloadAsExcel(): void {
+    const tableElement = document.getElementById(
+      'DetailDetudiant'
+    ) as HTMLTableElement;
 
-  const excelData = `
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
+
+    const tableHTML = tableElement.outerHTML;
+
+    const excelData = `
     <html xmlns:o="urn:schemas-microsoft-com:office:office"
           xmlns:x="urn:schemas-microsoft-com:office:excel"
           xmlns="http://www.w3.org/TR/REC-html40">
@@ -485,15 +554,16 @@ printTable(): void {
     </html>
   `;
 
-  const blob = new Blob([excelData], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
+    const blob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel;charset=utf-8;',
+    });
+    const url = URL.createObjectURL(blob);
 
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'etudianttable.xls';
-  link.click();
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'etudianttable.xls';
+    link.click();
 
-  URL.revokeObjectURL(url);
-}
-
+    URL.revokeObjectURL(url);
+  }
 }

@@ -203,7 +203,7 @@
                   <!-- Display the name and surname -->
                   <td>{{ item.nom }}</td>
                   <td>{{ item.prenom }}</td>
-                  <td>{{item.dateN}}</td>
+                  <td>{{ item.dateN }}</td>
                   <!-- Dropdown for Inscription -->
 
                   <td>
@@ -403,22 +403,6 @@
 
                       <!-- Second Row: Niveaux, Téléphone, Nom de Père -->
                       <div class="row">
-                        <div class="col-md-4">
-                          <div class="mb-3">
-                            <label for="dateNaissance" class="form-label">
-                              Date de Naissance <span class="required">*</span>
-                            </label>
-                            <input
-                              type="date"
-                              class="form-control"
-                              id="dateNaissance"
-                              name="dateNaissance"
-                              [(ngModel)]="data2.dateN"
-                              required
-                            />
-                          </div>
-                        </div>
-
                         <!-- Niveaux -->
                         <div class="col-md-4">
                           <div class="mb-3">
@@ -443,6 +427,21 @@
                             </select>
                           </div>
                         </div>
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="dateNaissance" class="form-label">
+                              Date de Naissance
+                            </label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="dateNaissance"
+                              name="dateNaissance"
+                              [(ngModel)]="data2.dateN"
+                              required
+                            />
+                          </div>
+                        </div>
 
                         <!-- Téléphone -->
                         <div class="col-md-4">
@@ -462,7 +461,7 @@
                         </div>
 
                         <!-- Nom de Père -->
-                        <div class="col-md-4" style="margin-top: 1%;">
+                        <div class="col-md-4" style="margin-top: 1%">
                           <div class="mb-3">
                             <label for="editNomPere" class="form-label"
                               >Nom de Père</label
@@ -565,6 +564,20 @@
 
                   <!-- Modal footer with buttons -->
                   <div class="modal-footer justify-content-center">
+                    <!--  message error -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
                     <!-- Success Alert (before footer and centered) -->
                     <div class="container bootstrap snippets bootdey">
                       <div
@@ -579,6 +592,7 @@
                         {{ modifysuccess }}
                       </div>
                     </div>
+
                     <button
                       type="button"
                       class="btn btn-round colormodalfermer"
@@ -586,6 +600,7 @@
                     >
                       <i class="fa fa-close text-white"></i>
                     </button>
+
                     <button
                       type="submit"
                       class="btn btn-round colormodalmodifier"
@@ -605,7 +620,6 @@
               </div>
             </div>
           </div>
-
           <!-- End of Modal -->
         </div>
       </div>

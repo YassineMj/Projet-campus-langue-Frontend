@@ -37,6 +37,20 @@
 
       <div class="card">
         <div class="card-body">
+          <!--  message error -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deletesMessage"
+              class="alert alert-delete alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <strong>Erreur!</strong>
+              {{ deletesMessage }}
+            </div>
+          </div>
           <!-- Success message container -->
           <div class="container bootstrap snippets bootdey">
             <div
@@ -162,7 +176,7 @@
                                   [(ngModel)]="nomGroupe"
                                   required
                                   #nomInput="ngModel"
-                                  placeholder="Saisir le nom"
+                                  placeholder="Saisir le nom (max 50 caractères)"
                                 />
                                 <div
                                   *ngIf="nomInput.invalid && nomInput.touched"
@@ -257,12 +271,26 @@
                               name="emploiTemps"
                               [(ngModel)]="emploidutemp"
                               rows="5"
-                              placeholder="Saisir l'emploi du temps..."
+                              placeholder="Saisir l'emploi du temps (max 500 caractères)..."
                             ></textarea>
                           </div>
                         </div>
                       </div>
                       <div class="modal-footer justify-content-center foot">
+                        <!--  message error -->
+                        <div class="container bootstrap snippets bootdey">
+                          <div
+                            *ngIf="deletesMessage"
+                            class="alert alert-delete alert-white rounded mx-auto w-75"
+                            role="alert"
+                          >
+                            <div class="icon">
+                              <i class="fa-solid fa-circle-exclamation"></i>
+                            </div>
+                            <strong>Erreur!</strong>
+                            {{ deletesMessage }}
+                          </div>
+                        </div>
                         <!-- Success message container -->
                         <div class="container bootstrap snippets bootdey">
                           <div
@@ -504,6 +532,20 @@
 
                   <!-- Modal Footer -->
                   <div class="modal-footer justify-content-center foot">
+                    <!--  message error -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
                     <!-- Success Alert (before footer and centered) -->
                     <div class="container bootstrap snippets bootdey">
                       <div

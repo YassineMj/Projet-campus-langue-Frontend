@@ -5,181 +5,235 @@ import * as bootstrap from 'bootstrap';
 @Component({
   selector: 'app-charges',
   templateUrl: './charges.component.html',
-  styleUrls: ['./charges.component.css']
+  styleUrls: ['./charges.component.css'],
 })
 export class ChargesComponent {
-
   constructor(private _service: GlobalService) {}
-  
 
-   formsData = {
-    annee: "",
-    description: "",
+  formsData = {
+    annee: '',
+    description: '',
     montant: null,
-    mois:""
+    mois: '',
   };
 
-   editData = {
-    annee: "",
-    description: "",
+  editData = {
+    annee: '',
+    description: '',
     montant: null,
-    mois:""
+    mois: '',
   };
-    isLoading: boolean = false; 
-  
-    
-    loadCharges(): void {
-      this.isLoading = true; // Activer le spinner
-      this._service.getCharges().subscribe(
-        (data) => {
-          this.charges = data;
-          this.charges = data.map(c => ({
-            ...c,
-            dateAuto: this.formatDate(new Date(c.dateAuto)),
-            mois: this.getMois(c.mois)
-          }));
-          this.filteredCharges=this.charges;
-          this.isLoading = false; // Désactiver le spinner
-        },
-        (error) => {
-          console.error('Erreur lors du chargement des charges', error);
-          this.isLoading = false; // Désactiver le spinner
-        }
-      );
-    }
-  
-    ngOnInit(): void {
-      this.loadCharges();
-    }
+  isLoading: boolean = false;
 
-    formatDate(date: Date): string {
-      const jour = date.getDate().toString().padStart(2, '0');
-      const mois = (date.getMonth() + 1).toString().padStart(2, '0'); // Les mois commencent à 0
-      const annee = date.getFullYear().toString().slice(-4); // Année sur 4 chiffres
-      const heures = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-    
-      return `${jour}-${mois}-${annee} | ${heures}:${minutes}`;
-    }
+  loadCharges(): void {
+    this.isLoading = true; // Activer le spinner
+    this._service.getCharges().subscribe(
+      (data) => {
+        this.charges = data;
+        this.charges = data.map((c) => ({
+          ...c,
+          dateAuto: this.formatDate(new Date(c.dateAuto)),
+          mois: this.getMois(c.mois),
+        }));
+        this.filteredCharges = this.charges;
+        this.isLoading = false; // Désactiver le spinner
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des charges', error);
+        this.isLoading = false; // Désactiver le spinner
+      }
+    );
+  }
 
-    getMois(mois: number): string {
-      const moisNoms = [
-        'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
-        'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'
-      ];
-      return moisNoms[mois - 1] || 'Inconnu';
-    }
+  ngOnInit(): void {
+    this.loadCharges();
+  }
 
-    filterCharge(): void {
-      this.filteredCharges = this.charges.filter(c => 
+  formatDate(date: Date): string {
+    const jour = date.getDate().toString().padStart(2, '0');
+    const mois = (date.getMonth() + 1).toString().padStart(2, '0'); // Les mois commencent à 0
+    const annee = date.getFullYear().toString().slice(-4); // Année sur 4 chiffres
+    const heures = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    return `${jour}-${mois}-${annee} | ${heures}:${minutes}`;
+  }
+
+  getMois(mois: number): string {
+    const moisNoms = [
+      'Janvier',
+      'Février',
+      'Mars',
+      'Avril',
+      'Mai',
+      'Juin',
+      'Juillet',
+      'Août',
+      'Septembre',
+      'Octobre',
+      'Novembre',
+      'Décembre',
+    ];
+    return moisNoms[mois - 1] || 'Inconnu';
+  }
+
+  filterCharge(): void {
+    this.filteredCharges = this.charges.filter(
+      (c) =>
         c.id?.toString().includes(this.searchTerm.toLowerCase()) ||
         c.annee?.toString().includes(this.searchTerm.toLowerCase()) ||
         c.montant?.toString().includes(this.searchTerm.toLowerCase()) ||
         c.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         c.mois?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         c.dateAuto?.toString().includes(this.searchTerm.toLowerCase())
-      );
-    }
-  
-  
-    charges:any[]=[]
-    filteredCharges:any[]=[]
-    searchTerm: string = '';
-  
-    deleteMessage: string = ''; // This will hold the success message
-    successMessage: string = ''; // This will hold the success message
-    modifysuccess: string = '';  
-      
-  
-    // Function to handle form submission for adding a new subject
-    onSubmit(form: any) {
-      if (form.valid) {
-        this.isLoading = true;
-        const newSubject = {
-          montant: this.formsData.montant,
-          description: this.formsData.description,
-          annee:this.formsData.annee,
-          mois:this.formsData.mois
-        };      
-        console.log('New subject added:', newSubject);
-        this._service.addCharge(newSubject).subscribe(
-          (response) => {
-            this.successMessage = 'Charge ajouté avec succès!'; // Set success message
-            form.reset(); // Réinitialiser le formulaire
-            this.loadCharges()
-            this.isLoading = false;
-              setTimeout(() => {
+    );
+  }
+
+  // Method to hide the success message when the close button is clicked
+  hideSuccessMessage(): void {
+    this.successMessage = '';
+    this.deleteMessage = '';
+    this.deletesMessage = '';
+
+    this.modifysuccess = ''; // Clear the message, hiding the alert
+  }
+
+  charges: any[] = [];
+  filteredCharges: any[] = [];
+  searchTerm: string = '';
+  deletesMessage: string = '';
+  deleteMessage: string = ''; // This will hold the success message
+  successMessage: string = ''; // This will hold the success message
+  modifysuccess: string = '';
+
+  // Function to handle form submission for adding a new subject
+  onSubmit(form: any) {
+    if (form.valid) {
+      this.isLoading = true;
+      const newSubject = {
+        montant: this.formsData.montant,
+        description: this.formsData.description,
+        annee: this.formsData.annee,
+        mois: this.formsData.mois,
+      };
+      console.log('New subject added:', newSubject);
+      this._service.addCharge(newSubject).subscribe(
+        (response) => {
+          this.successMessage = 'Charge ajouté avec succès!'; // Set success message
+          form.reset(); // Réinitialiser le formulaire
+          this.loadCharges();
+          this.isLoading = false;
+          setTimeout(() => {
             this.successMessage = ''; // Hide the success message after 5 seconds
           }, 2000);
-          },
-          (error) => {
-            console.error('Erreur lors de l\'ajout du Charge:', error);
-            alert('Une erreur s\'est produite lors de l\'ajout.');
-            this.isLoading = false;
+        },
+        (error) => {
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
           }
-        );
-      }
+          this.isLoading = false;
+        }
+      );
     }
-  
-    id:any
-    openEdit(item: any) {
-      this.editData.montant = item.montant;  // Set the current subject's name
-      this.editData.description = item.description;  // Set the current subject's description
-      this.editData.annee = item.annee;
-      this.editData.mois = item.mois;
+  }
 
-      this.id=item.id
-    }
-  
-    onEditSubmit(form: any) {
-      if (form.valid) {
-        this.isLoading = true;
-        
-     
-        this._service.updateCharge(this.editData,this.id).subscribe(
-          (response) => {
-            this.modifysuccess = 'Charge modifier avec succès!'; // Set success message
-            form.reset(); // Réinitialiser le formulaire
-            this.loadCharges()
-            this.isLoading = false;
-              setTimeout(() => {
+  id: any;
+  openEdit(item: any) {
+    this.editData.montant = item.montant; // Set the current subject's name
+    this.editData.description = item.description; // Set the current subject's description
+    this.editData.annee = item.annee;
+    this.editData.mois = item.mois;
+
+    this.id = item.id;
+  }
+
+  onEditSubmit(form: any) {
+    if (form.valid) {
+      this.isLoading = true;
+
+      this._service.updateCharge(this.editData, this.id).subscribe(
+        (response) => {
+          this.modifysuccess = 'Charge modifier avec succès!'; // Set success message
+          form.reset(); // Réinitialiser le formulaire
+          this.loadCharges();
+          this.isLoading = false;
+          setTimeout(() => {
             this.modifysuccess = ''; // Hide the success message after 5 seconds
           }, 2000);
-          },
-          (error) => {
-            console.error('Erreur lors de modification du Charge:', error);
-            alert('Une erreur s\'est produite lors de l\'ajout.');
-            this.isLoading = false;
+        },
+        (error) => {
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
           }
-        );
-      }
+          this.isLoading = false;
+        }
+      );
     }
-  
-  confirmDelete(id:any): void {
+  }
+
+  confirmDelete(id: any): void {
     if (id) {
-      this.isLoading=true
-  
+      this.isLoading = true;
+
       this._service.deleteCharge(id).subscribe(
         () => {
           this.deleteMessage = 'Charge supprimé avec succès!';
           //alert('Etablissement supprimé avec succès');
           this.ngOnInit();
           //this.ngOnInit() // Actualiser la liste
-          this.isLoading=false
+          this.isLoading = false;
           setTimeout(() => {
-              this.deleteMessage = ''; // Clear the message after 2 seconds
-            }, 2000); 
+            this.deleteMessage = ''; // Clear the message after 2 seconds
+          }, 2000);
         },
         (error) => {
-          console.error('Erreur lors de Charge:', error);
-          alert('Erreur lors de la suppression.');
-          this.isLoading=false
-  
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
+          this.isLoading = false;
         }
       );
     }
   }
-  
 
   printTable(): void {
     // Get the table element by its ID
@@ -188,29 +242,29 @@ export class ChargesComponent {
       console.error('Table element not found!');
       return;
     }
-  
+
     // Clone the table to modify it for printing
     const tableClone = tableElement.cloneNode(true) as HTMLElement;
-  
+
     // Remove the "Actions" column (last column) from the cloned table
     const headerRow = tableClone.querySelector('thead tr');
     const bodyRows = tableClone.querySelectorAll('tbody tr');
-  
+
     if (headerRow) {
       headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
     }
-  
-    bodyRows.forEach(row => {
+
+    bodyRows.forEach((row) => {
       row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
     });
-  
+
     // Create a new window for printing
     const printWindow = window.open('', '', 'width=900,height=650');
     if (!printWindow) {
       console.error('Failed to open print window.');
       return;
     }
-  
+
     // Add styled content to the new window
     printWindow.document.write(`
       <html>
@@ -316,24 +370,26 @@ export class ChargesComponent {
         </body>
       </html>
     `);
-  
+
     // Close the document and trigger the print dialog
     printWindow.document.close();
     printWindow.print();
   }
-  
+
   // Function to download the list as Excel
   downloadAsExcel(): void {
-    const tableElement = document.getElementById('Charges_Scolaire') as HTMLTableElement;
-  
+    const tableElement = document.getElementById(
+      'Charges_Scolaire'
+    ) as HTMLTableElement;
+
     if (!tableElement) {
       console.error('Table element not found!');
       return;
     }
-  
+
     // Generate table HTML
     const tableHTML = tableElement.outerHTML;
-  
+
     // Create XML data for Excel
     const excelData = `
       <html xmlns:o="urn:schemas-microsoft-com:office:office"
@@ -359,19 +415,20 @@ export class ChargesComponent {
         <body>${tableHTML}</body>
       </html>
     `;
-  
+
     // Create a Blob from the Excel data
-    const excelBlob = new Blob([excelData], { type: 'application/vnd.ms-excel' });
+    const excelBlob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel',
+    });
     const excelURL = URL.createObjectURL(excelBlob);
-  
+
     // Trigger download
     const link = document.createElement('a');
     link.href = excelURL;
     link.download = 'Charges_Scolaire.xls'; // Use .xls for compatibility
     link.click();
-  
+
     // Clean up
     URL.revokeObjectURL(excelURL);
-  
   }
 }

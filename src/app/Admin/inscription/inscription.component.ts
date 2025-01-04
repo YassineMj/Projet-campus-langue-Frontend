@@ -3,19 +3,16 @@ import { NgForm } from '@angular/forms';
 import * as bootstrap from 'bootstrap';
 import { GlobalService } from '../global.service';
 
-
 @Component({
   selector: 'app-inscription',
   templateUrl: './inscription.component.html',
-  styleUrls: ['./inscription.component.css']
+  styleUrls: ['./inscription.component.css'],
 })
 export class InscriptionComponent implements OnInit {
-
   constructor(private _service: GlobalService) {}
 
-
   ngOnInit(): void {
-    this.loadCours()
+    this.loadCours();
     this.loadEtablissements();
     this.loadGroupes();
     this.loadNiveaux();
@@ -23,16 +20,15 @@ export class InscriptionComponent implements OnInit {
     this.loadEtudiants();
   }
 
-  
-
   isLoading: boolean = false;
 
   etablissements: any[] = [];
   niveaux: any[] = [];
-  cours:any[]=[];
-  profs:any[]=[];
-  groupes:any[]=[];
-
+  cours: any[] = [];
+  profs: any[] = [];
+  groupes: any[] = [];
+  errorMessage: string = '';
+  deletesMessage: string = '';
   etudiants: any[] = [];
   filteredEtudiant: any[] = [];
   searchTerm: string = '';
@@ -40,20 +36,20 @@ export class InscriptionComponent implements OnInit {
   successMessage: string = ''; // This will hold the success message
   hideSuccessMessage(): void {
     this.successMessage = ''; // Clear the message, hiding the alert
+    this.deletesMessage = '';
   }
-
 
   loadEtudiants(): void {
     this.isLoading = true;
     this._service.getEtudiants().subscribe(
       (data) => {
         // Convertir et formater les dates
-        this.etudiants = data.map(e => ({
+        this.etudiants = data.map((e) => ({
           ...e,
-          dateEnregistrement: this.formatDate(new Date(e.dateEnregistrement))
+          dateEnregistrement: this.formatDate(new Date(e.dateEnregistrement)),
         }));
-  
-        this.filteredEtudiant= this.etudiants;
+
+        this.filteredEtudiant = this.etudiants;
         this.isLoading = false;
       },
       (error) => {
@@ -64,13 +60,13 @@ export class InscriptionComponent implements OnInit {
   }
 
   filterEtudiant(): void {
-    this.filteredEtudiant = this.etudiants.filter(p => {
+    this.filteredEtudiant = this.etudiants.filter((p) => {
       const searchTerm = this.searchTerm.toLowerCase();
-  
+
       // Combinaison des noms pour recherche "nom prénom" et "prénom nom"
       const fullName = `${p.nom.toLowerCase()} ${p.prenom.toLowerCase()}`;
       const reverseFullName = `${p.prenom.toLowerCase()} ${p.nom.toLowerCase()}`;
-  
+
       // Vérifie si les autres champs correspondent
       const matchOtherFields =
         p.telephone.toLowerCase().includes(searchTerm) ||
@@ -78,15 +74,17 @@ export class InscriptionComponent implements OnInit {
         p.niveau.nom.toLowerCase().includes(searchTerm) ||
         (p.nomMere && p.nomMere.toLowerCase().includes(searchTerm)) ||
         (p.nomPere && p.nomPere.toLowerCase().includes(searchTerm)) ||
-        (p.dateEnregistrement && p.dateEnregistrement.toLowerCase().includes(searchTerm));
-  
-     
-  
+        (p.dateEnregistrement &&
+          p.dateEnregistrement.toLowerCase().includes(searchTerm));
+
       // Combine toutes les conditions
-      return fullName.includes(searchTerm) || reverseFullName.includes(searchTerm) || matchOtherFields;
+      return (
+        fullName.includes(searchTerm) ||
+        reverseFullName.includes(searchTerm) ||
+        matchOtherFields
+      );
     });
   }
-  
 
   formatDate(date: Date): string {
     const jour = date.getDate().toString().padStart(2, '0');
@@ -94,7 +92,7 @@ export class InscriptionComponent implements OnInit {
     const annee = date.getFullYear().toString().slice(-4); // Année sur 4 chiffres
     const heures = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-  
+
     return `${jour}-${mois}-${annee} | ${heures}:${minutes}`;
   }
 
@@ -108,34 +106,31 @@ export class InscriptionComponent implements OnInit {
   }
   selectedOption: string | null = null;
   formDataEtu = {
-    nom: "",
-    prenom: "",
+    nom: '',
+    prenom: '',
     etablissement: { id: null },
     niveau: { id: null },
-    telephone: "",
-    commentaire: "",
-    nomMere: "",
-    telMere: "",
-    nomPere: "",
-    telPere: "",
+    telephone: '',
+    commentaire: '',
+    nomMere: '',
+    telMere: '',
+    nomPere: '',
+    telPere: '',
     passage: false,
-    dateN:""
-    
+    dateN: '',
   };
 
-formDataIns = {
-  etudiantId: null,
-  coursId: null,
-  groupeId: null,
-  profId: null,
-  mois: null,
-  annee: null,
-  emploidutemp: null,
-  test: null,
-  tarif: null  // Add the tarif property
-};
-
-
+  formDataIns = {
+    etudiantId: null,
+    coursId: null,
+    groupeId: null,
+    profId: null,
+    mois: null,
+    annee: null,
+    emploidutemp: null,
+    test: null,
+    tarif: null, // Add the tarif property
+  };
 
   loadEtablissements(): void {
     this.isLoading = true;
@@ -198,32 +193,28 @@ formDataIns = {
     );
   }
 
-  onGroupChange(){
-    this.groupes.forEach(element => {
-
-      if(element.id==this.formDataIns.groupeId){
-        this.formDataIns.emploidutemp=element.emploiDuTemps
+  onGroupChange() {
+    this.groupes.forEach((element) => {
+      if (element.id == this.formDataIns.groupeId) {
+        this.formDataIns.emploidutemp = element.emploiDuTemps;
         return;
       }
     });
   }
 
-  onCoursChange(){
-    this.cours.forEach(element => {
-
-      if(element.id==this.formDataIns.coursId){
-        this.formDataIns.tarif=element.tarif
+  onCoursChange() {
+    this.cours.forEach((element) => {
+      if (element.id == this.formDataIns.coursId) {
+        this.formDataIns.tarif = element.tarif;
         return;
       }
     });
   }
- 
 
   showForm(option: string) {
     this.selectedOption = option;
   }
 
- 
   onSubmit(): void {
     if (this.formDataEtu && this.formDataIns) {
       this.isLoading = true; // Indicateur de chargement
@@ -231,89 +222,116 @@ formDataIns = {
         next: (etuData) => {
           this.formDataIns.etudiantId = etuData.id;
           console.log('ID de l’étudiant créé:', this.formDataIns.etudiantId);
-          
+
           this._service.createInscription(this.formDataIns).subscribe({
             next: (inscriptionData) => {
               this.successMessage = 'Linscription effectuée avec succès!'; // Set success message
               this.formDataEtu = {
-                nom: "",
-                prenom: "",
+                nom: '',
+                prenom: '',
                 etablissement: { id: null },
                 niveau: { id: null },
-                telephone: "",
-                commentaire: "",
-                nomMere: "",
-                dateN:"",
-                telMere: "",
-                nomPere: "",
-                telPere: "",
-                passage: false
+                telephone: '',
+                commentaire: '',
+                nomMere: '',
+                dateN: '',
+                telMere: '',
+                nomPere: '',
+                telPere: '',
+                passage: false,
               };
-            
-              this.formDataIns={
-              etudiantId: null,
-              coursId: null,
-              groupeId: null,
-              profId:null ,
-              mois: null,
-              annee: null,
-              emploidutemp: null,
-              test:null,
-              tarif:null
-              }
-                this.loadEtudiants();
-                setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
+
+              this.formDataIns = {
+                etudiantId: null,
+                coursId: null,
+                groupeId: null,
+                profId: null,
+                mois: null,
+                annee: null,
+                emploidutemp: null,
+                test: null,
+                tarif: null,
+              };
+              this.loadEtudiants();
+              setTimeout(() => {
+                this.successMessage = ''; // Hide the success message after 5 seconds
+              }, 2000);
             },
             error: (error) => {
-              console.error('Erreur lors de la création de l’inscription:', error);
-              alert('Une erreur est survenue lors de la création de l’inscription.');
+              this.deletesMessage =
+                'Problème de connexion. Veuillez vérifier votre réseau.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
             },
-            complete: () => this.isLoading = false
+            complete: () => (this.isLoading = false),
           });
         },
         error: (error) => {
-          console.error('Erreur lors de la création du passage:', error);
-          alert('Une erreur est survenue lors de la création du passage.');
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+            this.isLoading = false;
+          }
+        },
+      });
+    }
+  }
+
+  onSubmitInsc(): void {
+    if (this.formDataIns) {
+      this.isLoading = true;
+      this.formDataIns.etudiantId = this.selectedItem.id;
+      this._service.createInscription(this.formDataIns).subscribe({
+        next: (inscriptionData) => {
+          console.log('Inscription créée:', inscriptionData);
+          this.successMessage = 'Linscription effectuée avec succès!'; // Set success message
           this.isLoading = false;
-          
-        }
+          this.loadEtudiants();
+          setTimeout(() => {
+            this.successMessage = ''; // Hide the success message after 5 seconds
+          }, 2000);
+        },
+        error: (error) => {
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+            this.isLoading = false;
+          }
+
+          this.isLoading = false;
+        },
       });
     } else {
       alert('Veuillez remplir tous les champs requis.');
     }
   }
 
-
-  onSubmitInsc(): void {
-    if (this.formDataIns) {
-      this.isLoading = true; 
-          this.formDataIns.etudiantId=this.selectedItem.id
-          this._service.createInscription(this.formDataIns).subscribe({
-            next: (inscriptionData) => {
-              console.log('Inscription créée:', inscriptionData);
-              this.successMessage = 'Linscription effectuée avec succès!'; // Set success message
-              this.isLoading = false
-              this.loadEtudiants();
-              setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
-            },
-            error: (error) => {
-              console.error('Erreur lors de la création de l’inscription:', error);
-              alert('Une erreur est survenue lors de la création de l’inscription.');
-              this.isLoading = false
-            },
-          });    
-        
-      }
-    else {
-      alert('Veuillez remplir tous les champs requis.');
-    }
-  }
-
-    isPassager: boolean = true; // Example value
+  isPassager: boolean = true; // Example value
   isEtudiant: boolean = false; // Example value
-
 }

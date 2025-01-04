@@ -24,6 +24,20 @@
     <div class="col-lg-12 col-md-12">
       <div class="card">
         <div class="card-body">
+          <!--  message error -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deletesMessage"
+              class="alert alert-delete alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <strong>Erreur!</strong>
+              {{ deletesMessage }}
+            </div>
+          </div>
           <!-- Success message container -->
           <div class="container bootstrap snippets bootdey">
             <div
@@ -326,7 +340,7 @@
                             id="description"
                             name="description"
                             rows="4"
-                            placeholder="Entrez une description"
+                            placeholder="Entrez une description (max 500 caractères)"
                             [(ngModel)]="formsData.description"
                           ></textarea>
                         </div>
@@ -334,6 +348,20 @@
                       <br />
                       <!-- Modal Footer with Submit -->
                       <div class="row justify-content-center">
+                        <!--  message error -->
+                        <div class="container bootstrap snippets bootdey">
+                          <div
+                            *ngIf="deletesMessage"
+                            class="alert alert-delete alert-white rounded mx-auto w-75"
+                            role="alert"
+                          >
+                            <div class="icon">
+                              <i class="fa-solid fa-circle-exclamation"></i>
+                            </div>
+                            <strong>Erreur!</strong>
+                            {{ deletesMessage }}
+                          </div>
+                        </div>
                         <!-- Success message container -->
                         <div class="container bootstrap snippets bootdey">
                           <div
@@ -572,7 +600,7 @@
                             class="form-control"
                             id="editDescription"
                             rows="2"
-                            placeholder="Entrez une description"
+                            placeholder="Entrez une description (max 500 caractères)"
                             [(ngModel)]="editData.description"
                             name="description"
                           ></textarea>
@@ -583,7 +611,22 @@
 
                   <!-- Modal footer -->
                   <div class="modal-footer justify-content-center">
+                    <!--  message error -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
                     <!-- Success Alert (before footer and centered) -->
+
                     <div class="container bootstrap snippets bootdey">
                       <div
                         *ngIf="modifysuccess"

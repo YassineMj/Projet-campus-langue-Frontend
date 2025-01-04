@@ -38,7 +38,20 @@
 
       <div class="card">
         <div class="card-body">
-          <!-- Success message container -->
+          <!--  message error -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deletesMessage"
+              class="alert alert-delete alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <strong>Erreur!</strong>
+              {{ deletesMessage }}
+            </div>
+          </div>
           <!-- Success message container -->
           <div class="container bootstrap snippets bootdey">
             <div
@@ -163,7 +176,7 @@
                                   [(ngModel)]="nom"
                                   required
                                   #nomInput="ngModel"
-                                  placeholder="Nom"
+                                  placeholder="Nom (max 100 caractères)"
                                 />
                                 <div
                                   *ngIf="nomInput.invalid && nomInput.touched"
@@ -177,6 +190,20 @@
                         </div>
                       </div>
                       <div class="modal-footer justify-content-center foot">
+                        <!--  message error -->
+                        <div class="container bootstrap snippets bootdey">
+                          <div
+                            *ngIf="deletesMessage"
+                            class="alert alert-delete alert-white rounded mx-auto w-75"
+                            role="alert"
+                          >
+                            <div class="icon">
+                              <i class="fa-solid fa-circle-exclamation"></i>
+                            </div>
+                            <strong>Erreur!</strong>
+                            {{ deletesMessage }}
+                          </div>
+                        </div>
                         <!-- Success message container -->
                         <div class="container bootstrap snippets bootdey">
                           <div
@@ -308,7 +335,7 @@
                               [(ngModel)]="editNom"
                               required
                               #editNomInput="ngModel"
-                              placeholder="Nom du niveau"
+                              placeholder="Nom du niveau (max 100 caractères)"
                             />
                             <div
                               *ngIf="
@@ -324,6 +351,20 @@
                     </div>
                   </div>
                   <div class="modal-footer justify-content-center">
+                    <!--  message error -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
                     <!-- Success Alert (before footer and centered) -->
                     <div class="container bootstrap snippets bootdey">
                       <div

@@ -2,26 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
 import * as bootstrap from 'bootstrap';
 
-
 @Component({
   selector: 'app-matieres',
   templateUrl: './matieres.component.html',
-  styleUrls: ['./matieres.component.css']
+  styleUrls: ['./matieres.component.css'],
 })
 export class MatieresComponent implements OnInit {
-
   constructor(private _service: GlobalService) {}
-  
-   
-   matieres:any[]=[]
-   filteredMatieres:any[]=[]
-   searchTerm: string = '';
 
-   filterMatieres(): void {
-    this.filteredMatieres = this.matieres.filter(m => 
-      m.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      m.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
-     
+  matieres: any[] = [];
+  filteredMatieres: any[] = [];
+  searchTerm: string = '';
+
+  filterMatieres(): void {
+    this.filteredMatieres = this.matieres.filter(
+      (m) =>
+        m.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        m.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
   isLoading: boolean = false;
@@ -31,7 +28,7 @@ export class MatieresComponent implements OnInit {
     this._service.getLangues().subscribe(
       (data) => {
         this.matieres = data;
-        this.filteredMatieres=this.matieres;
+        this.filteredMatieres = this.matieres;
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
@@ -45,18 +42,18 @@ export class MatieresComponent implements OnInit {
     this.loadMatiers();
   }
 
-   // For adding a new subject
+  // For adding a new subject
   libelle: string = '';
   description: string = '';
   selectedProfessorId: number = 0;
-
+  deletesMessage: string = ''; // This will hold the success message
   deleteMessage: string = ''; // This will hold the success message
   successMessage: string = ''; // This will hold the success message
   modifysuccess: string = '';
   hideSuccessMessage(): void {
     this.successMessage = ''; // Clear the message, hiding the alert
+    this.deletesMessage = ''; // Clear the message, hiding the alert
   }
-
 
   // Handle form submission
   onSubmit(form: any) {
@@ -64,46 +61,59 @@ export class MatieresComponent implements OnInit {
       this.isLoading = true;
       console.log('Updated values:', {
         libelle: this.libelle,
-        description: this.description
-      });   
-      
-      this._service.createLangue({
-        libelle: this.libelle,
-        description: this.description
-      }).subscribe(
-        (response) => {
-          
-          this.successMessage = 'Matiere ajouté avec succès!'; // Set success message
-          //alert('Matiere ajouté avec succès!');
-          form.reset(); // Réinitialiser le formulaire
-          this.ngOnInit()
-          this.isLoading = false;
-          setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
-        },
-        (error) => {
-          console.error('Erreur lors de l\'ajout du Matiere:', error);
-          alert('Une erreur s\'est produite lors de l\'ajout.');
-          this.isLoading = false;
-        }
-      );
+        description: this.description,
+      });
 
+      this._service
+        .createLangue({
+          libelle: this.libelle,
+          description: this.description,
+        })
+        .subscribe(
+          (response) => {
+            this.successMessage = 'Matiere ajouté avec succès!'; // Set success message
+            //alert('Matiere ajouté avec succès!');
+            form.reset(); // Réinitialiser le formulaire
+            this.ngOnInit();
+            this.isLoading = false;
+            setTimeout(() => {
+              this.successMessage = ''; // Hide the success message after 5 seconds
+            }, 2000);
+          },
+          (error) => {
+            // Handle error cases
+            if (error.status === 500) {
+              this.deletesMessage =
+                ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            } else {
+              this.deletesMessage =
+                'Problème de connexion. Veuillez vérifier votre réseau.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            }
+            this.isLoading = false;
+          }
+        );
     }
   }
- 
 
   // Variables for editing
-  editLibelle : string = '';
+  editLibelle: string = '';
   editDescription: string = '';
-  id:any
+  id: any;
 
   // Function to handle edit button click
   onEdit(item: any) {
     // Set the current data to edit
     this.editLibelle = item.libelle;
     this.editDescription = item.description;
-    this.id =item.id;
+    this.id = item.id;
   }
 
   // Function to handle edit form submission
@@ -113,7 +123,7 @@ export class MatieresComponent implements OnInit {
       this._service
         .updateLangue(this.id, {
           libelle: this.editLibelle,
-          description: this.editDescription
+          description: this.editDescription,
         })
         .subscribe(
           (response) => {
@@ -122,27 +132,38 @@ export class MatieresComponent implements OnInit {
             this.ngOnInit();
             this.isLoading = false;
             setTimeout(() => {
-                            this.modifysuccess = ''; // Clear the message after 2 seconds
-                          }, 2000);
+              this.modifysuccess = ''; // Clear the message after 2 seconds
+            }, 2000);
           },
           (error) => {
-            console.error('Erreur lors de la mise à jour du Matiere :', error);
-            alert('Erreur lors de la mise à jour');
+            // Handle error cases
+            if (error.status === 500) {
+              this.deletesMessage =
+                ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            } else {
+              this.deletesMessage =
+                'Problème de connexion. Veuillez vérifier votre réseau.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            }
             this.isLoading = false;
           }
         );
-        editForm.reset();
+      editForm.reset();
     }
   }
 
+  selectedMatiereId: any;
 
-  selectedMatiereId:any
-
-
-
-  confirmDelete(idM:any): void {
+  confirmDelete(idM: any): void {
     if (idM) {
-      this.isLoading=true
+      this.isLoading = true;
 
       this._service.deleteLangue(idM).subscribe(
         () => {
@@ -150,22 +171,33 @@ export class MatieresComponent implements OnInit {
           //alert('Matiere supprimé avec succès');
           this.loadMatiers();
           //this.ngOnInit() // Actualiser la liste
-          this.isLoading=false
+          this.isLoading = false;
           setTimeout(() => {
             this.deleteMessage = ''; // Clear the message after 2 seconds
-          }, 2000); 
+          }, 2000);
         },
         (error) => {
-          console.error('Erreur lors de la suppression:', error);
-          alert('Erreur lors de la suppression.');
-          this.isLoading=false
-
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
+          this.isLoading = false;
         }
       );
     }
   }
-
-
 
   printTable(): void {
     // Get the table element by its ID
@@ -186,7 +218,7 @@ export class MatieresComponent implements OnInit {
       headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
     }
 
-    bodyRows.forEach(row => {
+    bodyRows.forEach((row) => {
       row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
     });
 
@@ -311,7 +343,9 @@ export class MatieresComponent implements OnInit {
   // Download as Excel function
   downloadAsExcel(): void {
     console.log('Download button clicked'); // Debugging log
-    const tableElement = document.getElementById('MatiereTable') as HTMLTableElement;
+    const tableElement = document.getElementById(
+      'MatiereTable'
+    ) as HTMLTableElement;
     if (!tableElement) {
       console.error('Table element not found!');
       return;
@@ -334,7 +368,9 @@ export class MatieresComponent implements OnInit {
       </html>
     `;
 
-    const excelBlob = new Blob([excelData], { type: 'application/vnd.ms-excel' });
+    const excelBlob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel',
+    });
     const excelURL = URL.createObjectURL(excelBlob);
 
     const link = document.createElement('a');
@@ -344,5 +380,4 @@ export class MatieresComponent implements OnInit {
 
     URL.revokeObjectURL(excelURL);
   }
-
 }

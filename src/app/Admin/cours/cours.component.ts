@@ -2,15 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
 import * as bootstrap from 'bootstrap';
 
-
 @Component({
   selector: 'app-cours',
   templateUrl: './cours.component.html',
-  styleUrls: ['./cours.component.css']
+  styleUrls: ['./cours.component.css'],
 })
-  
 export class CoursComponent implements OnInit {
-
   constructor(private _service: GlobalService) {}
 
   isLoading: boolean = false; // Pour afficher le spinner pendant le chargement
@@ -68,20 +65,28 @@ export class CoursComponent implements OnInit {
 
   // Filtrer les cours
   filterCours(): void {
-    this.filteredCours = this.cours.filter((c) =>
-      c.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) || 
-      c.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      c.langue.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      c.tarif.toString()?.toLowerCase().includes(this.searchTerm.toLowerCase())
+    this.filteredCours = this.cours.filter(
+      (c) =>
+        c.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        c.description?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        c.langue.libelle
+          ?.toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        c.tarif
+          .toString()
+          ?.toLowerCase()
+          .includes(this.searchTerm.toLowerCase())
     );
   }
 
-  
   deleteMessage: string = ''; // This will hold the success message
   successMessage: string = ''; // This will hold the success message
   modifysuccess: string = '';
+  deletesMessage: string = ''; // This will hold the success message
+
   hideSuccessMessage(): void {
     this.successMessage = ''; // Clear the message, hiding the alert
+    this.deletesMessage = '';
   }
 
   // Ajouter un cours
@@ -92,7 +97,7 @@ export class CoursComponent implements OnInit {
         libelle: this.nom,
         description: this.description,
         langueId: this.language,
-        tarif: this.tarif
+        tarif: this.tarif,
       };
 
       this._service.createCour(newCour).subscribe(
@@ -103,12 +108,26 @@ export class CoursComponent implements OnInit {
           this.ngOnInit();
           this.isLoading = false;
           setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
+            this.successMessage = ''; // Hide the success message after 5 seconds
+          }, 2000);
         },
         (error) => {
-          console.error('Erreur lors de l\'ajout du cours:', error);
-          alert('Une erreur s\'est produite.');
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
           this.isLoading = false;
         }
       );
@@ -133,7 +152,7 @@ export class CoursComponent implements OnInit {
         libelle: this.editNom,
         description: this.editDescription,
         langueId: this.editLanguage,
-        tarif: this.editTarif
+        tarif: this.editTarif,
       };
 
       this._service.updateCour(this.editId, updatedCour).subscribe(
@@ -144,12 +163,26 @@ export class CoursComponent implements OnInit {
           editForm.reset();
           this.isLoading = false;
           setTimeout(() => {
-          this.modifysuccess = ''; // Hide the success message after 5 seconds
-        }, 2000);
+            this.modifysuccess = ''; // Hide the success message after 5 seconds
+          }, 2000);
         },
         (error) => {
-          console.error('Erreur lors de la mise à jour du cours:', error);
-          alert('Une erreur s\'est produite.');
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
           this.isLoading = false;
         }
       );
@@ -158,7 +191,7 @@ export class CoursComponent implements OnInit {
 
   // Supprimer un cours
 
-  confirmDelete(idC:any): void {
+  confirmDelete(idC: any): void {
     if (idC !== null) {
       this.isLoading = true;
       this._service.deleteCour(idC).subscribe(
@@ -168,52 +201,64 @@ export class CoursComponent implements OnInit {
           this.loadCours();
           this.isLoading = false;
           setTimeout(() => {
-          this.deleteMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
+            this.deleteMessage = ''; // Hide the success message after 5 seconds
+          }, 2000);
         },
         (error) => {
-          console.error('Erreur lors de la suppression du cours:', error);
-          alert('Une erreur s\'est produite.');
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
           this.isLoading = false;
         }
       );
     }
   }
 
+  printTable(): void {
+    // Get the table element by its ID
+    const tableElement = document.getElementById('CoursTable');
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
 
+    // Clone the table to modify it for printing
+    const tableClone = tableElement.cloneNode(true) as HTMLElement;
 
-printTable(): void {
-  // Get the table element by its ID
-  const tableElement = document.getElementById('CoursTable');
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
-  }
+    // Remove the "Actions" column (last column) from the cloned table
+    const headerRow = tableClone.querySelector('thead tr');
+    const bodyRows = tableClone.querySelectorAll('tbody tr');
 
-  // Clone the table to modify it for printing
-  const tableClone = tableElement.cloneNode(true) as HTMLElement;
+    if (headerRow) {
+      headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
+    }
 
-  // Remove the "Actions" column (last column) from the cloned table
-  const headerRow = tableClone.querySelector('thead tr');
-  const bodyRows = tableClone.querySelectorAll('tbody tr');
+    bodyRows.forEach((row) => {
+      row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
+    });
 
-  if (headerRow) {
-    headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
-  }
+    // Create a new window for printing
+    const printWindow = window.open('', '', 'width=900,height=650');
+    if (!printWindow) {
+      console.error('Failed to open print window.');
+      return;
+    }
 
-  bodyRows.forEach(row => {
-    row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
-  });
-
-  // Create a new window for printing
-  const printWindow = window.open('', '', 'width=900,height=650');
-  if (!printWindow) {
-    console.error('Failed to open print window.');
-    return;
-  }
-
-  // Add styled content to the new window
-  printWindow.document.write(`
+    // Add styled content to the new window
+    printWindow.document.write(`
     <html>
       <head>
         <title>Cours List</title>
@@ -318,27 +363,27 @@ printTable(): void {
     </html>
   `);
 
-  // Close the document and trigger the print dialog
-  printWindow.document.close();
-  printWindow.print();
-}
-
-
-
-// Function to download the list as Excel
-downloadAsExcel(): void {
-  const tableElement = document.getElementById('CoursTable') as HTMLTableElement;
-
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
+    // Close the document and trigger the print dialog
+    printWindow.document.close();
+    printWindow.print();
   }
 
-  // Generate table HTML
-  const tableHTML = tableElement.outerHTML;
+  // Function to download the list as Excel
+  downloadAsExcel(): void {
+    const tableElement = document.getElementById(
+      'CoursTable'
+    ) as HTMLTableElement;
 
-  // Create XML data for Excel
-  const excelData = `
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
+
+    // Generate table HTML
+    const tableHTML = tableElement.outerHTML;
+
+    // Create XML data for Excel
+    const excelData = `
     <html xmlns:o="urn:schemas-microsoft-com:office:office"
           xmlns:x="urn:schemas-microsoft-com:office:excel"
           xmlns="http://www.w3.org/TR/REC-html40">
@@ -363,22 +408,19 @@ downloadAsExcel(): void {
     </html>
   `;
 
-  // Create a Blob from the Excel data
-  const excelBlob = new Blob([excelData], { type: 'application/vnd.ms-excel' });
-  const excelURL = URL.createObjectURL(excelBlob);
+    // Create a Blob from the Excel data
+    const excelBlob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel',
+    });
+    const excelURL = URL.createObjectURL(excelBlob);
 
-  // Trigger download
-  const link = document.createElement('a');
-  link.href = excelURL;
-  link.download = 'CoursTable.xls'; // Use .xls for compatibility
-  link.click();
+    // Trigger download
+    const link = document.createElement('a');
+    link.href = excelURL;
+    link.download = 'CoursTable.xls'; // Use .xls for compatibility
+    link.click();
 
-  // Clean up
-  URL.revokeObjectURL(excelURL);
+    // Clean up
+    URL.revokeObjectURL(excelURL);
+  }
 }
-
-
-
-  
-}
-

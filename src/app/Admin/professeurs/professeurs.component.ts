@@ -2,32 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
 import * as bootstrap from 'bootstrap';
 
-
 @Component({
   selector: 'app-professeurs',
   templateUrl: './professeurs.component.html',
-  styleUrls: ['./professeurs.component.css']
+  styleUrls: ['./professeurs.component.css'],
 })
-export class ProfesseursComponent implements OnInit{
-
+export class ProfesseursComponent implements OnInit {
   isLoading: boolean = false;
 
-loadProfessors(): void {
-  this.isLoading = true; // Activer le spinner
-  this._service.getProfessors().subscribe(
-    (data) => {
-      this.professors = data;
-      this.filteredProfessors = this.professors;
-      this.isLoading = false; // Désactiver le spinner
-    },
-    (error) => {
-      console.error('Erreur lors du chargement des professeurs', error);
-      this.isLoading = false; // Désactiver le spinner même en cas d'erreur
-    }
-  );
-}
-
-
+  loadProfessors(): void {
+    this.isLoading = true; // Activer le spinner
+    this._service.getProfessors().subscribe(
+      (data) => {
+        this.professors = data;
+        this.filteredProfessors = this.professors;
+        this.isLoading = false; // Désactiver le spinner
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des professeurs', error);
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+      }
+    );
+  }
 
   professors: any[] = []; // Liste des professeurs
   filteredProfessors: any[] = [];
@@ -41,24 +37,27 @@ loadProfessors(): void {
 
   filterProfessors(): void {
     const searchTerm = this.searchTerm.trim().toLowerCase(); // Nettoyer et convertir en minuscule
-  
-    this.filteredProfessors = this.professors.filter(p => {
+
+    this.filteredProfessors = this.professors.filter((p) => {
       // Combiner nom et prénom dans les deux ordres
       const fullName = `${p.nom?.toLowerCase()} ${p.prenom?.toLowerCase()}`;
       const reverseFullName = `${p.prenom?.toLowerCase()} ${p.nom?.toLowerCase()}`;
-  
+
       // Vérifier les autres champs
       const matchOtherFields =
         p.cin?.toLowerCase().includes(searchTerm) ||
         p.tel?.toLowerCase().includes(searchTerm) ||
         p.adresse?.toLowerCase().includes(searchTerm) ||
         p.description?.toLowerCase().includes(searchTerm);
-  
+
       // Retourner true si une des conditions correspond
-      return fullName.includes(searchTerm) || reverseFullName.includes(searchTerm) || matchOtherFields;
+      return (
+        fullName.includes(searchTerm) ||
+        reverseFullName.includes(searchTerm) ||
+        matchOtherFields
+      );
     });
   }
-  
 
   nom = '';
   prenom = '';
@@ -72,7 +71,7 @@ loadProfessors(): void {
   deleteMessage: string = ''; // This will hold the success message
   successMessage: string = ''; // This will hold the success message
   modifysuccess: string = '';
-
+  deletesMessage: string = ''; // This will hold the success message
 
   onSubmit(form: any) {
     if (form.valid) {
@@ -87,50 +86,64 @@ loadProfessors(): void {
         description: this.description,
       });
 
-      this._service.addProfessor({
-        nom: this.nom,
-        prenom: this.prenom,
-        cin: this.cin,
-        tel: this.tel,
-        adresse: this.adresse,
-        description: this.description,
-      }).subscribe(
-        (response) => {
-          this.successMessage = 'Professeur ajouté avec succès!'; // Set success message
-         // alert('Professeur ajouté avec succès!');
-          form.reset(); // Réinitialiser le formulaire
-          this.ngOnInit()
-          this.isLoading = false; // Désactiver le mode de chargement
-          setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 3000);
-        },
-        (error) => {
-          console.error('Erreur lors de l\'ajout du professeur:', error);
-          alert('Une erreur s\'est produite lors de l\'ajout.');
-          this.isLoading = false; // Désactiver le mode de chargement
-
-        }
-      );
+      this._service
+        .addProfessor({
+          nom: this.nom,
+          prenom: this.prenom,
+          cin: this.cin,
+          tel: this.tel,
+          adresse: this.adresse,
+          description: this.description,
+        })
+        .subscribe(
+          (response) => {
+            this.successMessage = 'Professeur ajouté avec succès!'; // Set success message
+            // alert('Professeur ajouté avec succès!');
+            form.reset(); // Réinitialiser le formulaire
+            this.ngOnInit();
+            this.isLoading = false; // Désactiver le mode de chargement
+            setTimeout(() => {
+              this.successMessage = ''; // Hide the success message after 5 seconds
+            }, 3000);
+          },
+          (error) => {
+            // Handle error cases
+            if (error.status === 500) {
+              this.deletesMessage =
+                ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            } else {
+              this.deletesMessage =
+                'Problème de connexion. Veuillez vérifier votre réseau.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            }
+            this.isLoading = false; // Désactiver le mode de chargement
+          }
+        );
     } else {
       console.log('Form invalid');
     }
   }
 
-
   hideSuccessMessage(): void {
-    this.successMessage = ''; // Clear the message, hiding the alert
+    this.successMessage = '';
+    this.deletesMessage = ''; // Clear the message, hiding the alert
   }
 
-   // Pre-filled values
-  id:any
+  // Pre-filled values
+  id: any;
   editNom = '';
   editPrenom = '';
   editCIN = '';
   editTelephone = '';
   editAdresse = '';
   editDescription = '';
-
 
   openEditModal(professeur: any) {
     this.id = professeur.id;
@@ -152,100 +165,122 @@ loadProfessors(): void {
         cin: this.editCIN,
         tel: this.editTelephone,
         adresse: this.editAdresse,
-        description: this.editDescription
+        description: this.editDescription,
       });
 
-        if (this.id) {
-          this._service
-            .updateProfesseur(this.id, {
-              
-              nom: this.editNom,
-              prenom: this.editPrenom,
-              cin: this.editCIN,
-              tel: this.editTelephone,
-              adresse: this.editAdresse,
-              description: this.editDescription
-            })
-            .subscribe(
-              (response) => {
-             this.modifysuccess = 'Professeur modifier avec succès!';
-                //alert('Professeur mis à jour avec succès');
-                this.ngOnInit();
-                this.isLoading = false;
+      if (this.id) {
+        this._service
+          .updateProfesseur(this.id, {
+            nom: this.editNom,
+            prenom: this.editPrenom,
+            cin: this.editCIN,
+            tel: this.editTelephone,
+            adresse: this.editAdresse,
+            description: this.editDescription,
+          })
+          .subscribe(
+            (response) => {
+              this.modifysuccess = 'Professeur modifier avec succès!';
+              //alert('Professeur mis à jour avec succès');
+              this.ngOnInit();
+              this.isLoading = false;
+              setTimeout(() => {
+                this.modifysuccess = ''; // Clear the message after 2 seconds
+              }, 2000);
+            },
+            (error) => {
+              // Handle error cases
+              if (error.status === 500) {
+                this.deletesMessage =
+                  ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+                // Clear the error message after 3 seconds
                 setTimeout(() => {
-                            this.modifysuccess = ''; // Clear the message after 2 seconds
-                          }, 2000);
-              },
-              (error) => {
-                console.error('Erreur lors de la mise à jour du professeur :', error);
-                alert('Erreur lors de la mise à jour');
-                this.isLoading = false;
-
+                  this.deletesMessage = ''; // Correct variable name
+                }, 3000);
+              } else {
+                this.deletesMessage =
+                  'Problème de connexion. Veuillez vérifier votre réseau.';
+                // Clear the error message after 3 seconds
+                setTimeout(() => {
+                  this.deletesMessage = ''; // Correct variable name
+                }, 3000);
               }
-            );
-        }
-      
+              this.isLoading = false;
+            }
+          );
+      }
     }
   }
 
-  
-  confirmDelete(idP:any): void {
+  confirmDelete(idP: any): void {
     if (idP) {
-      this.isLoading=true
+      this.isLoading = true;
       this._service.deleteProfessor(idP).subscribe(
         () => {
           this.deleteMessage = 'Professeur supprimé avec succès!';
           //alert('Professeur supprimé avec succès');
           this.loadProfessors();
-          this.isLoading=false
+          this.isLoading = false;
           setTimeout(() => {
             this.deleteMessage = ''; // Clear the message after 2 seconds
-          }, 2000);  
+          }, 2000);
           //this.ngOnInit() // Actualiser la liste
         },
         (error) => {
-          console.error('Erreur lors de la suppression:', error);
-          alert('Erreur lors de la suppression.');
-          this.isLoading=false
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
+          this.isLoading = false;
         }
       );
     }
   }
-  
 
-  
-printTable(): void {
-  // Get the table element by its ID
-  const tableElement = document.getElementById('ProfesseurTable');
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
-  }
+  printTable(): void {
+    // Get the table element by its ID
+    const tableElement = document.getElementById('ProfesseurTable');
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
 
-  // Clone the table to modify it for printing
-  const tableClone = tableElement.cloneNode(true) as HTMLElement;
+    // Clone the table to modify it for printing
+    const tableClone = tableElement.cloneNode(true) as HTMLElement;
 
-  // Remove the "Actions" column (last column) from the cloned table
-  const headerRow = tableClone.querySelector('thead tr');
-  const bodyRows = tableClone.querySelectorAll('tbody tr');
+    // Remove the "Actions" column (last column) from the cloned table
+    const headerRow = tableClone.querySelector('thead tr');
+    const bodyRows = tableClone.querySelectorAll('tbody tr');
 
-  if (headerRow) {
-    headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
-  }
+    if (headerRow) {
+      headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
+    }
 
-  bodyRows.forEach(row => {
-    row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
-  });
+    bodyRows.forEach((row) => {
+      row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
+    });
 
-  // Create a new window for printing
-  const printWindow = window.open('', '', 'width=900,height=650');
-  if (!printWindow) {
-    console.error('Failed to open print window.');
-    return;
-  }
+    // Create a new window for printing
+    const printWindow = window.open('', '', 'width=900,height=650');
+    if (!printWindow) {
+      console.error('Failed to open print window.');
+      return;
+    }
 
-  // Add styled content to the new window
-  printWindow.document.write(`
+    // Add styled content to the new window
+    printWindow.document.write(`
     <html>
       <head>
         <title>Professeurs List</title>
@@ -350,24 +385,26 @@ printTable(): void {
     </html>
   `);
 
-  // Close the document and trigger the print dialog
-  printWindow.document.close();
-  printWindow.print();
-}
-  
-downloadAsExcel(): void {
-  const tableElement = document.getElementById('professorsTable') as HTMLTableElement;
-
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
+    // Close the document and trigger the print dialog
+    printWindow.document.close();
+    printWindow.print();
   }
 
-  // Generate table HTML
-  const tableHTML = tableElement.outerHTML;
+  downloadAsExcel(): void {
+    const tableElement = document.getElementById(
+      'professorsTable'
+    ) as HTMLTableElement;
 
-  // Create XML data for Excel
-  const excelData = `
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
+
+    // Generate table HTML
+    const tableHTML = tableElement.outerHTML;
+
+    // Create XML data for Excel
+    const excelData = `
     <html xmlns:o="urn:schemas-microsoft-com:office:office"
           xmlns:x="urn:schemas-microsoft-com:office:excel"
           xmlns="http://www.w3.org/TR/REC-html40">
@@ -392,19 +429,19 @@ downloadAsExcel(): void {
     </html>
   `;
 
-  // Create a Blob from the Excel data
-  const excelBlob = new Blob([excelData], { type: 'application/vnd.ms-excel' });
-  const excelURL = URL.createObjectURL(excelBlob);
+    // Create a Blob from the Excel data
+    const excelBlob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel',
+    });
+    const excelURL = URL.createObjectURL(excelBlob);
 
-  // Trigger download
-  const link = document.createElement('a');
-  link.href = excelURL;
-  link.download = 'ProfessorsList.xls'; // Use .xls for compatibility
-  link.click();
+    // Trigger download
+    const link = document.createElement('a');
+    link.href = excelURL;
+    link.download = 'ProfessorsList.xls'; // Use .xls for compatibility
+    link.click();
 
-  // Clean up
-  URL.revokeObjectURL(excelURL);
-}
-
-
+    // Clean up
+    URL.revokeObjectURL(excelURL);
+  }
 }

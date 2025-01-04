@@ -37,7 +37,20 @@
 
       <div class="card">
         <div class="card-body">
-          <!-- Success message container -->
+          <!--  message error -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deletesMessage"
+              class="alert alert-delete alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <strong>Erreur!</strong>
+              {{ deletesMessage }}
+            </div>
+          </div>
           <!-- Success message container -->
           <div class="container bootstrap snippets bootdey">
             <div
@@ -164,7 +177,7 @@
                                   [(ngModel)]="nom"
                                   required
                                   #nomInput="ngModel"
-                                  placeholder="Nom"
+                                  placeholder="Nom  (max 30 caractères)"
                                 />
                                 <div
                                   *ngIf="nomInput.invalid && nomInput.touched"
@@ -188,7 +201,7 @@
                                   [(ngModel)]="prenom"
                                   required
                                   #prenomInput="ngModel"
-                                  placeholder="Prénom"
+                                  placeholder="Prénom  (max 30 caractères)"
                                 />
                                 <div
                                   *ngIf="
@@ -216,7 +229,7 @@
                                   [(ngModel)]="cin"
                                   required
                                   #cinInput="ngModel"
-                                  placeholder="CIN"
+                                  placeholder="CIN  (max 20 caractères)"
                                 />
                                 <div
                                   *ngIf="cinInput.invalid && cinInput.touched"
@@ -241,7 +254,7 @@
                                   required
                                   pattern="^[0-9]+$"
                                   #telephoneInput="ngModel"
-                                  placeholder="Téléphone"
+                                  placeholder="Téléphone (max 20 caractères)"
                                 />
                                 <div
                                   *ngIf="
@@ -267,7 +280,7 @@
                               id="addAdresse"
                               name="adresse"
                               [(ngModel)]="adresse"
-                              placeholder="Adresse"
+                              placeholder="Adresse  (max 150 caractères)"
                             />
                           </div>
                           <!-- Description -->
@@ -281,12 +294,26 @@
                               name="description"
                               [(ngModel)]="description"
                               rows="3"
-                              placeholder="Description..."
+                              placeholder="Description...  (max 500 caractères)"
                             ></textarea>
                           </div>
                         </div>
                       </div>
                       <div class="modal-footer justify-content-center foot">
+                        <!--  message error -->
+                        <div class="container bootstrap snippets bootdey">
+                          <div
+                            *ngIf="deletesMessage"
+                            class="alert alert-delete alert-white rounded mx-auto w-75"
+                            role="alert"
+                          >
+                            <div class="icon">
+                              <i class="fa-solid fa-circle-exclamation"></i>
+                            </div>
+                            <strong>Erreur!</strong>
+                            {{ deletesMessage }}
+                          </div>
+                        </div>
                         <!-- Success message container -->
                         <div class="container bootstrap snippets bootdey">
                           <div
@@ -316,7 +343,7 @@
                           [disabled]="true"
                         >
                           <ng-container *ngIf="!isLoading">
-                            <i class="fa fa-save text-white"></i> 
+                            <i class="fa fa-save text-white"></i>
                           </ng-container>
                           <ng-container *ngIf="isLoading">
                             <i class="fa fa-spinner fa-spin text-white"></i> En
@@ -425,6 +452,7 @@
                                 class="form-control"
                                 id="editNom"
                                 name="editNom"
+                                placeholder="Nom  (max 30 caractères)"
                                 [(ngModel)]="editNom"
                                 required
                                 #editNomInput="ngModel"
@@ -450,6 +478,7 @@
                                 class="form-control"
                                 id="editPrenom"
                                 name="editPrenom"
+                                placeholder="Prénom (max 30 caractères)"
                                 [(ngModel)]="editPrenom"
                                 required
                                 #editPrenomInput="ngModel"
@@ -478,6 +507,7 @@
                                 class="form-control"
                                 id="editCIN"
                                 name="editCIN"
+                                placeholder="CIN (max 20 caractères)"
                                 [(ngModel)]="editCIN"
                                 required
                                 #editCINInput="ngModel"
@@ -505,6 +535,7 @@
                                 id="editTelephone"
                                 name="editTelephone"
                                 [(ngModel)]="editTelephone"
+                                placeholder="Téléphone (max 20 caractères)"
                                 required
                                 pattern="^[0-9]+$"
                                 #editTelephoneInput="ngModel"
@@ -531,6 +562,7 @@
                             type="text"
                             class="form-control"
                             id="editAdresse"
+                            placeholder="Adresse (max 150 caractères)"
                             name="editAdresse"
                             [(ngModel)]="editAdresse"
                           />
@@ -544,6 +576,7 @@
                             class="form-control formtexterea"
                             id="editDescription"
                             name="editDescription"
+                            placeholder="Description (max 500 caractères)"
                             placeholder="Description.."
                             [(ngModel)]="editDescription"
                             rows="3"
@@ -552,6 +585,20 @@
                       </div>
                     </div>
                     <div class="modal-footer justify-content-center">
+                      <!--  message error -->
+                      <div class="container bootstrap snippets bootdey">
+                        <div
+                          *ngIf="deletesMessage"
+                          class="alert alert-delete alert-white rounded mx-auto w-75"
+                          role="alert"
+                        >
+                          <div class="icon">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                          </div>
+                          <strong>Erreur!</strong>
+                          {{ deletesMessage }}
+                        </div>
+                      </div>
                       <!-- Success Alert (before footer and centered) -->
                       <div class="container bootstrap snippets bootdey">
                         <div
@@ -581,7 +628,7 @@
                         [disabled]="true"
                       >
                         <ng-container *ngIf="!isLoading">
-                          <i class="fa fa-save text-white"></i> 
+                          <i class="fa fa-save text-white"></i>
                         </ng-container>
                         <ng-container *ngIf="isLoading">
                           <i class="fa fa-spinner fa-spin text-white"></i> En

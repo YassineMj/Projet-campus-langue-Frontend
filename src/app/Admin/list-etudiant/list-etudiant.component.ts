@@ -6,12 +6,9 @@ import { GlobalService } from '../global.service';
 @Component({
   selector: 'app-list-etudiant',
   templateUrl: './list-etudiant.component.html',
-  styleUrls: ['./list-etudiant.component.css']
+  styleUrls: ['./list-etudiant.component.css'],
 })
-
-
 export class ListEtudiantComponent {
-  
   constructor(private _service: GlobalService) {}
 
   etudiants: any[] = [];
@@ -23,28 +20,27 @@ export class ListEtudiantComponent {
   inscriptions: any[] = [];
   filteredInscriptions: any[] = [];
 
-  mois:any;
-  annee:any;
-
+  mois: any;
+  annee: any;
 
   data2 = {
-    nom: "",
-    prenom: "",
+    nom: '',
+    prenom: '',
     etablissement: { id: null },
     niveau: { id: null },
-    telephone: "",
-    commentaire: "",
-    nomMere: "",
-    telMere: "",
-    nomPere: "",
-    telPere: "",
+    telephone: '',
+    commentaire: '',
+    nomMere: '',
+    telMere: '',
+    nomPere: '',
+    telPere: '',
     passage: false,
-    dateN:""
+    dateN: '',
   };
 
   ngOnInit(): void {
-    this.mois=new Date().getMonth()+1
-    this.annee='2024/2025'
+    this.mois = new Date().getMonth() + 1;
+    this.annee = '2024/2025';
     console.log(this.mois);
     console.log(this.annee);
 
@@ -53,10 +49,10 @@ export class ListEtudiantComponent {
     this.loadNiveaux();
   }
 
-  getFilteredGroupes(groupes:any) {
+  getFilteredGroupes(groupes: any) {
     const groupeMap = new Map();
-  
-    groupes.forEach((grp:any) => {
+
+    groupes.forEach((grp: any) => {
       if (groupeMap.has(grp.groupe)) {
         if (grp.active) {
           groupeMap.set(grp.groupe, { groupe: grp.groupe, active: true });
@@ -65,32 +61,31 @@ export class ListEtudiantComponent {
         groupeMap.set(grp.groupe, { groupe: grp.groupe, active: grp.active });
       }
     });
-  
+
     return Array.from(groupeMap.values());
   }
 
-  onDateChange(){
+  onDateChange() {
     this.loadEtudiants();
   }
 
   loadEtudiants(): void {
     this.isLoading = true;
-    this._service.getInscriptions(this.mois,this.annee).subscribe(
+    this._service.getInscriptions(this.mois, this.annee).subscribe(
       (data) => {
-         
         this.etudiants = data;
 
         this.inscriptions = this.etudiants.map((etu) => ({
-          id:etu.id,
+          id: etu.id,
           nom: etu.nom,
           prenom: etu.prenom,
-          dateN:etu.dateN,
-          lesLangues:etu.lesLangues,
+          dateN: etu.dateN,
+          lesLangues: etu.lesLangues,
           groupes: this.getFilteredGroupes(etu.lesGroupes),
         }));
-      
+
         console.log(this.inscriptions);
-        this.filteredInscriptions=this.inscriptions
+        this.filteredInscriptions = this.inscriptions;
 
         this.isLoading = false;
       },
@@ -100,7 +95,6 @@ export class ListEtudiantComponent {
       }
     );
   }
-
 
   loadEtablissements(): void {
     this.isLoading = true;
@@ -132,29 +126,29 @@ export class ListEtudiantComponent {
 
   filterInscriptions(): void {
     const searchTerm = this.searchTerm.trim().toLowerCase(); // Nettoyer et convertir en minuscule
-  
-    this.filteredInscriptions = this.inscriptions.filter(e => {
+
+    this.filteredInscriptions = this.inscriptions.filter((e) => {
       // Combiner nom et prénom dans les deux ordres
       const fullName = `${e.nom?.toLowerCase()} ${e.prenom?.toLowerCase()}`;
       const reverseFullName = `${e.prenom?.toLowerCase()} ${e.nom?.toLowerCase()}`;
-  
+
       // Vérifier les autres champs
-      const matchOtherFields =
-        e.id.toString().includes(searchTerm)  
+      const matchOtherFields = e.id.toString().includes(searchTerm);
       // Retourner true si une des conditions correspond
-      return fullName.includes(searchTerm) || reverseFullName.includes(searchTerm) || matchOtherFields;
+      return (
+        fullName.includes(searchTerm) ||
+        reverseFullName.includes(searchTerm) ||
+        matchOtherFields
+      );
     });
   }
-  
 
-  id:any;
+  id: any;
   openEditModal(id: any): void {
-    
     this.id = id;
 
     this._service.getEtudiantById(this.id).subscribe(
       (data) => {
-
         this.data2 = {
           nom: data.nom,
           prenom: data.prenom,
@@ -167,9 +161,9 @@ export class ListEtudiantComponent {
           nomPere: data.nomPere,
           telPere: data.telPere,
           passage: false,
-          dateN:data.dateN
-        };  
-       },
+          dateN: data.dateN,
+        };
+      },
       (error) => {
         alert('Erreur lors de la mise à jour du Etudiant.');
         this.isLoading = false;
@@ -177,29 +171,45 @@ export class ListEtudiantComponent {
     );
   }
 
+  modifysuccess: string = '';
+  errorMessage: string = '';
+  deletesMessage: string = '';
 
-   modifysuccess: string = '';
-   errorMessage: string = '';
-  
   onSubmitMis(form: NgForm): void {
     if (form.valid) {
       this.isLoading = true;
       if (this.id) {
         if ('dateEnregistrement' in this.data2) {
           delete this.data2.dateEnregistrement;
-        }        
-        
+        }
+
         this._service.updateEtudiant(this.id, this.data2).subscribe(
           () => {
-             this.modifysuccess = 'Etudiant modifier avec succès!';
+            this.modifysuccess = 'Etudiant modifier avec succès!';
             this.loadEtudiants();
-            
+
             this.isLoading = false;
             setTimeout(() => {
-            this.modifysuccess = ''; // Clear the message after 2 seconds
-          }, 2000);  },
+              this.modifysuccess = ''; // Clear the message after 2 seconds
+            }, 2000);
+          },
           (error) => {
-            alert('Erreur lors de la mise à jour du Etudiant.');
+            // Handle error cases
+            if (error.status === 500) {
+              this.deletesMessage =
+                ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            } else {
+              this.deletesMessage =
+                'Problème de connexion. Veuillez vérifier votre réseau.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            }
             this.isLoading = false;
           }
         );
@@ -209,43 +219,42 @@ export class ListEtudiantComponent {
 
   // Method to hide the success message when the close button is clicked
   hideSuccessMessage(): void {
-    this.modifysuccess='';// Clear the message, hiding the alert
+    this.modifysuccess = '';
+    this.deletesMessage = '';// Clear the message, hiding the alert
   }
 
+  printTable(): void {
+    // Get the table element by its ID
+    const tableElement = document.getElementById('list-etudiantTable');
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
 
-    
-printTable(): void {
-  // Get the table element by its ID
-  const tableElement = document.getElementById('list-etudiantTable');
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
-  }
+    // Clone the table to modify it for printing
+    const tableClone = tableElement.cloneNode(true) as HTMLElement;
 
-  // Clone the table to modify it for printing
-  const tableClone = tableElement.cloneNode(true) as HTMLElement;
+    // Remove the "Actions" column (last column) from the cloned table
+    const headerRow = tableClone.querySelector('thead tr');
+    const bodyRows = tableClone.querySelectorAll('tbody tr');
 
-  // Remove the "Actions" column (last column) from the cloned table
-  const headerRow = tableClone.querySelector('thead tr');
-  const bodyRows = tableClone.querySelectorAll('tbody tr');
+    if (headerRow) {
+      headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
+    }
 
-  if (headerRow) {
-    headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
-  }
+    bodyRows.forEach((row) => {
+      row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
+    });
 
-  bodyRows.forEach(row => {
-    row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
-  });
+    // Create a new window for printing
+    const printWindow = window.open('', '', 'width=900,height=650');
+    if (!printWindow) {
+      console.error('Failed to open print window.');
+      return;
+    }
 
-  // Create a new window for printing
-  const printWindow = window.open('', '', 'width=900,height=650');
-  if (!printWindow) {
-    console.error('Failed to open print window.');
-    return;
-  }
-
-  // Add styled content to the new window
-  printWindow.document.write(`
+    // Add styled content to the new window
+    printWindow.document.write(`
     <html>
       <head>
         <title> List des etudiant </title>
@@ -350,13 +359,15 @@ printTable(): void {
     </html>
   `);
 
-  // Close the document and trigger the print dialog
-  printWindow.document.close();
-  printWindow.print();
-}
+    // Close the document and trigger the print dialog
+    printWindow.document.close();
+    printWindow.print();
+  }
 
-    downloadAsExcel(): void {
-    const tableElement = document.getElementById('list-etudiantTable') as HTMLTableElement;
+  downloadAsExcel(): void {
+    const tableElement = document.getElementById(
+      'list-etudiantTable'
+    ) as HTMLTableElement;
 
     if (!tableElement) {
       console.error('Table element not found!');
@@ -390,7 +401,9 @@ printTable(): void {
       </html>
     `;
 
-    const blob = new Blob([excelData], { type: 'application/vnd.ms-excel;charset=utf-8;' });
+    const blob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel;charset=utf-8;',
+    });
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement('a');
@@ -400,5 +413,4 @@ printTable(): void {
 
     URL.revokeObjectURL(url);
   }
-
 }

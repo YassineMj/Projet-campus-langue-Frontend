@@ -38,6 +38,20 @@
 
       <div class="card">
         <div class="card-body">
+          <!--  message error -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deletesMessage"
+              class="alert alert-delete alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <strong>Erreur!</strong>
+              {{ deletesMessage }}
+            </div>
+          </div>
           <!-- Success message container -->
           <div class="container bootstrap snippets bootdey">
             <div
@@ -282,13 +296,27 @@
                               name="description"
                               [(ngModel)]="formsData.description"
                               rows="3"
-                              placeholder="Description..."
+                              placeholder="Description (max 500 caractères)..."
                             ></textarea>
                           </div>
                         </div>
                       </div>
 
                       <div class="modal-footer justify-content-center foot">
+                        <!--  message error -->
+                        <div class="container bootstrap snippets bootdey">
+                          <div
+                            *ngIf="deletesMessage"
+                            class="alert alert-delete alert-white rounded mx-auto w-75"
+                            role="alert"
+                          >
+                            <div class="icon">
+                              <i class="fa-solid fa-circle-exclamation"></i>
+                            </div>
+                            <strong>Erreur!</strong>
+                            {{ deletesMessage }}
+                          </div>
+                        </div>
                         <!-- Success message container -->
                         <div class="container bootstrap snippets bootdey">
                           <div
@@ -556,7 +584,7 @@
                               name="editDescription"
                               [(ngModel)]="editData.description"
                               rows="3"
-                              placeholder="Description..."
+                              placeholder="Description (max 500 caractères)..."
                             ></textarea>
                           </div>
                         </div>
@@ -565,6 +593,20 @@
                   </div>
 
                   <div class="modal-footer justify-content-center">
+                    <!--  message error -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
                     <!-- Success Alert -->
                     <div class="container bootstrap snippets bootdey">
                       <div
