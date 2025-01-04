@@ -31,7 +31,21 @@
     <div class="col-lg-12 col-md-12">
       <div class="card shadow-md rounded-3">
         <div class="card-body">
-          <!-- Success message container -->
+          
+          <!--  message error -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deletesMessage"
+              class="alert alert-delete alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <strong>Erreur!</strong>
+              {{ deletesMessage }}
+            </div>
+          </div>
           <!-- Success message container -->
           <div class="container bootstrap snippets bootdey">
             <div
@@ -46,6 +60,7 @@
               {{ deleteMessage }}
             </div>
           </div>
+
           <div class="header-container d-flex align-items-center">
             <!-- Back Link -->
             <a href="/menu-admin/etudiant" class="back-link">
@@ -100,7 +115,7 @@
               <strong>Téléphone : </strong>
               <span>{{ etudiant.telephone }}</span>
             </div>
-             <div class="col-6">
+            <div class="col-6">
               <strong>Date de naissance : </strong>
               <span>{{ etudiant.dateN }}</span>
             </div>

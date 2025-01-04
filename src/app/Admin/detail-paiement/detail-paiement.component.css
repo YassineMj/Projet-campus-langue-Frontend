@@ -13,6 +13,20 @@
     /* Smooth transition */
 }
 
+
+/* Custom colors */
+.alert-delete {
+    color: #dd230f;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-white.alert-delete .icon,
+.alert-white.alert-delete .icon:after {
+    border-color: #dd230f;
+    background: #dd230f;
+}
+
 .card {
     background-color: #ffffff;
     border-radius: 15px;

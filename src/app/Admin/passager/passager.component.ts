@@ -6,10 +6,9 @@ import { GlobalService } from '../global.service';
 @Component({
   selector: 'app-passager',
   templateUrl: './passager.component.html',
-  styleUrls: ['./passager.component.css']
+  styleUrls: ['./passager.component.css'],
 })
 export class PassagerComponent implements OnInit {
-  
   constructor(private _service: GlobalService) {}
 
   passages: any[] = [];
@@ -20,38 +19,36 @@ export class PassagerComponent implements OnInit {
   id: number | null = null;
   searchTerm: string = '';
   isLoading: boolean = false;
-  datedenaissance:string ='';
+  datedenaissance: string = '';
 
   data1 = {
-
-    nom: "",
-    prenom: "",
+    nom: '',
+    prenom: '',
     etablissement: { id: null },
     niveau: { id: null },
-    telephone: "",
-    commentaire: "",
-    nomMere: "",
-    telMere: "",
-    nomPere: "",
-    telPere: "",
+    telephone: '',
+    commentaire: '',
+    nomMere: '',
+    telMere: '',
+    nomPere: '',
+    telPere: '',
     passage: true,
-    dateN:""
-
+    dateN: '',
   };
 
   data2 = {
-    nom: "",
-    prenom: "",
+    nom: '',
+    prenom: '',
     etablissement: { id: null },
     niveau: { id: null },
-    telephone: "",
-    commentaire: "",
-    nomMere: "",
-    telMere: "",
-    nomPere: "",
-    telPere: "",
+    telephone: '',
+    commentaire: '',
+    nomMere: '',
+    telMere: '',
+    nomPere: '',
+    telPere: '',
     passage: true,
-    dateN:""
+    dateN: '',
   };
 
   ngOnInit(): void {
@@ -65,11 +62,13 @@ export class PassagerComponent implements OnInit {
     this._service.getPassages().subscribe(
       (data) => {
         // Convertir et formater les dates
-        this.passages = data.map(passage => ({
+        this.passages = data.map((passage) => ({
           ...passage,
-          dateEnregistrement: this.formatDate(new Date(passage.dateEnregistrement))
+          dateEnregistrement: this.formatDate(
+            new Date(passage.dateEnregistrement)
+          ),
         }));
-  
+
         this.filteredPassages = this.passages;
         this.isLoading = false;
       },
@@ -79,7 +78,7 @@ export class PassagerComponent implements OnInit {
       }
     );
   }
-  
+
   // Fonction pour formater la date
   formatDate(date: Date): string {
     const jour = date.getDate().toString().padStart(2, '0');
@@ -87,11 +86,9 @@ export class PassagerComponent implements OnInit {
     const annee = date.getFullYear().toString().slice(-4); // Année sur 4 chiffres
     const heures = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-  
+
     return `${jour}-${mois}-${annee} | ${heures}:${minutes}`;
   }
-  
-  
 
   loadEtablissements(): void {
     this.isLoading = true;
@@ -123,12 +120,12 @@ export class PassagerComponent implements OnInit {
 
   filterPassages(): void {
     const searchTerm = this.searchTerm.trim().toLowerCase(); // Nettoyer et convertir en minuscule
-  
-    this.filteredPassages = this.passages.filter(p => {
+
+    this.filteredPassages = this.passages.filter((p) => {
       // Combiner nom et prénom dans les deux ordres
       const fullName = `${p.nom.toLowerCase()} ${p.prenom.toLowerCase()}`;
       const reverseFullName = `${p.prenom.toLowerCase()} ${p.nom.toLowerCase()}`;
-  
+
       // Vérification des autres champs
       const matchOtherFields =
         p.telephone.toLowerCase().includes(searchTerm) ||
@@ -136,48 +133,51 @@ export class PassagerComponent implements OnInit {
         p.niveau.nom.toLowerCase().includes(searchTerm) ||
         (p.nomMere && p.nomMere.toLowerCase().includes(searchTerm)) ||
         (p.nomPere && p.nomPere.toLowerCase().includes(searchTerm)) ||
-        (p.dateEnregistrement && p.dateEnregistrement.toLowerCase().includes(searchTerm));
-  
+        (p.dateEnregistrement &&
+          p.dateEnregistrement.toLowerCase().includes(searchTerm));
+
       // Retourner true si une des conditions correspond
-      return fullName.includes(searchTerm) || reverseFullName.includes(searchTerm) || matchOtherFields;
+      return (
+        fullName.includes(searchTerm) ||
+        reverseFullName.includes(searchTerm) ||
+        matchOtherFields
+      );
     });
   }
-  
 
   openAddModal(): void {
     this.data1 = {
-      nom: "",
-      prenom: "",
+      nom: '',
+      prenom: '',
       etablissement: { id: null },
       niveau: { id: null },
-      telephone: "",
-      commentaire: "",
-      nomMere: "",
-      telMere: "",
-      nomPere: "",
-      telPere: "",
+      telephone: '',
+      commentaire: '',
+      nomMere: '',
+      telMere: '',
+      nomPere: '',
+      telPere: '',
       passage: true,
-      dateN:""
+      dateN: '',
     };
     this.id = null;
   }
 
   openEditModal(item: any): void {
-    this.data2.nom=item.nom
-    this.data2.prenom=item.prenom
-    this.data2.etablissement.id=item.etablissement.id
-    this.data2.niveau.id=item.niveau.id
-    this.data2.telephone=item.telephone
-    this.data2.commentaire=item.commentaire
-    this.data2.nomMere=item.nomMere
-    this.data2.telMere=item.telMere
-    this.data2.nomPere=item.nomPere
-    this.data2.telPere=item.telPere
-    this.data2.passage=true
+    this.data2.nom = item.nom;
+    this.data2.prenom = item.prenom;
+    this.data2.etablissement.id = item.etablissement.id;
+    this.data2.niveau.id = item.niveau.id;
+    this.data2.telephone = item.telephone;
+    this.data2.commentaire = item.commentaire;
+    this.data2.nomMere = item.nomMere;
+    this.data2.telMere = item.telMere;
+    this.data2.nomPere = item.nomPere;
+    this.data2.telPere = item.telPere;
+    this.data2.passage = true;
 
     this.id = item.id;
   }
-
 
   openDetailsModal(item: any): void {
     this.selectedItem = item;
@@ -188,30 +188,48 @@ export class PassagerComponent implements OnInit {
     }
   }
 
-   deleteMessage: string = ''; // This will hold the success message
-   successMessage: string = ''; // This will hold the success message
-   modifysuccess: string = '';
-   errorMessage: string = '';
-  
+  deleteMessage: string = ''; // This will hold the success message
+  successMessage: string = ''; // This will hold the success message
+  modifysuccess: string = '';
+  errorMessage: string = '';
+  deletesMessage: string = '';
+
   onSubmitMis(form: NgForm): void {
     if (form.valid) {
       this.isLoading = true;
       if (this.id) {
         if ('dateEnregistrement' in this.data2) {
           delete this.data2.dateEnregistrement;
-        }        
-        
+        }
+
         this._service.updatePassage(this.id, this.data2).subscribe(
           () => {
-             this.modifysuccess = 'Passage modifier avec succès!';
+            this.modifysuccess = 'Passage modifier avec succès!';
             this.loadPassages();
-            
+
             this.isLoading = false;
             setTimeout(() => {
-            this.modifysuccess = ''; // Clear the message after 2 seconds
-          }, 2000);  },
+              this.modifysuccess = ''; // Clear the message after 2 seconds
+            }, 2000);
+          },
           (error) => {
-            alert('Erreur lors de la mise à jour du passage.');
+            // Handle error cases
+            if (error.status === 500) {
+              this.deletesMessage =
+                ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            } else {
+              this.deletesMessage =
+                'Problème de connexion. Veuillez vérifier votre réseau.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            }
+
             this.isLoading = false;
           }
         );
@@ -223,102 +241,140 @@ export class PassagerComponent implements OnInit {
   hideSuccessMessage(): void {
     this.successMessage = '';
     this.deleteMessage = '';
-    this.modifysuccess='';// Clear the message, hiding the alert
+    this.deletesMessage = '';
+
+    this.modifysuccess = ''; // Clear the message, hiding the alert
   }
 
   onSubmitAjou(form: NgForm): void {
     if (form.valid) {
       this.isLoading = true;
+
       this._service.createPassage(this.data1).subscribe(
         () => {
-          this.successMessage = 'Passage ajouté avec succès!'; // Set success message
+          this.successMessage = 'Passage ajouté avec succès!'; // Message de succès
           this.loadPassages();
+
+          // Réinitialiser les données du formulaire
           this.data1 = {
-            nom: "",
-            prenom: "",
+            nom: '',
+            prenom: '',
             etablissement: { id: null },
             niveau: { id: null },
-            telephone: "",
-            commentaire: "",
-            nomMere: "",
-            telMere: "",
-            nomPere: "",
-            telPere: "",
+            telephone: '',
+            commentaire: '',
+            nomMere: '',
+            telMere: '',
+            nomPere: '',
+            telPere: '',
             passage: true,
-            dateN:""
+            dateN: '',
           };
-          setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
-          },
-        (error) => {
-          alert('Erreur lors de l\'ajout du passage.');
+
           this.isLoading = false;
+
+          // Cacher le message de succès après 5 secondes
+          setTimeout(() => {
+            this.successMessage = '';
+          }, 5000);
+        },
+        (error) => {
+          this.isLoading = false;
+
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
         }
       );
     }
   }
 
-
-
-  confirmDelete(idP:any): void {
+  confirmDelete(idP: any): void {
     console.log(idP);
-    
+
     if (idP) {
       this.isLoading = true;
       this._service.deletePassage(idP).subscribe(
         () => {
-        this.deleteMessage = 'Passage supprimé avec succès!';
-
+          this.deleteMessage = 'Passage supprimé avec succès!';
           this.loadPassages();
           this.id = null;
           this.isLoading = false;
+
+          // Clear the success message after 2 seconds
           setTimeout(() => {
-            this.deleteMessage = ''; // Clear the message after 2 seconds
-          }, 2000);  
-            
+            this.deleteMessage = '';
+          }, 2000);
         },
         (error) => {
-          alert('Erreur lors de la suppression du passage.');
           this.isLoading = false;
+
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
         }
       );
     }
   }
-  
 
-printTable(): void {
-  // Get the table element by its ID
-  const tableElement = document.getElementById('PassagerTable');
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
-  }
+  printTable(): void {
+    // Get the table element by its ID
+    const tableElement = document.getElementById('PassagerTable');
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
 
-  // Clone the table to modify it for printing
-  const tableClone = tableElement.cloneNode(true) as HTMLElement;
+    // Clone the table to modify it for printing
+    const tableClone = tableElement.cloneNode(true) as HTMLElement;
 
-  // Remove the "Actions" column (last column) from the cloned table
-  const headerRow = tableClone.querySelector('thead tr');
-  const bodyRows = tableClone.querySelectorAll('tbody tr');
+    // Remove the "Actions" column (last column) from the cloned table
+    const headerRow = tableClone.querySelector('thead tr');
+    const bodyRows = tableClone.querySelectorAll('tbody tr');
 
-  if (headerRow) {
-    headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
-  }
+    if (headerRow) {
+      headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
+    }
 
-  bodyRows.forEach(row => {
-    row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
-  });
+    bodyRows.forEach((row) => {
+      row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
+    });
 
-  // Create a new window for printing
-  const printWindow = window.open('', '', 'width=900,height=650');
-  if (!printWindow) {
-    console.error('Failed to open print window.');
-    return;
-  }
+    // Create a new window for printing
+    const printWindow = window.open('', '', 'width=900,height=650');
+    if (!printWindow) {
+      console.error('Failed to open print window.');
+      return;
+    }
 
-  // Add styled content to the new window
-  printWindow.document.write(`
+    // Add styled content to the new window
+    printWindow.document.write(`
     <html>
       <head>
         <title>Passager List</title>
@@ -423,23 +479,24 @@ printTable(): void {
     </html>
   `);
 
-  // Close the document and trigger the print dialog
-  printWindow.document.close();
-  printWindow.print();
-}
-
-
-  downloadAsExcel(): void {
-  const tableElement = document.getElementById('PassagerTable') as HTMLTableElement;
-
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
+    // Close the document and trigger the print dialog
+    printWindow.document.close();
+    printWindow.print();
   }
 
-  const tableHTML = tableElement.outerHTML;
+  downloadAsExcel(): void {
+    const tableElement = document.getElementById(
+      'PassagerTable'
+    ) as HTMLTableElement;
 
-  const excelData = `
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
+
+    const tableHTML = tableElement.outerHTML;
+
+    const excelData = `
     <html xmlns:o="urn:schemas-microsoft-com:office:office"
           xmlns:x="urn:schemas-microsoft-com:office:excel"
           xmlns="http://www.w3.org/TR/REC-html40">
@@ -464,15 +521,16 @@ printTable(): void {
     </html>
   `;
 
-  const blob = new Blob([excelData], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
+    const blob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel;charset=utf-8;',
+    });
+    const url = URL.createObjectURL(blob);
 
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'PassagerList.xls';
-  link.click();
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'PassagerList.xls';
+    link.click();
 
-  URL.revokeObjectURL(url);
-}
-
+    URL.revokeObjectURL(url);
+  }
 }

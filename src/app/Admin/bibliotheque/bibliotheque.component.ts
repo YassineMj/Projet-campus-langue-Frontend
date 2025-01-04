@@ -2,171 +2,206 @@ import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
 import * as bootstrap from 'bootstrap';
 
-
 @Component({
   selector: 'app-bibliotheque',
   templateUrl: './bibliotheque.component.html',
-  styleUrls: ['./bibliotheque.component.css']
+  styleUrls: ['./bibliotheque.component.css'],
 })
 export class BibliothequeComponent {
+  constructor(private _service: GlobalService) {}
 
-   constructor(private _service: GlobalService) {}
-  
-    filterScolaires(): void {
-      this.filteredScolaires = this.scolaires.filter(s => 
+  filterScolaires(): void {
+    this.filteredScolaires = this.scolaires.filter(
+      (s) =>
         s.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         s.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
-       
-      );
-    }
-  
-    isLoading: boolean = false;
-  
-    loadScolaireAnnuelle(): void {
-      this.isLoading = true; // Activer le spinner
-      this._service.getScolaires().subscribe(
-        (data) => {
-          this.scolaires = data;
-          this.filteredScolaires=this.scolaires;
-          this.isLoading = false; // Désactiver le spinner
-        },
-        (error) => {
-          console.error('Erreur lors du chargement des informations', error);
-          this.isLoading = false; // Désactiver le spinner
-        }
-      );
-    }
-  
-    ngOnInit(): void {
-      this.loadScolaireAnnuelle();
-    }
-  
-  
+    );
+  }
+
+  isLoading: boolean = false;
+
+  loadScolaireAnnuelle(): void {
+    this.isLoading = true; // Activer le spinner
+    this._service.getScolaires().subscribe(
+      (data) => {
+        this.scolaires = data;
+        this.filteredScolaires = this.scolaires;
+        this.isLoading = false; // Désactiver le spinner
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des informations', error);
+        this.isLoading = false; // Désactiver le spinner
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadScolaireAnnuelle();
+  }
+
   // For adding a new subject
-    nom: string = '';
-    description: string = '';
-    
+  nom: string = '';
+  description: string = '';
+
+  // For editing a subject (Pre-filled values)
+  editNom: string = '';
+  editDescription: string = '';
+
+  scolaires: any[] = [];
+  filteredScolaires: any[] = [];
+  searchTerm: string = '';
+
+  deleteMessage: string = ''; // This will hold the success message
+  successMessage: string = ''; // This will hold the success message
+  modifysuccess: string = '';
+  deletesMessage: string = '';
   
-    // For editing a subject (Pre-filled values)
-    editNom: string = '';
-    editDescription: string = '';
-  
-    scolaires:any[]=[]
-    filteredScolaires:any[]=[]
-    searchTerm: string = '';
-  
-    deleteMessage: string = ''; // This will hold the success message
-    successMessage: string = ''; // This will hold the success message
-    modifysuccess: string = '';
-    hideSuccessMessage(): void {
-      this.successMessage = ''; // Clear the message, hiding the alert
-    }
-    
-      
-  
-    // Function to handle form submission for adding a new subject
-    onSubmit(form: any) {
-      if (form.valid) {
-        this.isLoading = true;
-        const newSubject = {
+  hideSuccessMessage(): void {
+    this.successMessage = '';
+    this.deletesMessage ='';// Clear the message, hiding the alert
+  }
+
+  // Function to handle form submission for adding a new subject
+  onSubmit(form: any) {
+    if (form.valid) {
+      this.isLoading = true;
+      const newSubject = {
+        nom: this.nom,
+        description: this.description,
+      };
+      console.log('New subject added:', newSubject);
+      this._service
+        .createScolaire({
           nom: this.nom,
-          description: this.description
-        };      
-        console.log('New subject added:', newSubject);
-        this._service.createScolaire({
-          nom: this.nom,
-          description: this.description
-        }).subscribe(
+          description: this.description,
+        })
+        .subscribe(
           (response) => {
             this.successMessage = 'Scolaire Annuelle ajouté avec succès!'; // Set success message
             form.reset(); // Réinitialiser le formulaire
-            this.ngOnInit()
+            this.ngOnInit();
             this.isLoading = false;
-              setTimeout(() => {
-            this.successMessage = ''; // Hide the success message after 5 seconds
-          }, 2000);
+            setTimeout(() => {
+              this.successMessage = ''; // Hide the success message after 5 seconds
+            }, 2000);
           },
           (error) => {
-            console.error('Erreur lors de l\'ajout du Scolaire Annuelle:', error);
-            alert('Une erreur s\'est produite lors de l\'ajout.');
+            // Handle error cases
+            if (error.status === 500) {
+              this.deletesMessage =
+                ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            } else {
+              this.deletesMessage =
+                'Problème de connexion. Veuillez vérifier votre réseau.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            }
             this.isLoading = false;
           }
         );
-      }
     }
-  
-    id:any
-    onEdit(item: any) {
-      this.editNom = item.nom;  // Set the current subject's name
-      this.editDescription = item.description;  // Set the current subject's description
-      this.id =item.id;
-    }
-    
-   onEditSubmit(editForm: any) {
+  }
+
+  id: any;
+  onEdit(item: any) {
+    this.editNom = item.nom; // Set the current subject's name
+    this.editDescription = item.description; // Set the current subject's description
+    this.id = item.id;
+  }
+
+  onEditSubmit(editForm: any) {
     if (editForm.valid) {
       this.isLoading = true;
       // Update the subject in tableData
       const updatedSubject = {
         nom: this.editNom,
-        description: this.editDescription
+        description: this.editDescription,
       };
       console.log('Subject updated:', updatedSubject);
-      
-      this._service.updateScolaireAnnuelle(this.id, {
-            nom: this.editNom,
-            description: this.editDescription
-          })
-          .subscribe(
-            (response) => {
-              
-              this.modifysuccess = 'Scolaire Annuelle modifier avec succès!';
-              //alert('Etablissement mis à jour avec succès');
-              this.isLoading = false;
-              this.ngOnInit();
-              editForm.reset();
-                setTimeout(() => {
+
+      this._service
+        .updateScolaireAnnuelle(this.id, {
+          nom: this.editNom,
+          description: this.editDescription,
+        })
+        .subscribe(
+          (response) => {
+            this.modifysuccess = 'Scolaire Annuelle modifier avec succès!';
+            //alert('Etablissement mis à jour avec succès');
+            this.isLoading = false;
+            this.ngOnInit();
+            editForm.reset();
+            setTimeout(() => {
               this.modifysuccess = '';
               console.log('After timeout: modifysuccess =', this.modifysuccess);
-              }, 2000);
-  
-            },
-            (error) => {
-              console.error('Erreur lors de la mise à jour du Scolaire Annuelle :', error);
-              alert('Erreur lors de la mise à jour');
-              this.isLoading = false;
+            }, 2000);
+          },
+          (error) => {
+            // Handle error cases
+            if (error.status === 500) {
+              this.deletesMessage =
+                ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
+            } else {
+              this.deletesMessage =
+                'Problème de connexion. Veuillez vérifier votre réseau.';
+              // Clear the error message after 3 seconds
+              setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
             }
-          );
-          
+            this.isLoading = false;
+          }
+        );
     }
   }
-  
-  
-  
-  confirmDelete(idE:any): void {
+
+  confirmDelete(idE: any): void {
     if (idE) {
-      this.isLoading=true
-  
+      this.isLoading = true;
+
       this._service.deleteScolaireAnnuelle(idE).subscribe(
         () => {
           this.deleteMessage = 'Scolaire Annuelle supprimé avec succès!';
           //alert('Etablissement supprimé avec succès');
           this.loadScolaireAnnuelle();
           //this.ngOnInit() // Actualiser la liste
-          this.isLoading=false
+          this.isLoading = false;
           setTimeout(() => {
-              this.deleteMessage = ''; // Clear the message after 2 seconds
-            }, 2000); 
+            this.deleteMessage = ''; // Clear the message after 2 seconds
+          }, 2000);
         },
         (error) => {
-          console.error('Erreur lors de Scolaire Annuelle:', error);
-          alert('Erreur lors de la suppression.');
-          this.isLoading=false
-  
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
+          this.isLoading = false;
         }
       );
     }
   }
-  
 
   printTable(): void {
     // Get the table element by its ID
@@ -175,29 +210,29 @@ export class BibliothequeComponent {
       console.error('Table element not found!');
       return;
     }
-  
+
     // Clone the table to modify it for printing
     const tableClone = tableElement.cloneNode(true) as HTMLElement;
-  
+
     // Remove the "Actions" column (last column) from the cloned table
     const headerRow = tableClone.querySelector('thead tr');
     const bodyRows = tableClone.querySelectorAll('tbody tr');
-  
+
     if (headerRow) {
       headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
     }
-  
-    bodyRows.forEach(row => {
+
+    bodyRows.forEach((row) => {
       row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
     });
-  
+
     // Create a new window for printing
     const printWindow = window.open('', '', 'width=900,height=650');
     if (!printWindow) {
       console.error('Failed to open print window.');
       return;
     }
-  
+
     // Add styled content to the new window
     printWindow.document.write(`
       <html>
@@ -303,24 +338,26 @@ export class BibliothequeComponent {
         </body>
       </html>
     `);
-  
+
     // Close the document and trigger the print dialog
     printWindow.document.close();
     printWindow.print();
   }
-  
+
   // Function to download the list as Excel
   downloadAsExcel(): void {
-    const tableElement = document.getElementById('Scolaire-annuelle') as HTMLTableElement;
-  
+    const tableElement = document.getElementById(
+      'Scolaire-annuelle'
+    ) as HTMLTableElement;
+
     if (!tableElement) {
       console.error('Table element not found!');
       return;
     }
-  
+
     // Generate table HTML
     const tableHTML = tableElement.outerHTML;
-  
+
     // Create XML data for Excel
     const excelData = `
       <html xmlns:o="urn:schemas-microsoft-com:office:office"
@@ -346,20 +383,20 @@ export class BibliothequeComponent {
         <body>${tableHTML}</body>
       </html>
     `;
-  
+
     // Create a Blob from the Excel data
-    const excelBlob = new Blob([excelData], { type: 'application/vnd.ms-excel' });
+    const excelBlob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel',
+    });
     const excelURL = URL.createObjectURL(excelBlob);
-  
+
     // Trigger download
     const link = document.createElement('a');
     link.href = excelURL;
     link.download = 'BiblioTable.xls'; // Use .xls for compatibility
     link.click();
-  
+
     // Clean up
     URL.revokeObjectURL(excelURL);
   }
-  
-
 }

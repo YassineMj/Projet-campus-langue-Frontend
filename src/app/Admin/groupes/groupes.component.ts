@@ -2,14 +2,12 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { GlobalService } from '../global.service';
 import * as bootstrap from 'bootstrap';
 
-
 @Component({
   selector: 'app-groupes',
   templateUrl: './groupes.component.html',
-  styleUrls: ['./groupes.component.css']
+  styleUrls: ['./groupes.component.css'],
 })
 export class GroupesComponent {
- 
   groupes: any[] = []; // Stocker les groupes
   filteredGroupes: any[] = []; // Groupes filtrés pour la recherche
   searchTerm: string = ''; // Terme de recherche
@@ -33,7 +31,10 @@ export class GroupesComponent {
 
   isLoading: boolean = false;
 
-  constructor(private _service: GlobalService,private cdr: ChangeDetectorRef) {}
+  constructor(
+    private _service: GlobalService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadGroupes();
@@ -41,8 +42,8 @@ export class GroupesComponent {
     this.loadProfs();
   }
 
-   // Charger les groupes
-   loadGroupes(): void {
+  // Charger les groupes
+  loadGroupes(): void {
     this.isLoading = true;
     this._service.getGroupes().subscribe(
       (data) => {
@@ -81,11 +82,13 @@ export class GroupesComponent {
     );
   }
 
+  deletesMessage: string = ''; // This will hold the success message
   deleteMessage: string = ''; // This will hold the success message
   successMessage: string = ''; // This will hold the success message
   modifysuccess: string = '';
   hideSuccessMessage(): void {
     this.successMessage = ''; // Clear the message, hiding the alert
+    this.deletesMessage = '';
   }
 
   // Ajouter un nouveau groupe
@@ -96,24 +99,37 @@ export class GroupesComponent {
         nomGroupe: this.nomGroupe,
         emploidutemp: this.emploidutemp,
         coursId: this.coursId,
-        profId: this.profId
+        profId: this.profId,
       };
 
       this._service.createGroupe(newGroupe).subscribe(
         (response) => {
-          
-         this.successMessage = 'Groupe ajouté avec succès!'; // Set success message
+          this.successMessage = 'Groupe ajouté avec succès!'; // Set success message
           //alert('Groupe ajouté avec succès !');
           form.reset();
           this.ngOnInit(); // Recharger la liste des groupes
           this.isLoading = false;
-               setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
+          setTimeout(() => {
+            this.successMessage = ''; // Hide the success message after 5 seconds
+          }, 2000);
         },
         (error) => {
-          console.error('Erreur lors de l\'ajout du groupe :', error);
-          alert('Une erreur s\'est produite lors de l\'ajout.');
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
           this.isLoading = false;
         }
       );
@@ -129,7 +145,6 @@ export class GroupesComponent {
     this.editProfId = item.prof.id;
   }
 
-  
   // Soumettre les modifications d'un groupe
   onEditSubmit(editForm: any): void {
     if (editForm.valid && this.editId !== null) {
@@ -138,99 +153,128 @@ export class GroupesComponent {
         nomGroupe: this.editNomGroupe,
         emploidutemp: this.editEmploidutemp,
         coursId: this.editCoursId,
-        profId: this.editProfId
+        profId: this.editProfId,
       };
 
-          this._service.updateGroupe(this.editId, updatedGroupe).subscribe(
-         (response) => {
+      this._service.updateGroupe(this.editId, updatedGroupe).subscribe(
+        (response) => {
           console.log('Update response:', response); // Debugging
           this.modifysuccess = 'Groupe modifier avec succès!';
           this.isLoading = false;
-          this.ngOnInit(); 
+          this.ngOnInit();
           editForm.reset();
-              setTimeout(() => {
-          this.modifysuccess = '';
-          console.log('After timeout: modifysuccess =', this.modifysuccess);
-        }, 2000);
-          },
-          
+          setTimeout(() => {
+            this.modifysuccess = '';
+            console.log('After timeout: modifysuccess =', this.modifysuccess);
+          }, 2000);
+        },
+
         (error) => {
-          console.error('Erreur lors de la mise à jour du groupe :', error);
-          alert('Erreur lors de la mise à jour.');
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
           this.isLoading = false;
-          
         }
       );
     }
   }
 
-  
-
   // Supprimer un groupe
-  confirmDelete(idG:any): void {
+  confirmDelete(idG: any): void {
     this.isLoading = true;
     this._service.deleteGroupe(idG).subscribe(
       () => {
         this.deleteMessage = 'Groupe supprimé avec succès!';
         //alert('Groupe supprimé avec succès !');
-        this.loadGroupes()
+        this.loadGroupes();
         this.isLoading = false;
         setTimeout(() => {
           this.deleteMessage = ''; // Hide the success message after 5 seconds
         }, 2000);
       },
       (error) => {
-        console.error('Erreur lors de la suppression du groupe :', error);
-        alert('Erreur lors de la suppression.');
-        this.isLoading=false
+        // Handle error cases
+        if (error.status === 500) {
+          this.deletesMessage =
+            'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+          // Clear the error message after 3 seconds
+          setTimeout(() => {
+            this.deletesMessage = ''; // Correct variable name
+          }, 3000);
+        } else {
+          this.deletesMessage =
+            'Problème de connexion. Veuillez vérifier votre réseau.';
+          // Clear the error message after 3 seconds
+          setTimeout(() => {
+            this.deletesMessage = ''; // Correct variable name
+          }, 3000);
+        }
+        this.isLoading = false;
       }
     );
   }
 
   // Filtrer les groupes
   filterGroupes(): void {
-    this.filteredGroupes = this.groupes.filter(g =>
-      g.nomGroupe?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      g.cours.libelle?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      g.emploiDuTemps?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      g.prof.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      g.prof.prenom?.toLowerCase().includes(this.searchTerm.toLowerCase()) 
+    this.filteredGroupes = this.groupes.filter(
+      (g) =>
+        g.nomGroupe?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        g.cours.libelle
+          ?.toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        g.emploiDuTemps
+          ?.toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
+        g.prof.nom?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        g.prof.prenom?.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
+  printTable(): void {
+    // Get the table element by its ID
+    const tableElement = document.getElementById('GroupeTable');
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
 
-printTable(): void {
-  // Get the table element by its ID
-  const tableElement = document.getElementById('GroupeTable');
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
-  }
+    // Clone the table to modify it for printing
+    const tableClone = tableElement.cloneNode(true) as HTMLElement;
 
-  // Clone the table to modify it for printing
-  const tableClone = tableElement.cloneNode(true) as HTMLElement;
+    // Remove the "Actions" column (last column) from the cloned table
+    const headerRow = tableClone.querySelector('thead tr');
+    const bodyRows = tableClone.querySelectorAll('tbody tr');
 
-  // Remove the "Actions" column (last column) from the cloned table
-  const headerRow = tableClone.querySelector('thead tr');
-  const bodyRows = tableClone.querySelectorAll('tbody tr');
+    if (headerRow) {
+      headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
+    }
 
-  if (headerRow) {
-    headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
-  }
+    bodyRows.forEach((row) => {
+      row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
+    });
 
-  bodyRows.forEach(row => {
-    row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
-  });
+    // Create a new window for printing
+    const printWindow = window.open('', '', 'width=900,height=650');
+    if (!printWindow) {
+      console.error('Failed to open print window.');
+      return;
+    }
 
-  // Create a new window for printing
-  const printWindow = window.open('', '', 'width=900,height=650');
-  if (!printWindow) {
-    console.error('Failed to open print window.');
-    return;
-  }
-
-  // Add styled content to the new window
-  printWindow.document.write(`
+    // Add styled content to the new window
+    printWindow.document.write(`
     <html>
       <head>
         <title>Groupe List</title>
@@ -335,26 +379,27 @@ printTable(): void {
     </html>
   `);
 
-  // Close the document and trigger the print dialog
-  printWindow.document.close();
-  printWindow.print();
-}
-
-
-// Function to download the list as Excel
-downloadAsExcel(): void {
-  const tableElement = document.getElementById('GroupeTable') as HTMLTableElement;
-
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
+    // Close the document and trigger the print dialog
+    printWindow.document.close();
+    printWindow.print();
   }
 
-  // Generate table HTML
-  const tableHTML = tableElement.outerHTML;
+  // Function to download the list as Excel
+  downloadAsExcel(): void {
+    const tableElement = document.getElementById(
+      'GroupeTable'
+    ) as HTMLTableElement;
 
-  // Create XML data for Excel
-  const excelData = `
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
+
+    // Generate table HTML
+    const tableHTML = tableElement.outerHTML;
+
+    // Create XML data for Excel
+    const excelData = `
     <html xmlns:o="urn:schemas-microsoft-com:office:office"
           xmlns:x="urn:schemas-microsoft-com:office:excel"
           xmlns="http://www.w3.org/TR/REC-html40">
@@ -379,16 +424,19 @@ downloadAsExcel(): void {
     </html>
   `;
 
-  // Create a Blob from the Excel data
-  const excelBlob = new Blob([excelData], { type: 'application/vnd.ms-excel' });
-  const excelURL = URL.createObjectURL(excelBlob);
+    // Create a Blob from the Excel data
+    const excelBlob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel',
+    });
+    const excelURL = URL.createObjectURL(excelBlob);
 
-  // Trigger download
-  const link = document.createElement('a');
-  link.href = excelURL;
-  link.download = 'MatiereList.xls'; // Use .xls for compatibility
-  link.click();
+    // Trigger download
+    const link = document.createElement('a');
+    link.href = excelURL;
+    link.download = 'MatiereList.xls'; // Use .xls for compatibility
+    link.click();
 
-  // Clean up
-  URL.revokeObjectURL(excelURL);
-}}
+    // Clean up
+    URL.revokeObjectURL(excelURL);
+  }
+}

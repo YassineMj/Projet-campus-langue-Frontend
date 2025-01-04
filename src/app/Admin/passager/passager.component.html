@@ -37,7 +37,21 @@
       </div>
       <div class="card">
         <div class="card-body">
-          <!-- Success message container -->
+          <!--  message error -->
+          <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deletesMessage"
+              class="alert alert-delete alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <strong>Erreur!</strong>
+              {{ deletesMessage }}
+            </div>
+          </div>
+
           <!-- Success message container -->
           <div class="container bootstrap snippets bootdey">
             <div
@@ -52,6 +66,7 @@
               {{ deleteMessage }}
             </div>
           </div>
+
           <div class="mb-2 d-flex justify-content-between align-items-center">
             <div class="position-relative">
               <span class="position-absolute search"
@@ -164,7 +179,7 @@
                                   [(ngModel)]="data1.nom"
                                   #nomInput="ngModel"
                                   required
-                                  placeholder="Nom"
+                                  placeholder="Nom (max 30 caractères)"
                                 />
                                 <div
                                   *ngIf="nomInput.invalid && nomInput.touched"
@@ -189,7 +204,7 @@
                                   [(ngModel)]="data1.prenom"
                                   #prenomInput="ngModel"
                                   required
-                                  placeholder="Prénom"
+                                  placeholder="Prénom (max 30 caractères)"
                                 />
                                 <div
                                   *ngIf="
@@ -240,7 +255,6 @@
                                 </div>
                               </div>
                             </div>
-
                             <br />
 
                             <div class="row">
@@ -291,7 +305,7 @@
                                     id="addTelephone"
                                     name="telephone"
                                     [(ngModel)]="data1.telephone"
-                                    placeholder="Téléphone"
+                                    placeholder="Téléphone (max 20 caractères)"
                                   />
                                 </div>
                               </div>
@@ -303,7 +317,6 @@
                                     class="form-label"
                                   >
                                     Date de naissance
-                                    
                                   </label>
                                   <input
                                     type="date"
@@ -341,7 +354,7 @@
                                   id="addNomPere"
                                   name="nomPere"
                                   [(ngModel)]="data1.nomPere"
-                                  placeholder="Nom de Père"
+                                  placeholder="Nom de Père (max 50 caractères)"
                                 />
                               </div>
                             </div>
@@ -357,7 +370,7 @@
                                   id="addTelephonePere"
                                   name="telephonePere"
                                   [(ngModel)]="data1.telPere"
-                                  placeholder="Téléphone Père"
+                                  placeholder="Téléphone Père (max 20 caractères)"
                                 />
                               </div>
                             </div>
@@ -374,7 +387,7 @@
                                   id="addNomMere"
                                   name="nomMere"
                                   [(ngModel)]="data1.nomMere"
-                                  placeholder="Nom de Mère"
+                                  placeholder="Nom de Mère (max 50 caractères)"
                                 />
                               </div>
                             </div>
@@ -391,7 +404,7 @@
                                   id="addTelephoneMere"
                                   name="telephoneMere"
                                   [(ngModel)]="data1.telMere"
-                                  placeholder="Téléphone Mère"
+                                  placeholder="Téléphone Mère (max 20 caractères)"
                                 />
                               </div>
                             </div>
@@ -417,7 +430,7 @@
                                   id="addCommentaire"
                                   name="commentaire"
                                   [(ngModel)]="data1.commentaire"
-                                  placeholder="Commentaire"
+                                  placeholder="Commentaire (max 500 caractères)"
                                 ></textarea>
                               </div>
                             </div>
@@ -428,6 +441,20 @@
                       <!-- Modal footer with buttons -->
                       <!-- Bouton de soumission -->
                       <div class="modal-footer justify-content-center foot">
+                        <!--  message error -->
+                        <div class="container bootstrap snippets bootdey">
+                          <div
+                            *ngIf="deletesMessage"
+                            class="alert alert-delete alert-white rounded mx-auto w-75"
+                            role="alert"
+                          >
+                            <div class="icon">
+                              <i class="fa-solid fa-circle-exclamation"></i>
+                            </div>
+                            <strong>Erreur!</strong>
+                            {{ deletesMessage }}
+                          </div>
+                        </div>
                         <!-- Success message container -->
                         <div class="container bootstrap snippets bootdey">
                           <div
@@ -469,6 +496,7 @@
               </div>
             </div>
           </div>
+
           <!-- Table for displaying list of items with only the required attributes -->
           <div class="table-responsive table-container" id="passagertable">
             <div *ngIf="isLoading" style="text-align: center">
@@ -503,7 +531,7 @@
                   <td>{{ item.prenom }}</td>
                   <td>{{ item.etablissement.nom }}</td>
                   <td>{{ item.niveau.nom }}</td>
-                  <td>{{item.dateN}}</td>
+                  <td>{{ item.dateN }}</td>
 
                   <!-- <td>{{ item.commentaire }}</td> -->
                   <td class="td-actions text-right d-flex justify-content-end">
@@ -518,6 +546,7 @@
                     >
                       <i class="fa fa-edit" style="font-size: medium"></i>
                     </button>
+
                     <!-- Delete Button -->
                     <button
                       type="button"
@@ -527,6 +556,7 @@
                     >
                       <i class="fa fa-trash" style="font-size: medium"></i>
                     </button>
+
                     <!-- Details Button -->
                     <button
                       type="button"
@@ -612,12 +642,11 @@
                     </div>
                     <br />
                     <div class="row mb-2">
-
                       <div class="col-6">
                         <b>Téléphone:</b> {{ selectedItem.telephone }}
                       </div>
-                        <div class="col-6">
-                        <b>Date de naissance:</b> {{selectedItem.dateN}}
+                      <div class="col-6">
+                        <b>Date de naissance:</b> {{ selectedItem.dateN }}
                       </div>
                     </div>
                     <br />
@@ -731,7 +760,7 @@
                               [(ngModel)]="data2.nom"
                               #nomInput="ngModel"
                               required
-                              placeholder="Nom"
+                              placeholder="Nom  (max 30 caractères)"
                             />
                             <div
                               *ngIf="nomInput.invalid && nomInput.touched"
@@ -756,7 +785,7 @@
                               [(ngModel)]="data2.prenom"
                               #prenomInput="ngModel"
                               required
-                              placeholder="Prénom"
+                              placeholder="Prénom (max 30 caractères)"
                             />
                             <div
                               *ngIf="prenomInput.invalid && prenomInput.touched"
@@ -801,7 +830,6 @@
                             </div>
                           </div>
                         </div>
-
                       </div>
                       <br />
 
@@ -844,32 +872,26 @@
                               id="editTelephone"
                               name="telephone"
                               [(ngModel)]="data2.telephone"
-                              placeholder="Téléphone"
+                              placeholder="Téléphone (max 20 caractères)"
                             />
                           </div>
                         </div>
 
-                           <div class="col-md-4">
-                                <div class="mb-3">
-                                  <label
-                                    for="addDateNaissance"
-                                    class="form-label"
-                                  >
-                                    Date de naissance
-                                    
-                                  </label>
-                                  <input
-                                    type="date"
-                                    class="form-control"
-                                    id="addDateNaissance"
-                                    name="dateNaissance"
-                                    [(ngModel)]="data2.dateN"
-
-                                    required
-                                  />
-                                </div>
-                              </div>
-                      
+                        <div class="col-md-4">
+                          <div class="mb-3">
+                            <label for="addDateNaissance" class="form-label">
+                              Date de naissance
+                            </label>
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="addDateNaissance"
+                              name="dateNaissance"
+                              [(ngModel)]="data2.dateN"
+                              required
+                            />
+                          </div>
+                        </div>
                       </div>
                       <hr
                         style="
@@ -896,7 +918,7 @@
                               id="editTelephonePere"
                               name="telephonePere"
                               [(ngModel)]="data2.telPere"
-                              placeholder="Téléphone Père"
+                              placeholder="Téléphone Père  (max 20 caractères)"
                             />
                           </div>
                         </div>
@@ -913,7 +935,7 @@
                               id="editNomMere"
                               name="nomMere"
                               [(ngModel)]="data2.nomMere"
-                              placeholder="Nom de Mère"
+                              placeholder="Nom de Mère  (max 50 caractères)"
                             />
                           </div>
                         </div>
@@ -922,7 +944,7 @@
                         <div class="col-md-4">
                           <div class="mb-3">
                             <label for="editTelephoneMere" class="form-label"
-                              >Téléphone Mère</label
+                              >Téléphone Mère (max 20 caractères)</label
                             >
                             <input
                               type="text"
@@ -934,11 +956,11 @@
                             />
                           </div>
                         </div>
-                          <!-- Nom de Père -->
+                        <!-- Nom de Père -->
                         <div class="col-md-6">
                           <div class="mb-3">
                             <label for="editNomPere" class="form-label"
-                              >Nom de Père</label
+                              >Nom de Père (max 50 caractères)</label
                             >
                             <input
                               type="text"
@@ -965,7 +987,7 @@
                               id="editCommentaire"
                               name="commentaire"
                               [(ngModel)]="data2.commentaire"
-                              placeholder="Commentaire"
+                              placeholder="Commentaire  (max 50 caractères)"
                             ></textarea>
                           </div>
                         </div>
@@ -975,6 +997,21 @@
 
                   <!-- Modal footer with buttons -->
                   <div class="modal-footer justify-content-center foot">
+                    <!--  message error -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
+
                     <!-- Success Alert (before footer and centered) -->
                     <div class="container bootstrap snippets bootdey">
                       <div
@@ -989,6 +1026,7 @@
                         {{ modifysuccess }}
                       </div>
                     </div>
+
                     <button
                       type="button"
                       class="btn btn-round colormodalfermer"

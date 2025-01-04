@@ -2,19 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { GlobalService } from '../global.service';
 import * as bootstrap from 'bootstrap';
 
-
 @Component({
   selector: 'app-niveaux',
   templateUrl: './niveaux.component.html',
-  styleUrls: ['./niveaux.component.css']
+  styleUrls: ['./niveaux.component.css'],
 })
 export class NiveauxComponent implements OnInit {
-
   constructor(private _service: GlobalService) {}
 
-  
   filterNiveaux(): void {
-    this.filteredNiveaux = this.niveaux.filter(n => 
+    this.filteredNiveaux = this.niveaux.filter((n) =>
       n.nom?.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
@@ -27,12 +24,10 @@ export class NiveauxComponent implements OnInit {
         this.niveaux = data;
         this.filteredNiveaux = this.niveaux;
         this.isLoading = false; // Désactiver le spinner
-
       },
       (error) => {
         console.error('Erreur lors du chargement des niveaux', error);
         this.isLoading = false; // Désactiver le spinner
-
       }
     );
   }
@@ -50,13 +45,14 @@ export class NiveauxComponent implements OnInit {
   filteredNiveaux: any[] = [];
   searchTerm: string = '';
 
-  
+  deletesMessage: string = ''; // This will hold the success message
   deleteMessage: string = ''; // This will hold the success message
   successMessage: string = ''; // This will hold the success message
   modifysuccess: string = '';
 
   hideSuccessMessage(): void {
     this.successMessage = ''; // Clear the message, hiding the alert
+    this.deletesMessage = '';
   }
 
   // Function to handle form submission for adding a new level
@@ -64,8 +60,8 @@ export class NiveauxComponent implements OnInit {
     if (form.valid) {
       this.isLoading = true;
       const newLevel = {
-        nom: this.nom
-      };      
+        nom: this.nom,
+      };
       this._service.createNiveau(newLevel).subscribe(
         (response) => {
           this.successMessage = 'Niveau ajouté avec succès!'; // Set success message
@@ -74,14 +70,27 @@ export class NiveauxComponent implements OnInit {
           this.ngOnInit();
           this.isLoading = false;
           setTimeout(() => {
-          this.successMessage = ''; // Hide the success message after 5 seconds
-        }, 2000);
+            this.successMessage = ''; // Hide the success message after 5 seconds
+          }, 2000);
         },
         (error) => {
-          console.error('Erreur lors de l\'ajout du niveau:', error);
-          alert('Une erreur s\'est produite lors de l\'ajout.');
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
           this.isLoading = false;
-
         }
       );
     }
@@ -89,21 +98,21 @@ export class NiveauxComponent implements OnInit {
 
   id: any;
   onEdit(item: any) {
-    this.editNom = item.nom;  // Set the current level's name
+    this.editNom = item.nom; // Set the current level's name
     this.id = item.id;
   }
-  
+
   onEditSubmit(editForm: any) {
     if (editForm.valid) {
       this.isLoading = true;
 
       const updatedLevel = {
-        nom: this.editNom
+        nom: this.editNom,
       };
-      
+
       this._service.updateNiveau(this.id, updatedLevel).subscribe(
         (response) => {
-             this.modifysuccess = 'Niveau modifié avec succès !';
+          this.modifysuccess = 'Niveau modifié avec succès !';
           //alert('Niveau mis à jour avec succès');
           this.ngOnInit();
           editForm.reset();
@@ -111,20 +120,31 @@ export class NiveauxComponent implements OnInit {
           setTimeout(() => {
             this.modifysuccess = ''; // Clear the message after 2 seconds
           }, 2000);
-
         },
         (error) => {
-          console.error('Erreur lors de la mise à jour du niveau :', error);
-          alert('Erreur lors de la mise à jour');
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
           this.isLoading = false;
-
         }
       );
     }
   }
 
-
-  confirmDelete(idN:any): void {
+  confirmDelete(idN: any): void {
     if (idN) {
       this.isLoading = true;
 
@@ -135,52 +155,64 @@ export class NiveauxComponent implements OnInit {
           this.loadNiveaux();
           this.isLoading = false;
           setTimeout(() => {
-                      this.deleteMessage = ''; // Clear the message after 2 seconds
-                    }, 2000);   
+            this.deleteMessage = ''; // Clear the message after 2 seconds
+          }, 2000);
         },
         (error) => {
-          console.error('Erreur lors de la suppression du niveau:', error);
-          alert('Erreur lors de la suppression.');
+          // Handle error cases
+          if (error.status === 500) {
+            this.deletesMessage =
+              'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          } else {
+            this.deletesMessage =
+              'Problème de connexion. Veuillez vérifier votre réseau.';
+            // Clear the error message after 3 seconds
+            setTimeout(() => {
+              this.deletesMessage = ''; // Correct variable name
+            }, 3000);
+          }
           this.isLoading = false;
         }
       );
     }
   }
- 
 
+  printTable(): void {
+    // Get the table element by its ID
+    const tableElement = document.getElementById('NiveauxTable');
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
 
-printTable(): void {
-  // Get the table element by its ID
-  const tableElement = document.getElementById('NiveauxTable');
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
-  }
+    // Clone the table to modify it for printing
+    const tableClone = tableElement.cloneNode(true) as HTMLElement;
 
-  // Clone the table to modify it for printing
-  const tableClone = tableElement.cloneNode(true) as HTMLElement;
+    // Remove the "Actions" column (last column) from the cloned table
+    const headerRow = tableClone.querySelector('thead tr');
+    const bodyRows = tableClone.querySelectorAll('tbody tr');
 
-  // Remove the "Actions" column (last column) from the cloned table
-  const headerRow = tableClone.querySelector('thead tr');
-  const bodyRows = tableClone.querySelectorAll('tbody tr');
+    if (headerRow) {
+      headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
+    }
 
-  if (headerRow) {
-    headerRow.removeChild(headerRow.lastElementChild!); // Remove "Actions" header
-  }
+    bodyRows.forEach((row) => {
+      row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
+    });
 
-  bodyRows.forEach(row => {
-    row.removeChild(row.lastElementChild!); // Remove "Actions" cell from each row
-  });
+    // Create a new window for printing
+    const printWindow = window.open('', '', 'width=900,height=650');
+    if (!printWindow) {
+      console.error('Failed to open print window.');
+      return;
+    }
 
-  // Create a new window for printing
-  const printWindow = window.open('', '', 'width=900,height=650');
-  if (!printWindow) {
-    console.error('Failed to open print window.');
-    return;
-  }
-
-  // Add styled content to the new window
-  printWindow.document.write(`
+    // Add styled content to the new window
+    printWindow.document.write(`
     <html>
       <head>
         <title>Niveaux List</title>
@@ -285,26 +317,27 @@ printTable(): void {
     </html>
   `);
 
-  // Close the document and trigger the print dialog
-  printWindow.document.close();
-  printWindow.print();
-}
-
-
-// Function to download the list as Excel
-downloadAsExcel(): void {
-  const tableElement = document.getElementById('NiveauxTable') as HTMLTableElement;
-
-  if (!tableElement) {
-    console.error('Table element not found!');
-    return;
+    // Close the document and trigger the print dialog
+    printWindow.document.close();
+    printWindow.print();
   }
 
-  // Generate table HTML
-  const tableHTML = tableElement.outerHTML;
+  // Function to download the list as Excel
+  downloadAsExcel(): void {
+    const tableElement = document.getElementById(
+      'NiveauxTable'
+    ) as HTMLTableElement;
 
-  // Create XML data for Excel
-  const excelData = `
+    if (!tableElement) {
+      console.error('Table element not found!');
+      return;
+    }
+
+    // Generate table HTML
+    const tableHTML = tableElement.outerHTML;
+
+    // Create XML data for Excel
+    const excelData = `
     <html xmlns:o="urn:schemas-microsoft-com:office:office"
           xmlns:x="urn:schemas-microsoft-com:office:excel"
           xmlns="http://www.w3.org/TR/REC-html40">
@@ -329,18 +362,19 @@ downloadAsExcel(): void {
     </html>
   `;
 
-  // Create a Blob from the Excel data
-  const excelBlob = new Blob([excelData], { type: 'application/vnd.ms-excel' });
-  const excelURL = URL.createObjectURL(excelBlob);
+    // Create a Blob from the Excel data
+    const excelBlob = new Blob([excelData], {
+      type: 'application/vnd.ms-excel',
+    });
+    const excelURL = URL.createObjectURL(excelBlob);
 
-  // Trigger download
-  const link = document.createElement('a');
-  link.href = excelURL;
-  link.download = 'MatiereList.xls'; // Use .xls for compatibility
-  link.click();
+    // Trigger download
+    const link = document.createElement('a');
+    link.href = excelURL;
+    link.download = 'MatiereList.xls'; // Use .xls for compatibility
+    link.click();
 
-  // Clean up
-  URL.revokeObjectURL(excelURL);
-}
-  
+    // Clean up
+    URL.revokeObjectURL(excelURL);
+  }
 }

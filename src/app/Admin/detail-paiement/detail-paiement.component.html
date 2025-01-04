@@ -19,7 +19,21 @@
 
 <br />
 <div class="container" style="margin-top: 0%">
-  <!-- Success message container -->
+ <!--  message error -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
+
   <!-- Success message container -->
   <div class="container bootstrap snippets bootdey">
     <div
@@ -99,7 +113,7 @@
               <strong>Téléphone : </strong>
               <span>{{ etudiant.telephone }}</span>
             </div>
-             <div class="col-6">
+            <div class="col-6">
               <strong>Date de naissance : </strong>
               <span>11-08-2001</span>
             </div>
@@ -276,6 +290,21 @@
                   </div>
 
                   <div class="modal-footer justify-content-center">
+                     <!--  message error -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
+
                     <!-- Success Alert (before footer and centered) -->
                     <div class="container bootstrap snippets bootdey">
                       <div
@@ -552,6 +581,21 @@
 
                       <!-- Modal Footer with Submit -->
                       <div class="modal-footer justify-content-center">
+                         <!--  message error -->
+                    <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
+
                         <!-- Success message container -->
                         <div class="container bootstrap snippets bootdey">
                           <div
