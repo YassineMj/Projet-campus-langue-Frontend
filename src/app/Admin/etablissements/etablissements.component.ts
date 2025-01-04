@@ -29,13 +29,13 @@ export class EtablissementsComponent implements OnInit {
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
-        
         this.isLoading = false; // Désactiver le spinner
-        this.deletesMessage ='Problème de connexion. Veuillez vérifier votre réseau.';
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
         setTimeout(() => {
-                this.deletesMessage = ''; // Correct variable name
-              }, 3000);
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -89,7 +89,7 @@ export class EtablissementsComponent implements OnInit {
             }, 2000);
           },
           (error) => {
-                        this.isLoading = false;
+            this.isLoading = false;
 
             // Handle error cases
             if (error.status === 500) {
@@ -99,7 +99,7 @@ export class EtablissementsComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
-              return
+              return;
             } else {
               this.deletesMessage =
                 'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -107,7 +107,7 @@ export class EtablissementsComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
-              return
+              return;
             }
           }
         );
@@ -149,7 +149,7 @@ export class EtablissementsComponent implements OnInit {
             }, 2000);
           },
           (error) => {
-                        this.isLoading = false;
+            this.isLoading = false;
 
             // Handle error cases
             if (error.status === 500) {
@@ -159,7 +159,7 @@ export class EtablissementsComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
-              return
+              return;
             } else {
               this.deletesMessage =
                 'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -167,7 +167,7 @@ export class EtablissementsComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
-              return
+              return;
             }
           }
         );
@@ -199,7 +199,7 @@ export class EtablissementsComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
-            return
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -207,7 +207,7 @@ export class EtablissementsComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
-            return
+            return;
           }
           this.isLoading = false;
         }

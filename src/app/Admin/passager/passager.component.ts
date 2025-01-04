@@ -9,6 +9,7 @@ import { GlobalService } from '../global.service';
   styleUrls: ['./passager.component.css'],
 })
 export class PassagerComponent implements OnInit {
+  
   constructor(private _service: GlobalService) {}
 
   passages: any[] = [];
@@ -73,8 +74,13 @@ export class PassagerComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des passages', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -98,8 +104,13 @@ export class PassagerComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des établissements', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -112,8 +123,13 @@ export class PassagerComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des niveaux', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -213,6 +229,7 @@ export class PassagerComponent implements OnInit {
             }, 2000);
           },
           (error) => {
+            this.isLoading = false;
             // Handle error cases
             if (error.status === 500) {
               this.deletesMessage =
@@ -221,6 +238,7 @@ export class PassagerComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             } else {
               this.deletesMessage =
                 'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -228,9 +246,8 @@ export class PassagerComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             }
-
-            this.isLoading = false;
           }
         );
       }
@@ -280,7 +297,6 @@ export class PassagerComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -289,6 +305,7 @@ export class PassagerComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -296,6 +313,7 @@ export class PassagerComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           }
         }
       );
@@ -321,15 +339,15 @@ export class PassagerComponent implements OnInit {
         },
         (error) => {
           this.isLoading = false;
-
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
-              'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+              'Impossible de supprimer ?il est déjà utilisé ailleurs.';
             // Clear the error message after 3 seconds
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -337,6 +355,7 @@ export class PassagerComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           }
         }
       );

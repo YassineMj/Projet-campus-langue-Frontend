@@ -50,8 +50,13 @@ export class GestionScolaireComponent {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des passages', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -95,8 +100,13 @@ export class GestionScolaireComponent {
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
-        console.error('Erreur lors du chargement des informations', error);
-        this.isLoading = false; // Désactiver le spinner
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -144,6 +154,7 @@ export class GestionScolaireComponent {
           }, 2000);
         },
         (error) => {
+          this.isLoading = false; // Désactiver le mode de chargement
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -152,6 +163,7 @@ export class GestionScolaireComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -159,8 +171,8 @@ export class GestionScolaireComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           }
-          this.isLoading = false; // Désactiver le spinner
         }
       );
     }
@@ -180,8 +192,13 @@ export class GestionScolaireComponent {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des paiements', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -249,6 +266,7 @@ export class GestionScolaireComponent {
           },
 
           (error) => {
+            this.isLoading = false; // Désactiver le mode de chargement
             // Handle error cases
             if (error.status === 500) {
               this.deletesMessage =
@@ -257,6 +275,7 @@ export class GestionScolaireComponent {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             } else {
               this.deletesMessage =
                 'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -264,8 +283,8 @@ export class GestionScolaireComponent {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             }
-            this.isLoading = false; // Désactiver le spinner
           }
         );
     }
@@ -290,14 +309,16 @@ export class GestionScolaireComponent {
         }, 2000);
       },
       (error) => {
+        this.isLoading = false;
         // Handle error cases
         if (error.status === 500) {
           this.deletesMessage =
-            'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            'Impossible de supprimer ?il est déjà utilisé ailleurs.';
           // Clear the error message after 3 seconds
           setTimeout(() => {
             this.deletesMessage = ''; // Correct variable name
           }, 3000);
+          return;
         } else {
           this.deletesMessage =
             'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -305,8 +326,8 @@ export class GestionScolaireComponent {
           setTimeout(() => {
             this.deletesMessage = ''; // Correct variable name
           }, 3000);
+          return;
         }
-        this.isLoading = false; // Désactiver le spinner
       }
     );
   }

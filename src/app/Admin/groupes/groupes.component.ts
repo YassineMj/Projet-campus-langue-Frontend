@@ -52,8 +52,13 @@ export class GroupesComponent {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des groupes', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -65,7 +70,13 @@ export class GroupesComponent {
         this.coursList = data;
       },
       (error) => {
-        console.error('Erreur lors du chargement des cours', error);
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -77,7 +88,13 @@ export class GroupesComponent {
         this.profsList = data;
       },
       (error) => {
-        console.error('Erreur lors du chargement des profs', error);
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -114,6 +131,7 @@ export class GroupesComponent {
           }, 2000);
         },
         (error) => {
+          this.isLoading = false; // Désactiver le mode de chargement
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -122,6 +140,7 @@ export class GroupesComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -129,8 +148,8 @@ export class GroupesComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           }
-          this.isLoading = false;
         }
       );
     }
@@ -170,6 +189,7 @@ export class GroupesComponent {
         },
 
         (error) => {
+          this.isLoading = false; // Désactiver le mode de chargement
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -178,6 +198,7 @@ export class GroupesComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -185,8 +206,8 @@ export class GroupesComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           }
-          this.isLoading = false;
         }
       );
     }
@@ -206,14 +227,16 @@ export class GroupesComponent {
         }, 2000);
       },
       (error) => {
+        this.isLoading = false;
         // Handle error cases
         if (error.status === 500) {
           this.deletesMessage =
-            'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            'Impossible de supprimer ?il est déjà utilisé ailleurs.';
           // Clear the error message after 3 seconds
           setTimeout(() => {
             this.deletesMessage = ''; // Correct variable name
           }, 3000);
+          return;
         } else {
           this.deletesMessage =
             'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -221,8 +244,8 @@ export class GroupesComponent {
           setTimeout(() => {
             this.deletesMessage = ''; // Correct variable name
           }, 3000);
+          return;
         }
-        this.isLoading = false;
       }
     );
   }

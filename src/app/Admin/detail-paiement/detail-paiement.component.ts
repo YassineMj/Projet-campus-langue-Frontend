@@ -119,8 +119,13 @@ export class DetailPaiementComponent {
       },
 
       (error) => {
-        alert('Erreur lors de chargement du Etudiant.');
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -232,6 +237,7 @@ export class DetailPaiementComponent {
         }, 3000);
       },
       error: (error) => {
+        this.isLoading = false; // Désactiver le mode de chargement
         // Handle error cases
         if (error.status === 500) {
           this.deletesMessage =
@@ -240,6 +246,7 @@ export class DetailPaiementComponent {
           setTimeout(() => {
             this.deletesMessage = ''; // Correct variable name
           }, 3000);
+          return;
         } else {
           this.deletesMessage =
             'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -247,8 +254,8 @@ export class DetailPaiementComponent {
           setTimeout(() => {
             this.deletesMessage = ''; // Correct variable name
           }, 3000);
+          return;
         }
-        this.isLoadingPai = false;
       },
     });
   }
@@ -278,14 +285,16 @@ export class DetailPaiementComponent {
               console.log(this.filteredPaiements);
             },
             (error) => {
+              this.isLoading = false;
               // Handle error cases
               if (error.status === 500) {
                 this.deletesMessage =
-                  'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+                  'Impossible de supprimer ?il est déjà utilisé ailleurs.';
                 // Clear the error message after 3 seconds
                 setTimeout(() => {
                   this.deletesMessage = ''; // Correct variable name
                 }, 3000);
+                return;
               } else {
                 this.deletesMessage =
                   'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -293,6 +302,7 @@ export class DetailPaiementComponent {
                 setTimeout(() => {
                   this.deletesMessage = ''; // Correct variable name
                 }, 3000);
+                return;
               }
             }
           );
@@ -353,6 +363,7 @@ export class DetailPaiementComponent {
             }, 2000);
           },
           (error) => {
+            this.isLoading = false; // Désactiver le mode de chargement
             // Handle error cases
             if (error.status === 500) {
               this.deletesMessage =
@@ -361,6 +372,7 @@ export class DetailPaiementComponent {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             } else {
               this.deletesMessage =
                 'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -368,6 +380,7 @@ export class DetailPaiementComponent {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             }
           }
         );

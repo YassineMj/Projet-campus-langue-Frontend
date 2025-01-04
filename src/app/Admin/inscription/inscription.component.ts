@@ -53,8 +53,13 @@ export class InscriptionComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des passages', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -140,8 +145,13 @@ export class InscriptionComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des établissements', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -154,8 +164,13 @@ export class InscriptionComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des niveaux', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -166,7 +181,13 @@ export class InscriptionComponent implements OnInit {
         this.cours = data;
       },
       (error) => {
-        console.error('Erreur lors du chargement des cours', error);
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -177,7 +198,13 @@ export class InscriptionComponent implements OnInit {
         this.profs = data;
       },
       (error) => {
-        console.error('Erreur lors du chargement des profs', error);
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -188,7 +215,13 @@ export class InscriptionComponent implements OnInit {
         this.groupes = data;
       },
       (error) => {
-        console.error('Erreur lors du chargement des groupes', error);
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -269,6 +302,7 @@ export class InscriptionComponent implements OnInit {
           });
         },
         error: (error) => {
+          this.isLoading = false; // Désactiver le mode de chargement
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -277,6 +311,7 @@ export class InscriptionComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -284,7 +319,7 @@ export class InscriptionComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
-            this.isLoading = false;
+            return;
           }
         },
       });
@@ -306,6 +341,7 @@ export class InscriptionComponent implements OnInit {
           }, 2000);
         },
         error: (error) => {
+          this.isLoading = false; // Désactiver le mode de chargement
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -314,6 +350,7 @@ export class InscriptionComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -321,10 +358,8 @@ export class InscriptionComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
-            this.isLoading = false;
+            return;
           }
-
-          this.isLoading = false;
         },
       });
     } else {
