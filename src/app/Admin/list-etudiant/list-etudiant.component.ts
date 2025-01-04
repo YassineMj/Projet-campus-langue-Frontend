@@ -90,8 +90,13 @@ export class ListEtudiantComponent {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des etudiants', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -104,8 +109,13 @@ export class ListEtudiantComponent {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des établissements', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -118,8 +128,13 @@ export class ListEtudiantComponent {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Erreur lors du chargement des niveaux', error);
-        this.isLoading = false;
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -194,6 +209,7 @@ export class ListEtudiantComponent {
             }, 2000);
           },
           (error) => {
+            this.isLoading = false;
             // Handle error cases
             if (error.status === 500) {
               this.deletesMessage =
@@ -202,6 +218,7 @@ export class ListEtudiantComponent {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             } else {
               this.deletesMessage =
                 'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -209,8 +226,8 @@ export class ListEtudiantComponent {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return;
             }
-            this.isLoading = false;
           }
         );
       }
@@ -220,7 +237,7 @@ export class ListEtudiantComponent {
   // Method to hide the success message when the close button is clicked
   hideSuccessMessage(): void {
     this.modifysuccess = '';
-    this.deletesMessage = '';// Clear the message, hiding the alert
+    this.deletesMessage = ''; // Clear the message, hiding the alert
   }
 
   printTable(): void {

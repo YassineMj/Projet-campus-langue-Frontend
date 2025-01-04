@@ -128,6 +128,7 @@ export class ChargesComponent {
           }, 2000);
         },
         (error) => {
+          this.isLoading = false; // Désactiver le mode de chargement
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -136,6 +137,7 @@ export class ChargesComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -143,8 +145,8 @@ export class ChargesComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           }
-          this.isLoading = false;
         }
       );
     }
@@ -175,6 +177,7 @@ export class ChargesComponent {
           }, 2000);
         },
         (error) => {
+          this.isLoading = false; // Désactiver le mode de chargement
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -183,6 +186,7 @@ export class ChargesComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -190,8 +194,8 @@ export class ChargesComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           }
-          this.isLoading = false;
         }
       );
     }
@@ -213,14 +217,16 @@ export class ChargesComponent {
           }, 2000);
         },
         (error) => {
+          this.isLoading = false;
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
-              'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+              'Impossible de supprimer ?il est déjà utilisé ailleurs.';
             // Clear the error message after 3 seconds
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -228,8 +234,8 @@ export class ChargesComponent {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return;
           }
-          this.isLoading = false;
         }
       );
     }
@@ -376,7 +382,6 @@ export class ChargesComponent {
     printWindow.print();
   }
 
-  // Function to download the list as Excel
   downloadAsExcel(): void {
     const tableElement = document.getElementById(
       'Charges_Scolaire'
