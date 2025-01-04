@@ -29,8 +29,13 @@ export class EtablissementsComponent implements OnInit {
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
-        console.error('Erreur lors du chargement des langues', error);
+        
         this.isLoading = false; // Désactiver le spinner
+        this.deletesMessage ='Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+                this.deletesMessage = ''; // Correct variable name
+              }, 3000);
       }
     );
   }
@@ -84,6 +89,8 @@ export class EtablissementsComponent implements OnInit {
             }, 2000);
           },
           (error) => {
+                        this.isLoading = false;
+
             // Handle error cases
             if (error.status === 500) {
               this.deletesMessage =
@@ -92,6 +99,7 @@ export class EtablissementsComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return
             } else {
               this.deletesMessage =
                 'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -99,8 +107,8 @@ export class EtablissementsComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return
             }
-            this.isLoading = false;
           }
         );
     }
@@ -141,6 +149,8 @@ export class EtablissementsComponent implements OnInit {
             }, 2000);
           },
           (error) => {
+                        this.isLoading = false;
+
             // Handle error cases
             if (error.status === 500) {
               this.deletesMessage =
@@ -149,6 +159,7 @@ export class EtablissementsComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return
             } else {
               this.deletesMessage =
                 'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -156,8 +167,8 @@ export class EtablissementsComponent implements OnInit {
               setTimeout(() => {
                 this.deletesMessage = ''; // Correct variable name
               }, 3000);
+              return
             }
-            this.isLoading = false;
           }
         );
     }
@@ -179,6 +190,7 @@ export class EtablissementsComponent implements OnInit {
           }, 2000);
         },
         (error) => {
+          this.isLoading = false;
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
@@ -187,6 +199,7 @@ export class EtablissementsComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return
           } else {
             this.deletesMessage =
               'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -194,6 +207,7 @@ export class EtablissementsComponent implements OnInit {
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
             }, 3000);
+            return
           }
           this.isLoading = false;
         }

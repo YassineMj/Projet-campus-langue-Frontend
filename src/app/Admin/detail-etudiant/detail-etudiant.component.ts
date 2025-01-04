@@ -122,21 +122,16 @@ export class DetailEtudiantComponent {
       },
       (error) => {
         // Handle error cases
-        if (error.status === 500) {
+        if (error.status == 500) {
           this.deletesMessage =
-            'Impossible de supprimer le passage, il est déjà utilisé ailleurs.';
+            'Impossible de supprimer l\'inscription, il est déjà payé';
           // Clear the error message after 3 seconds
           setTimeout(() => {
             this.deletesMessage = ''; // Correct variable name
           }, 3000);
-        } else {
-          this.deletesMessage =
-            'Problème de connexion. Veuillez vérifier votre réseau.';
-          // Clear the error message after 3 seconds
-          setTimeout(() => {
-            this.deletesMessage = ''; // Correct variable name
-          }, 3000);
-        }
+          this.ngOnInit();
+          return;
+        } 
         this.isLoading = false;
 
         if (error.status == 200) {
@@ -149,7 +144,14 @@ export class DetailEtudiantComponent {
           this.ngOnInit();
           return;
         }
-        alert("Erreur lors de la suppression d'inscription.");
+        else {
+          this.deletesMessage =
+            'Problème de connexion. Veuillez vérifier votre réseau.';
+          // Clear the error message after 3 seconds
+          setTimeout(() => {
+            this.deletesMessage = ''; // Correct variable name
+          }, 3000);
+        }
       }
     );
   }
