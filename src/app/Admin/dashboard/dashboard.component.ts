@@ -29,6 +29,8 @@ export class DashboardComponent {
     this.getListEtud();
   }
 
+  deletesMessage=''
+
   resume: any;
   loadingResume: boolean = false;
   getResume() {
@@ -39,8 +41,13 @@ export class DashboardComponent {
         this.loadingResume = false; // Fin du chargement
       },
       (error) => {
-        console.error('Erreur lors de la récupération du résumé', error);
-        this.loadingResume = false; // Fin du chargement en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
+        //this.loadingResume = false; // Fin du chargement en cas d'erreur
       }
     );
   }
@@ -76,8 +83,13 @@ export class DashboardComponent {
         this.loadingGroupes = false; // Fin du chargement
       },
       (error) => {
-        console.error('Erreur lors de la récupération des groupes', error);
-        this.loadingGroupes = false; // Fin du chargement en cas d'erreur
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);        
+        //this.loadingGroupes = false; // Fin du chargement en cas d'erreur
       }
     );
   }
@@ -111,11 +123,13 @@ export class DashboardComponent {
         this.loadingAnnuelle = false; // Fin du chargement
       },
       (error) => {
-        console.error(
-          'Erreur lors de la récupération des données annuelles',
-          error
-        );
-        this.loadingAnnuelle = false; // Fin du chargement en cas d'erreur
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
+        //this.loadingAnnuelle = false; // Fin du chargement en cas d'erreur
       }
     );
   }
@@ -151,11 +165,13 @@ export class DashboardComponent {
         this.loadingInscriptionsParAnnee = false; // Fin du chargement
       },
       (error) => {
-        console.error(
-          'Erreur lors de la récupération des inscriptions par année',
-          error
-        );
-        this.loadingInscriptionsParAnnee = false; // Fin du chargement en cas d'erreur
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
+        //this.loadingInscriptionsParAnnee = false; // Fin du chargement en cas d'erreur
       }
     );
   }
@@ -213,11 +229,13 @@ export class DashboardComponent {
           this.loadingPaiementsPonctuels = false; // Fin du chargement
         },
         (error) => {
-          console.error(
-            'Erreur lors de la récupération des paiements ponctuels',
-            error
-          );
-          this.loadingPaiementsPonctuels = false; // Fin du chargement en cas d'erreur
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
+          //this.loadingPaiementsPonctuels = false; // Fin du chargement en cas d'erreur
         }
       );
   }
@@ -273,11 +291,13 @@ export class DashboardComponent {
           this.loadingPaiementsInscriptions = false; // Fin du chargement
         },
         (error) => {
-          console.error(
-            'Erreur lors de la récupération des paiements des inscriptions',
-            error
-          );
-          this.loadingPaiementsInscriptions = false; // Fin du chargement en cas d'erreur
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
+          //this.loadingPaiementsInscriptions = false; // Fin du chargement en cas d'erreur
         }
       );
   }
@@ -331,11 +351,13 @@ export class DashboardComponent {
         this.loadingCharges = false; // Fin du chargement
       },
       (error) => {
-        console.error(
-          'Erreur lors de la récupération des charges par année',
-          error
-        );
-        this.loadingCharges = false; // Fin du chargement en cas d'erreur
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
+        //this.loadingCharges = false; // Fin du chargement en cas d'erreur
       }
     );
   }
@@ -389,11 +411,13 @@ export class DashboardComponent {
         this.loadingNet = false; // Fin du chargement
       },
       (error) => {
-        console.error(
-          "Erreur lors de la récupération du chiffre d'affaires",
-          error
-        );
-        this.loadingNet = false; // Fin du chargement en cas d'erreur
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
+        //this.loadingNet = false; // Fin du chargement en cas d'erreur
       }
     );
   }
@@ -413,8 +437,13 @@ export class DashboardComponent {
         this.loadingProfs = false; // Fin du chargement
       },
       (error) => {
-        console.error('Erreur lors du chargement des profs', error);
-        this.loadingProfs = false; // Fin du chargement en cas d'erreur
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);        
+        //this.loadingProfs = false; // Fin du chargement en cas d'erreur
       }
     );
   }
@@ -428,8 +457,14 @@ export class DashboardComponent {
         this.loadingEtu = false;
       },
       (error) => {
-        console.error('Erreur lors de la récupération des étudiants', error);
-        this.loadingEtu = false;
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
+                //this.loadingEtu = false;
+                return
       }
     );
     this.loadingEtu = true;
@@ -440,11 +475,14 @@ export class DashboardComponent {
         this.loadingEtu = false;
       },
       (error) => {
-        console.error(
-          "Erreur lors de la récupération du nombre d'étudiants",
-          error
-        );
-        this.loadingEtu = false;
+this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
+        //this.loadingEtu = false;
+        return
       }
     );
   }
