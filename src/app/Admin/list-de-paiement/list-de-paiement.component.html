@@ -17,8 +17,26 @@
   rel="stylesheet"
 />
 
+       <!--  message error -->
+                      <div class="container bootstrap snippets bootdey">
+            <div
+              *ngIf="deletesMessage"
+              class="alert alert-delete alert-white rounded mx-auto w-75"
+              role="alert"
+            >
+              <div class="icon">
+                <i class="fa-solid fa-circle-exclamation"></i>
+              </div>
+              <strong>Erreur!</strong>
+              {{ deletesMessage }}
+            </div>
+          </div>
+
+
 <div class="card shadow">
+
   <div class="card-body">
+
     <!-- Top Section: Search and Filters -->
     <div
       class="mb-2 d-flex justify-content-between align-items-center flex-wrap"
@@ -63,6 +81,8 @@
         <option value="2040/2041">2040/2041</option>
       </select>
     </div>
+
+    
 
     <div *ngIf="isLoading" style="text-align: center">
       <div>

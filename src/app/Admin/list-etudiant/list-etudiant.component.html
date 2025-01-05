@@ -41,6 +41,20 @@
         <h2 style="margin: 0" class="text-black">Liste des étudiants</h2>
       </div>
 
+      <div class="container bootstrap snippets bootdey">
+                      <div
+                        *ngIf="deletesMessage"
+                        class="alert alert-delete alert-white rounded mx-auto w-75"
+                        role="alert"
+                      >
+                        <div class="icon">
+                          <i class="fa-solid fa-circle-exclamation"></i>
+                        </div>
+                        <strong>Erreur!</strong>
+                        {{ deletesMessage }}
+                      </div>
+                    </div>
+
       <div class="card">
         <div class="card-body">
           <div class="mb-2 d-flex justify-content-between align-items-center">
@@ -438,7 +452,7 @@
                               id="dateNaissance"
                               name="dateNaissance"
                               [(ngModel)]="data2.dateN"
-                              required
+                              
                             />
                           </div>
                         </div>
