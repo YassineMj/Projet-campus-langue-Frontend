@@ -17,6 +17,9 @@ export class ListDePaiementComponent implements OnInit {
   paiements: any[] = []
   filteredPaiements: any[] = []
 
+    deletesMessage: string = '';
+
+
   constructor(private _service: GlobalService) {}
 
   ngOnInit(): void {
@@ -35,8 +38,15 @@ export class ListDePaiementComponent implements OnInit {
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
-        console.error('Erreur lors du chargement des informations', error);
-        this.isLoading = false; // Désactiver le spinner
+         console.log('error');
+        
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
@@ -55,8 +65,13 @@ export class ListDePaiementComponent implements OnInit {
         this.isLoading=false
       },
       (error) => {
-        console.error('Erreur lors du chargement des matières', error);
-      }
+this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);      }
     );
     
   }
@@ -72,8 +87,13 @@ export class ListDePaiementComponent implements OnInit {
 
       },
       (error) => {
-        console.error('Erreur lors du chargement des paiements', error);
-        this.isLoading=false
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
 
       }
     );
@@ -236,8 +256,13 @@ export class ListDePaiementComponent implements OnInit {
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
-        console.error('Erreur lors du chargement des informations', error);
-        this.isLoading = false; // Désactiver le spinner
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }

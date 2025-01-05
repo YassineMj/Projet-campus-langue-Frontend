@@ -39,8 +39,13 @@ export class ChargesComponent {
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
-        console.error('Erreur lors du chargement des charges', error);
-        this.isLoading = false; // Désactiver le spinner
+       this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }

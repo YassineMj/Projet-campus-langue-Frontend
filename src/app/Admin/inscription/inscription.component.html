@@ -34,7 +34,20 @@
         />
         <h2 style="margin: 0" class="text-black">Liste d'inscription</h2>
       </div>
-
+ <!--  message error -->
+            <div class="container bootstrap snippets bootdey">
+              <div
+                *ngIf="deletesMessage"
+                class="alert alert-delete alert-white rounded mx-auto w-75"
+                role="alert"
+              >
+                <div class="icon">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+                <strong>Erreur!</strong>
+                {{ deletesMessage }}
+              </div>
+            </div>
       <!-- Card Section -->
       <div class="card">
         <div class="card-body">
@@ -211,7 +224,7 @@
                     id="addDateNaissance"
                     name="dateNaissance"
                     [(ngModel)]="formDataEtu.dateN"
-                    required
+                    
                   />
                 </div>
               </div>

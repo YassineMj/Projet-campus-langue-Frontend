@@ -90,6 +90,8 @@ export class ListEtudiantComponent {
         this.isLoading = false;
       },
       (error) => {
+        console.log('error');
+        
         this.isLoading = false; // Désactiver le spinner même en cas d'erreur
         this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
@@ -180,8 +182,15 @@ export class ListEtudiantComponent {
         };
       },
       (error) => {
-        alert('Erreur lors de la mise à jour du Etudiant.');
-        this.isLoading = false;
+         console.log('error');
+        
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.deletesMessage =
+          'Problème de connexion. Veuillez vérifier votre réseau.';
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          this.deletesMessage = ''; // Correct variable name
+        }, 3000);
       }
     );
   }
