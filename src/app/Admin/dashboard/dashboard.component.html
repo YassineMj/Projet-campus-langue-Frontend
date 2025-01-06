@@ -5,7 +5,6 @@
   crossorigin="anonymous"
 />
 
-
 <div class="row" style="padding-top: 3%">
   <div class="row">
     <div class="col-12 d-flex justify-content-center mb-4">
@@ -39,7 +38,7 @@
                 style="width: 20px; height: 20px"
               />
               Bienvenue sur votre tableau de bord. Obtenez un aperçu de vos
-              métriques et statistiques.
+              statistiques.
             </p>
           </div>
         </div>
@@ -54,16 +53,14 @@
       </div>
     </div>
 
-
-
     <ng-container *ngIf="!loadingResume">
       <div class="dashboard-container">
-        <div class="row">  
+        <div class="row">
           <!-- Column 1 (for Donut Chart) -->
           <div class="col-8">
             <!-- Card for Donut Chart -->
             <div class="card card-donut">
-              <h3>Nombre du Group par Matière</h3>
+              <h3>Nombre de Groupes par Matière</h3>
               <hr style="border: 7px double rgba(12, 123, 174, 0.763)" />
 
               <apx-chart
@@ -72,6 +69,7 @@
                 [labels]="chartDataGroupesParMatiere.labels"
                 [legend]="chartDataGroupesParMatiere.legend"
                 [colors]="chartDataGroupesParMatiere.colors"
+                [tooltip]="chartDataGroupesParMatiere.tooltip"
               ></apx-chart>
             </div>
           </div>
@@ -81,7 +79,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col mt-0">
-                    <h4 class="card-title">Nombre des groupes</h4>
+                    <h4 class="card-title">Nombre de groupes</h4>
                   </div>
                   <div class="col-auto">
                     <div class="stat text-primary">
@@ -115,7 +113,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col mt-0">
-                    <h4 class="card-title">Nombre des Passagers</h4>
+                    <h4 class="card-title">Nombre de Passagers</h4>
                   </div>
                   <div class="col-auto">
                     <div class="stat text-primary">
@@ -149,7 +147,7 @@
           <div class="col-8">
             <div class="card card-donut">
               <br />
-              <h3>Paiements du Scolaire annuelle par année</h3>
+              <h3>Produits Annuels</h3>
               <hr style="border: 7px double rgba(12, 123, 174, 0.763)" />
               <select
                 class="form-select form-select-sm mb-3"
@@ -189,6 +187,7 @@
                 [labels]="chartDataAnnuelle.labels"
                 [legend]="chartDataAnnuelle.legend"
                 [colors]="chartDataAnnuelle.colors"
+                [tooltip]="chartDataAnnuelle.tooltip"
               ></apx-chart>
               <br /><br /><br />
             </div>
@@ -199,7 +198,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col mt-0">
-                    <h4 class="card-title">Nombre des étudiant</h4>
+                    <h4 class="card-title">Nombre d'Étudiants</h4>
                   </div>
                   <div class="col-auto">
                     <div class="stat text-primary">
@@ -233,7 +232,7 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col mt-0">
-                    <h4 class="card-title">Nombre des cours</h4>
+                    <h4 class="card-title">Nombre de cours</h4>
                   </div>
                   <div class="col-auto">
                     <div class="stat text-primary">
@@ -260,14 +259,11 @@
               </div>
             </div>
 
-            <div
-              class="card draggable"
-              style="border-top: 4px solid #376e91"
-            >
+            <div class="card draggable" style="border-top: 4px solid #376e91">
               <div class="card-body">
                 <div class="row">
                   <div class="col mt-0">
-                    <h4 class="card-title">Nombre des profs</h4>
+                    <h5 class="card-title">Nombre de Professeurs</h5>
                   </div>
                   <div class="col-auto">
                     <div class="stat text-primary">
@@ -303,7 +299,7 @@
           <div class="col">
             <!-- Card for Chart 1 -->
             <div class="card card-chart1">
-              <h3>Nombre d'inscriptions par année</h3>
+              <h3>Nombre d'inscriptions</h3>
               <div
                 *ngIf="loadingInscriptionsParAnnee"
                 style="text-align: center"
@@ -330,7 +326,7 @@
           <div class="col">
             <!-- Card for Chart 2 -->
             <div class="card card-chart2">
-              <h3>Chiffre des Paiements Ponctuels par année</h3>
+              <h3>CA Produits Annuels</h3>
               <br />
               <!-- Dropdown for Months -->
               <select
@@ -366,6 +362,7 @@
                 [chart]="chartDataPaiementsPonctuelsParAnnee.chart"
                 [xaxis]="chartDataPaiementsPonctuelsParAnnee.xaxis"
                 [colors]="chartDataPaiementsPonctuelsParAnnee.colors"
+                [tooltip]="chartDataPaiementsPonctuelsParAnnee.tooltip"
               ></apx-chart>
             </div>
           </div>
@@ -376,7 +373,7 @@
           <div class="col">
             <!-- Card for Chart 2 -->
             <div class="card card-chart2">
-              <h3>Chiffre des Paiements Inscriptions par année</h3>
+              <h3>CA Scolarité</h3>
               <br />
               <!-- Dropdown for Months -->
               <select
@@ -420,6 +417,7 @@
                 [chart]="chartDataPaiementsInscriptionsParAnnee.chart"
                 [xaxis]="chartDataPaiementsInscriptionsParAnnee.xaxis"
                 [colors]="chartDataPaiementsInscriptionsParAnnee.colors"
+                [tooltip]="chartDataInscriptionsParAnnee.tooltip"
               ></apx-chart>
             </div>
           </div>
@@ -429,7 +427,7 @@
           <!-- Charges Par Annee -->
           <div class="col">
             <div class="card card-chart2">
-              <h3>Chiffre des Charges par année</h3>
+              <h3>Charges</h3>
               <br />
               <select
                 class="form-select form-select-sm mb-3"
@@ -470,6 +468,7 @@
                 [chart]="chartDataChargesParAnnee.chart"
                 [xaxis]="chartDataChargesParAnnee.xaxis"
                 [colors]="chartDataChargesParAnnee.colors"
+                [tooltip]="chartDataChargesParAnnee.tooltip"
               ></apx-chart>
             </div>
           </div>
@@ -479,7 +478,7 @@
           <!-- Net Par Annee -->
           <div class="col">
             <div class="card card-chart2">
-              <h3>Chiffre d'affaires par année</h3>
+              <h3>CA Global</h3>
               <br />
               <select
                 class="form-select form-select-sm mb-3"
@@ -519,6 +518,7 @@
                 [chart]="chartDataNetParAnnee.chart"
                 [xaxis]="chartDataNetParAnnee.xaxis"
                 [colors]="chartDataNetParAnnee.colors"
+                [tooltip]="chartDataNetParAnnee.tooltip"
               ></apx-chart>
             </div>
           </div>
@@ -527,12 +527,10 @@
         <div class="row">
           <!-- Card for Table with Dropdowns -->
           <div class="card card-table">
-            <h3>Liste des Étudiants</h3>
-
+            <h3>Etat Paiement Professeurs</h3>
             <!-- Dropdowns for Prof, Année, Mois -->
             <div class="filter-options mb-3">
               <label class="form-label">Filtrer par :</label>
-
               <!-- Dropdowns Inline -->
               <div class="d-flex mb-3">
                 <!-- Prof Dropdown -->
@@ -623,8 +621,10 @@
                     <th>ID</th>
                     <th>Nom</th>
                     <th>Prénom</th>
-                    <th>Etablissement</th>
+                    <th>Matière</th>
                     <th>Niveau</th>
+                    <th>Tarif</th>
+                    <th>Payé</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -632,8 +632,10 @@
                     <td>{{ e.id }}</td>
                     <td>{{ e.nom }}</td>
                     <td>{{ e.prenom }}</td>
-                    <td>{{ e.etablissement }}</td>
+                    <td>Francais</td>
                     <td>{{ e.niveau }}</td>
+                    <td>250 dh</td>
+                    <td>100 dh</td>
                   </tr>
                 </tbody>
               </table>
@@ -643,6 +645,11 @@
             <div class="total-etudiants mt-4">
               <div class="border p-3" *ngFor="let n of nbrEtud">
                 <h4>{{ n.cours }}: {{ n.nombreEtudiants }}</h4>
+              </div>
+            </div>
+             <div class="total-etudiants mt-4">
+              <div class="border p-3" >
+                <h4><span style="background-color:#ffbb00 ; padding: 5px; border-radius: 5px; ">Total :</span> 222 DH </h4>
               </div>
             </div>
           </div>

@@ -195,7 +195,7 @@
                         <!-- Sélection type (Dropdown) -->
                         <div class="col-md-6">
                           <label for="type" class="form-label">
-                            Type de frais
+                            Produit
                             <span style="color: #ff0d00">*</span>
                           </label>
                           <select
@@ -211,7 +211,7 @@
                             }"
                           >
                             <option value="" disabled selected>
-                              -- Sélectionner un type de frais --
+                              -- Sélectionner un Produit --
                             </option>
                             <option *ngFor="let s of scolaires" [value]="s.id">
                               {{ s.nom }}
@@ -222,7 +222,7 @@
                             *ngIf="typeInput.invalid && typeInput.touched"
                             class="text-danger"
                           >
-                            Type de frais est obligatoire.
+                            Produit est obligatoire.
                           </div>
                         </div>
 
@@ -462,7 +462,7 @@
                   <th><b>Etablissement</b></th>
                   <th><b>Niveaux</b></th>
                   <th><b>Montant</b></th>
-                  <th><b>Type de frais</b></th>
+                  <th><b>Produit</b></th>
                   <th><b>Année</b></th>
                   <th class="text-right"><b>Actions</b></th>
                   <!-- Align header to right -->

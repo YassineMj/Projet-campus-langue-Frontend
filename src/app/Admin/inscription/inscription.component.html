@@ -34,20 +34,20 @@
         />
         <h2 style="margin: 0" class="text-black">Liste d'inscription</h2>
       </div>
- <!--  message error -->
-            <div class="container bootstrap snippets bootdey">
-              <div
-                *ngIf="deletesMessage"
-                class="alert alert-delete alert-white rounded mx-auto w-75"
-                role="alert"
-              >
-                <div class="icon">
-                  <i class="fa-solid fa-circle-exclamation"></i>
-                </div>
-                <strong>Erreur!</strong>
-                {{ deletesMessage }}
-              </div>
-            </div>
+      <!--  message error -->
+      <div class="container bootstrap snippets bootdey">
+        <div
+          *ngIf="deletesMessage"
+          class="alert alert-delete alert-white rounded mx-auto w-75"
+          role="alert"
+        >
+          <div class="icon">
+            <i class="fa-solid fa-circle-exclamation"></i>
+          </div>
+          <strong>Erreur!</strong>
+          {{ deletesMessage }}
+        </div>
+      </div>
       <!-- Card Section -->
       <div class="card">
         <div class="card-body">
@@ -63,11 +63,10 @@
                 (change)="showForm('neverRegistered')"
               />
               <label class="form-check-label" for="neverRegistered">
-                Jamais inscrit
+                1ʳᵉ visite et Inscription
               </label>
             </div>
             <!-- Radio 2 -->
-
             <div class="form-check mx-4">
               <input
                 class="form-check-input"
@@ -78,12 +77,11 @@
                 (change)="showForm('visitorWithoutRegistration')"
               />
               <label class="form-check-label" for="visitorWithoutRegistration">
-                Visiteur sans inscription ou Réinscription
+                Déjà Passager ou Réinscription
               </label>
             </div>
           </div>
           <br />
-
           <!-- Conditional Form -->
           <form
             *ngIf="selectedOption === 'neverRegistered'"
@@ -101,7 +99,7 @@
                   "
                 />
                 <span class="hr-text"
-                  ><i class="fas fa-user-plus"></i> les informations
+                  ><i class="fas fa-user-plus"></i> Informations
                   personnelles</span
                 >
               </div>
@@ -189,7 +187,7 @@
               <!-- Niveaux -->
               <div class="col-md-6">
                 <label for="addNiveaux" class="form-label">
-                  Niveaux <span class="required">*</span>
+                  Niveau <span class="required">*</span>
                 </label>
                 <select
                   class="form-select"
@@ -224,7 +222,6 @@
                     id="addDateNaissance"
                     name="dateNaissance"
                     [(ngModel)]="formDataEtu.dateN"
-                    
                   />
                 </div>
               </div>
@@ -324,7 +321,7 @@
                 "
               />
               <span class="hr-text"
-                ><i class="fa-solid fa-circle-plus"></i> Détails
+                ><i class="fa-solid fa-circle-plus"></i> Détail
                 d'inscription</span
               >
             </div>
@@ -432,7 +429,7 @@
               <!-- Prof Dropdown -->
               <div class="col-md-6">
                 <label for="group" class="form-label"
-                  >Profs <span class="required">*</span></label
+                  >Prof <span class="required">*</span></label
                 >
                 <select
                   id="editProf"
@@ -618,7 +615,7 @@
                   />
                   <span class="hr-text"
                     ><i class="fa-solid fa-list-check"></i> Liste des passagers
-                    et etudiants
+                    et étudiants
                   </span>
                 </div>
                 <div class="card-body">
@@ -659,7 +656,7 @@
                           <th><b>Prénom</b></th>
                           <th><b>Etablissement</b></th>
                           <th><b>Niveaux</b></th>
-                          <th><b>Statue</b></th>
+                          <th><b>Statut</b></th>
                           <th class="text-right"><b>Actions</b></th>
                           <!-- Align header to right -->
                         </tr>
@@ -941,7 +938,7 @@
 
                                   <div class="col-md-6">
                                     <label for="editProf" class="form-label">
-                                      Profs <span class="required">*</span>
+                                      Prof <span class="required">*</span>
                                     </label>
                                     <select
                                       id="editProf"
