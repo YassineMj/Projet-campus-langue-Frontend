@@ -29,7 +29,7 @@ export class DashboardComponent {
     this.getListEtud();
   }
 
-  deletesMessage=''
+  deletesMessage = '';
 
   resume: any;
   loadingResume: boolean = false;
@@ -78,17 +78,24 @@ export class DashboardComponent {
           legend: {
             position: 'bottom',
           },
+          tooltip: {
+            y: {
+              formatter: function (val: number) {
+                return val + ' DH'; // Ajoute "DH" après la valeur
+              },
+            },
+          },
         };
 
         this.loadingGroupes = false; // Fin du chargement
       },
       (error) => {
-this.deletesMessage =
+        this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
         setTimeout(() => {
           this.deletesMessage = ''; // Correct variable name
-        }, 3000);        
+        }, 3000);
         //this.loadingGroupes = false; // Fin du chargement en cas d'erreur
       }
     );
@@ -119,11 +126,18 @@ this.deletesMessage =
             position: 'bottom',
           },
           colors: ['#ffbb00', '#ff5722', '#4caf50', '#ff9800'],
+          tooltip: {
+            y: {
+              formatter: function (val: number) {
+                return val + ' DH'; // Ajoute "DH" après la valeur
+              },
+            },
+          },
         };
         this.loadingAnnuelle = false; // Fin du chargement
       },
       (error) => {
-this.deletesMessage =
+        this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
         setTimeout(() => {
@@ -161,11 +175,18 @@ this.deletesMessage =
             },
           },
           colors: ['#219395'], // Couleur personnalisée pour les barres
+          tooltip: {
+            y: {
+              formatter: function (val: number) {
+                return val + ' DH'; // Affiche "Inscriptions" après la valeur
+              },
+            },
+          },
         };
         this.loadingInscriptionsParAnnee = false; // Fin du chargement
       },
       (error) => {
-this.deletesMessage =
+        this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
         setTimeout(() => {
@@ -188,18 +209,18 @@ this.deletesMessage =
       .subscribe(
         (data) => {
           const monthOrder = [
-            'Sep',
+            'Sept',
             'Oct',
             'Nov',
-            'Dec',
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
+            'Déc',
+            'Janv',
+            'Févr',
+            'Mars',
+            'Avr',
+            'Mai',
+            'Juin',
+            'Juil',
+            'Août',
           ];
 
           const orderedData = monthOrder.map((month, index) => {
@@ -225,16 +246,23 @@ this.deletesMessage =
               },
             },
             colors: ['#219395'],
+            tooltip: {
+              y: {
+                formatter: function (val: number) {
+                  return val + ' DH'; // Append "DH" to the tooltip values
+                },
+              },
+            },
           };
           this.loadingPaiementsPonctuels = false; // Fin du chargement
         },
         (error) => {
-this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
+          this.deletesMessage =
+            'Problème de connexion. Veuillez vérifier votre réseau.';
+          // Clear the error message after 3 seconds
+          setTimeout(() => {
+            this.deletesMessage = ''; // Correct variable name
+          }, 3000);
           //this.loadingPaiementsPonctuels = false; // Fin du chargement en cas d'erreur
         }
       );
@@ -250,18 +278,18 @@ this.deletesMessage =
       .subscribe(
         (data) => {
           const monthOrder = [
-            'Sep',
+            'Sept',
             'Oct',
             'Nov',
-            'Dec',
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
+            'Déc',
+            'Janv',
+            'Févr',
+            'Mars',
+            'Avr',
+            'Mai',
+            'Juin',
+            'Juil',
+            'Août',
           ];
 
           const orderedData = monthOrder.map((month, index) => {
@@ -291,12 +319,12 @@ this.deletesMessage =
           this.loadingPaiementsInscriptions = false; // Fin du chargement
         },
         (error) => {
-this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
+          this.deletesMessage =
+            'Problème de connexion. Veuillez vérifier votre réseau.';
+          // Clear the error message after 3 seconds
+          setTimeout(() => {
+            this.deletesMessage = ''; // Correct variable name
+          }, 3000);
           //this.loadingPaiementsInscriptions = false; // Fin du chargement en cas d'erreur
         }
       );
@@ -310,18 +338,18 @@ this.deletesMessage =
     this._service.chargesParAnnee(this.anneeCharges).subscribe(
       (data) => {
         const monthOrder = [
-          'Sep',
+          'Sept',
           'Oct',
           'Nov',
-          'Dec',
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
+          'Déc',
+          'Janv',
+          'Févr',
+          'Mars',
+          'Avr',
+          'Mai',
+          'Juin',
+          'Juil',
+          'Août',
         ];
 
         const orderedData = monthOrder.map((month, index) => {
@@ -346,12 +374,19 @@ this.deletesMessage =
               text: 'Par mois',
             },
           },
+          tooltip: {
+            y: {
+              formatter: function (val: number) {
+                return val + ' DH'; // Append "DH" to tooltip values
+              },
+            },
+          },
           colors: ['#FF5733'],
         };
         this.loadingCharges = false; // Fin du chargement
       },
       (error) => {
-this.deletesMessage =
+        this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
         setTimeout(() => {
@@ -365,23 +400,24 @@ this.deletesMessage =
   chartDataNetParAnnee: any;
   anneeNet: string = '2024/2025';
   loadingNet: boolean = false;
+
   getNetParAnnee() {
     this.loadingNet = true; // Début du chargement
     this._service.netParAnnee(this.anneeNet).subscribe(
       (data) => {
         const monthOrder = [
-          'Sep',
+          'Sept',
           'Oct',
           'Nov',
-          'Dec',
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
+          'Déc',
+          'Janv',
+          'Févr',
+          'Mars',
+          'Avr',
+          'Mai',
+          'Juin',
+          'Juil',
+          'Août',
         ];
 
         const orderedData = monthOrder.map((month, index) => {
@@ -407,11 +443,18 @@ this.deletesMessage =
             },
           },
           colors: ['#28B463'],
+          tooltip: {
+            y: {
+              formatter: function (val: number) {
+                return val + ' DH'; // Append "DH" to tooltip values
+              },
+            },
+          },
         };
         this.loadingNet = false; // Fin du chargement
       },
       (error) => {
-this.deletesMessage =
+        this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
         setTimeout(() => {
@@ -437,12 +480,12 @@ this.deletesMessage =
         this.loadingProfs = false; // Fin du chargement
       },
       (error) => {
-this.deletesMessage =
+        this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
         setTimeout(() => {
           this.deletesMessage = ''; // Correct variable name
-        }, 3000);        
+        }, 3000);
         //this.loadingProfs = false; // Fin du chargement en cas d'erreur
       }
     );
@@ -457,14 +500,14 @@ this.deletesMessage =
         this.loadingEtu = false;
       },
       (error) => {
-this.deletesMessage =
+        this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
         setTimeout(() => {
           this.deletesMessage = ''; // Correct variable name
         }, 3000);
-                //this.loadingEtu = false;
-                return
+        //this.loadingEtu = false;
+        return;
       }
     );
     this.loadingEtu = true;
@@ -475,14 +518,14 @@ this.deletesMessage =
         this.loadingEtu = false;
       },
       (error) => {
-this.deletesMessage =
+        this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
         setTimeout(() => {
           this.deletesMessage = ''; // Correct variable name
         }, 3000);
         //this.loadingEtu = false;
-        return
+        return;
       }
     );
   }
