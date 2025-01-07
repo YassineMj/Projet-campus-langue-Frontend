@@ -26,7 +26,6 @@ export class DashboardComponent {
     this.getChargesParAnnee();
     this.getNetParAnnee();
     this.loadProfs();
-    this.getListEtud();
   }
 
   deletesMessage = '';
@@ -41,13 +40,7 @@ export class DashboardComponent {
         this.loadingResume = false; // Fin du chargement
       },
       (error) => {
-        this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
-        //this.loadingResume = false; // Fin du chargement en cas d'erreur
+        
       }
     );
   }
@@ -78,25 +71,13 @@ export class DashboardComponent {
           legend: {
             position: 'bottom',
           },
-          tooltip: {
-            y: {
-              formatter: function (val: number) {
-                return val + ' DH'; // Ajoute "DH" après la valeur
-              },
-            },
-          },
+
         };
 
         this.loadingGroupes = false; // Fin du chargement
       },
       (error) => {
-        this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
-        //this.loadingGroupes = false; // Fin du chargement en cas d'erreur
+       
       }
     );
   }
@@ -137,13 +118,7 @@ export class DashboardComponent {
         this.loadingAnnuelle = false; // Fin du chargement
       },
       (error) => {
-        this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
-        //this.loadingAnnuelle = false; // Fin du chargement en cas d'erreur
+       
       }
     );
   }
@@ -186,13 +161,7 @@ export class DashboardComponent {
         this.loadingInscriptionsParAnnee = false; // Fin du chargement
       },
       (error) => {
-        this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
-        //this.loadingInscriptionsParAnnee = false; // Fin du chargement en cas d'erreur
+       
       }
     );
   }
@@ -257,13 +226,7 @@ export class DashboardComponent {
           this.loadingPaiementsPonctuels = false; // Fin du chargement
         },
         (error) => {
-          this.deletesMessage =
-            'Problème de connexion. Veuillez vérifier votre réseau.';
-          // Clear the error message after 3 seconds
-          setTimeout(() => {
-            this.deletesMessage = ''; // Correct variable name
-          }, 3000);
-          //this.loadingPaiementsPonctuels = false; // Fin du chargement en cas d'erreur
+          
         }
       );
   }
@@ -319,13 +282,7 @@ export class DashboardComponent {
           this.loadingPaiementsInscriptions = false; // Fin du chargement
         },
         (error) => {
-          this.deletesMessage =
-            'Problème de connexion. Veuillez vérifier votre réseau.';
-          // Clear the error message after 3 seconds
-          setTimeout(() => {
-            this.deletesMessage = ''; // Correct variable name
-          }, 3000);
-          //this.loadingPaiementsInscriptions = false; // Fin du chargement en cas d'erreur
+          
         }
       );
   }
@@ -386,13 +343,7 @@ export class DashboardComponent {
         this.loadingCharges = false; // Fin du chargement
       },
       (error) => {
-        this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
-        //this.loadingCharges = false; // Fin du chargement en cas d'erreur
+        
       }
     );
   }
@@ -454,13 +405,7 @@ export class DashboardComponent {
         this.loadingNet = false; // Fin du chargement
       },
       (error) => {
-        this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
-        //this.loadingNet = false; // Fin du chargement en cas d'erreur
+        
       }
     );
   }
@@ -480,37 +425,29 @@ export class DashboardComponent {
         this.loadingProfs = false; // Fin du chargement
       },
       (error) => {
-        this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
-        //this.loadingProfs = false; // Fin du chargement en cas d'erreur
+        
       }
     );
   }
   loadingEtu: boolean = false;
+  somme:number=0.0
 
   getListEtud() {
     this.loadingEtu = true;
     this._service.getListEtud(this.annee, this.mois, this.profId).subscribe(
       (data) => {
         this.listEtu = data;
+        this.somme = 0; 
+        for (let etu of this.listEtu) { 
+          this.somme += etu.paye; 
+        }
         this.loadingEtu = false;
       },
       (error) => {
-        this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
-        //this.loadingEtu = false;
-        return;
+        
       }
+
     );
-    this.loadingEtu = true;
 
     this._service.getNbrEtud(this.annee, this.mois, this.profId).subscribe(
       (data) => {
@@ -518,15 +455,120 @@ export class DashboardComponent {
         this.loadingEtu = false;
       },
       (error) => {
-        this.deletesMessage =
-          'Problème de connexion. Veuillez vérifier votre réseau.';
-        // Clear the error message after 3 seconds
-        setTimeout(() => {
-          this.deletesMessage = ''; // Correct variable name
-        }, 3000);
-        //this.loadingEtu = false;
-        return;
+        
       }
     );
   }
+
+  print(): void {
+  // Sélectionnez la section à imprimer
+  const printContent = document.getElementById('printSection');
+  const windowPrint = window.open('', '', 'width=800,height=600');
+
+  if (windowPrint && printContent) {
+    // Ajouter le contenu au document de la fenêtre d'impression
+    windowPrint.document.write(`
+    <html>
+      <head>
+        <title>Niveaux List</title>
+        <style>
+          /* General body styling */
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+          }
+
+          /* Header section styling */
+          .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #0275d8;
+            padding-bottom: 10px;
+            background-color: #eaf4fc;
+          }
+          .header h1 {
+            font-size: 28px;
+            margin: 0;
+            color: #0275d8;
+          }
+          .header p {
+            font-size: 14px;
+            color: #555;
+          }
+
+          /* Table styling */
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+          }
+          th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+          }
+          th {
+            background-color: #0275d8;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+          }
+          td {
+            color: #333;
+          }
+          tr:nth-child(even) {
+            background-color: #f9f9f9;
+          }
+          tr:nth-child(odd) {
+            background-color: #eaf4fc;
+          }
+          tr:hover {
+            background-color: #d9edf7;
+          }
+
+          /* Footer section styling */
+          .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #0275d8;
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+          }
+
+          /* Print-specific adjustments */
+          @media print {
+            body {
+              margin: 0;
+            }
+            .header, .footer {
+              page-break-inside: avoid;
+            }
+          }
+        </style>
+      </head>
+      <body>
+      <!-- Header -->
+        <div class="header">
+          <h1>Détails</h1>
+          <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+        </div>
+          ${printContent.outerHTML}
+        </body>
+      </html>
+    `);
+
+    // Fermer le flux d'écriture et lancer l'impression
+    windowPrint.document.close();
+    windowPrint.print();
+  }
+}
+
 }

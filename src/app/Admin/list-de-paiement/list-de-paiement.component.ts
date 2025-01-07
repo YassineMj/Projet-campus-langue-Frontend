@@ -185,7 +185,7 @@ this.isLoading = false; // Désactiver le spinner même en cas d'erreur
     if (!matiereData) {
       return { 
         color: 'white', 
-        status: '<span class="badge bg-secondary">Ne étudie pas</span>', 
+        status: '<span class="badge bg-secondary">Vide</span>', 
       };  
     }
   
