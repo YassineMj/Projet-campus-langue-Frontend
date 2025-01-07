@@ -306,7 +306,7 @@ export class InscriptionComponent implements OnInit {
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
-              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              'Validation échouée. Veuillez vérifier les champs du formulaire ou cette inscription existe peut-être déjà.';
             // Clear the error message after 3 seconds
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name
@@ -345,7 +345,7 @@ export class InscriptionComponent implements OnInit {
           // Handle error cases
           if (error.status === 500) {
             this.deletesMessage =
-              ' Validation échouée. Veuillez vérifier les champs du formulaire.';
+              'Validation échouée. Veuillez vérifier les champs du formulaire ou cette inscription existe peut-être déjà.';
             // Clear the error message after 3 seconds
             setTimeout(() => {
               this.deletesMessage = ''; // Correct variable name

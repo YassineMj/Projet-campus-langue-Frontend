@@ -33,7 +33,7 @@
           class="icon-img mb-2"
           style="margin-right: 10px"
         />
-        <h2 style="margin: 0" class="text-black">Liste des passager</h2>
+        <h2 style="margin: 0" class="text-black">Liste des Passages</h2>
       </div>
       <div class="card">
         <div class="card-body">
@@ -262,7 +262,7 @@
                               <div class="col-md-4">
                                 <div class="mb-3">
                                   <label for="addNiveaux" class="form-label"
-                                    >Niveaux <span class="required">*</span>
+                                    >Niveau <span class="required">*</span>
                                   </label>
                                   <select
                                     class="form-select"
@@ -288,7 +288,7 @@
                                     "
                                     class="text-danger"
                                   >
-                                    Niveau est obligatoire.
+                                    Niveaux est obligatoire.
                                   </div>
                                 </div>
                               </div>
@@ -324,7 +324,6 @@
                                     id="addDateNaissance"
                                     name="dateNaissance"
                                     [(ngModel)]="data1.dateN"
-                                    
                                   />
                                 </div>
                               </div>
@@ -637,7 +636,7 @@
                         {{ selectedItem.etablissement?.nom }}
                       </div>
                       <div class="col-6">
-                        <b>Niveaux:</b> {{ selectedItem.niveau?.nom }}
+                        <b>Niveau:</b> {{ selectedItem.niveau?.nom }}
                       </div>
                     </div>
                     <br />
@@ -839,7 +838,7 @@
                         <div class="col-md-4">
                           <div class="mb-3">
                             <label for="addNiveaux" class="form-label"
-                              >Niveaux</label
+                              >Niveau</label
                             >
                             <select
                               class="form-select"
@@ -888,7 +887,6 @@
                               id="addDateNaissance"
                               name="dateNaissance"
                               [(ngModel)]="data2.dateN"
-                              
                             />
                           </div>
                         </div>

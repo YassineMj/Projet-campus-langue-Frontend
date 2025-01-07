@@ -42,18 +42,18 @@
       </div>
 
       <div class="container bootstrap snippets bootdey">
-                      <div
-                        *ngIf="deletesMessage"
-                        class="alert alert-delete alert-white rounded mx-auto w-75"
-                        role="alert"
-                      >
-                        <div class="icon">
-                          <i class="fa-solid fa-circle-exclamation"></i>
-                        </div>
-                        <strong>Erreur!</strong>
-                        {{ deletesMessage }}
-                      </div>
-                    </div>
+        <div
+          *ngIf="deletesMessage"
+          class="alert alert-delete alert-white rounded mx-auto w-75"
+          role="alert"
+        >
+          <div class="icon">
+            <i class="fa-solid fa-circle-exclamation"></i>
+          </div>
+          <strong>Erreur!</strong>
+          {{ deletesMessage }}
+        </div>
+      </div>
 
       <div class="card">
         <div class="card-body">
@@ -421,7 +421,7 @@
                         <div class="col-md-4">
                           <div class="mb-3">
                             <label for="addNiveaux" class="form-label"
-                              >Niveaux <span class="required">*</span></label
+                              >Niveau <span class="required">*</span></label
                             >
                             <select
                               class="form-select"
@@ -452,7 +452,6 @@
                               id="dateNaissance"
                               name="dateNaissance"
                               [(ngModel)]="data2.dateN"
-                              
                             />
                           </div>
                         </div>
