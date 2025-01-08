@@ -39,9 +39,7 @@ export class DashboardComponent {
         this.resume = data;
         this.loadingResume = false; // Fin du chargement
       },
-      (error) => {
-        
-      }
+      (error) => {}
     );
   }
 
@@ -66,25 +64,69 @@ export class DashboardComponent {
           title: {
             text: 'Données Dynamiques (Donut Chart)',
           },
-          colors: ['#ffbb00', '#ff5722', '#376e91', '#ff9800'], // Couleurs personnalisées
+          colors: [
+            '#ffbb00',
+            '#ff5722',
+            '#376e91',
+            '#ff9800',
+            '#4caf50',
+            '#2196f3',
+            '#9c27b0',
+            '#673ab7',
+            '#3f51b5',
+            '#e91e63',
+            '#f44336',
+            '#8bc34a',
+            '#cddc39',
+            '#ffc107',
+            '#00bcd4',
+            '#009688',
+            '#607d8b',
+            '#795548',
+            '#ffeb3b',
+            '#b2ff59',
+            '#ff80ab',
+            '#ff7043',
+            '#d500f9',
+            '#76ff03',
+            '#00e5ff',
+            '#c51162',
+            '#aa00ff',
+            '#ff6f00',
+            '#1de9b6',
+            '#2962ff',
+            '#00c853',
+            '#ff1744',
+            '#1a237e',
+            '#00acc1',
+            '#4dd0e1',
+            '#ffab91',
+            '#dce775',
+            '#ffcc80',
+            '#8e24aa',
+            '#64b5f6',
+            '#ffd600',
+            '#6a1b9a',
+            '#b71c1c',
+            '#304ffe',
+            '#dd2c00',
+          ],
 
           legend: {
             position: 'bottom',
           },
-
         };
 
         this.loadingGroupes = false; // Fin du chargement
       },
-      (error) => {
-       
-      }
+      (error) => {}
     );
   }
 
   chartDataAnnuelle: any;
   chartDataAnnuelleDate = '2024/2025';
   loadingAnnuelle: boolean = false;
+
   getAnnulle() {
     this.loadingAnnuelle = true; // Début du chargement
     this._service.getAnnulle(this.chartDataAnnuelleDate).subscribe(
@@ -106,7 +148,52 @@ export class DashboardComponent {
           legend: {
             position: 'bottom',
           },
-          colors: ['#ffbb00', '#ff5722', '#4caf50', '#ff9800'],
+          colors: [
+            '#ffbb00',
+            '#ff5722',
+            '#4caf50',
+            '#ff9800',
+            '#2196f3',
+            '#9c27b0',
+            '#673ab7',
+            '#3f51b5',
+            '#e91e63',
+            '#f44336',
+            '#8bc34a',
+            '#cddc39',
+            '#ffc107',
+            '#00bcd4',
+            '#009688',
+            '#607d8b',
+            '#795548',
+            '#ffeb3b',
+            '#b2ff59',
+            '#ff80ab',
+            '#ff7043',
+            '#d500f9',
+            '#76ff03',
+            '#00e5ff',
+            '#c51162',
+            '#aa00ff',
+            '#ff6f00',
+            '#1de9b6',
+            '#2962ff',
+            '#00c853',
+            '#ff1744',
+            '#1a237e',
+            '#00acc1',
+            '#4dd0e1',
+            '#ffab91',
+            '#dce775',
+            '#ffcc80',
+            '#8e24aa',
+            '#64b5f6',
+            '#ffd600',
+            '#6a1b9a',
+            '#b71c1c',
+            '#304ffe',
+            '#dd2c00',
+          ],
           tooltip: {
             y: {
               formatter: function (val: number) {
@@ -117,9 +204,7 @@ export class DashboardComponent {
         };
         this.loadingAnnuelle = false; // Fin du chargement
       },
-      (error) => {
-       
-      }
+      (error) => {}
     );
   }
 
@@ -160,9 +245,7 @@ export class DashboardComponent {
         };
         this.loadingInscriptionsParAnnee = false; // Fin du chargement
       },
-      (error) => {
-       
-      }
+      (error) => {}
     );
   }
 
@@ -225,9 +308,7 @@ export class DashboardComponent {
           };
           this.loadingPaiementsPonctuels = false; // Fin du chargement
         },
-        (error) => {
-          
-        }
+        (error) => {}
       );
   }
 
@@ -281,9 +362,7 @@ export class DashboardComponent {
           };
           this.loadingPaiementsInscriptions = false; // Fin du chargement
         },
-        (error) => {
-          
-        }
+        (error) => {}
       );
   }
 
@@ -342,9 +421,7 @@ export class DashboardComponent {
         };
         this.loadingCharges = false; // Fin du chargement
       },
-      (error) => {
-        
-      }
+      (error) => {}
     );
   }
 
@@ -404,9 +481,7 @@ export class DashboardComponent {
         };
         this.loadingNet = false; // Fin du chargement
       },
-      (error) => {
-        
-      }
+      (error) => {}
     );
   }
 
@@ -424,29 +499,24 @@ export class DashboardComponent {
         this.profsList = data;
         this.loadingProfs = false; // Fin du chargement
       },
-      (error) => {
-        
-      }
+      (error) => {}
     );
   }
   loadingEtu: boolean = false;
-  somme:number=0.0
+  somme: number = 0.0;
 
   getListEtud() {
     this.loadingEtu = true;
     this._service.getListEtud(this.annee, this.mois, this.profId).subscribe(
       (data) => {
         this.listEtu = data;
-        this.somme = 0; 
-        for (let etu of this.listEtu) { 
-          this.somme += etu.paye; 
+        this.somme = 0;
+        for (let etu of this.listEtu) {
+          this.somme += etu.paye;
         }
         this.loadingEtu = false;
       },
-      (error) => {
-        
-      }
-
+      (error) => {}
     );
 
     this._service.getNbrEtud(this.annee, this.mois, this.profId).subscribe(
@@ -454,121 +524,146 @@ export class DashboardComponent {
         this.nbrEtud = data;
         this.loadingEtu = false;
       },
-      (error) => {
-        
-      }
+      (error) => {}
     );
   }
 
   print(): void {
-  // Sélectionnez la section à imprimer
-  const printContent = document.getElementById('printSection');
-  const windowPrint = window.open('', '', 'width=800,height=600');
+    // Sélectionner la section à imprimer
+    const printContent = document.getElementById('printSection');
+    const windowPrint = window.open('', '', 'width=800,height=600');
 
-  if (windowPrint && printContent) {
-    // Ajouter le contenu au document de la fenêtre d'impression
-    windowPrint.document.write(`
-    <html>
-      <head>
-        <title>Niveaux List</title>
-        <style>
-          /* General body styling */
-          body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-          }
-
-          /* Header section styling */
-          .header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #0275d8;
-            padding-bottom: 10px;
-            background-color: #eaf4fc;
-          }
-          .header h1 {
-            font-size: 28px;
-            margin: 0;
-            color: #0275d8;
-          }
-          .header p {
-            font-size: 14px;
-            color: #555;
-          }
-
-          /* Table styling */
-          table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-          }
-          th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-            font-size: 14px;
-          }
-          th {
-            background-color: #0275d8;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-          }
-          td {
-            color: #333;
-          }
-          tr:nth-child(even) {
-            background-color: #f9f9f9;
-          }
-          tr:nth-child(odd) {
-            background-color: #eaf4fc;
-          }
-          tr:hover {
-            background-color: #d9edf7;
-          }
-
-          /* Footer section styling */
-          .footer {
-            text-align: center;
-            font-size: 12px;
-            color: #0275d8;
-            margin-top: 30px;
-            border-top: 1px solid #ddd;
-            padding-top: 10px;
-          }
-
-          /* Print-specific adjustments */
-          @media print {
+    if (windowPrint && printContent) {
+      // Ajouter le contenu au document de la fenêtre d'impression
+      windowPrint.document.write(`
+      <html>
+        <head>
+          <title>Etat Paiement Professeurs</title>
+          <style>
+            /* Général body styling */
             body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
               margin: 0;
+              padding: 20px;
+              background-color: #f4f4f4;
+              color: #333;
             }
-            .header, .footer {
-              page-break-inside: avoid;
+
+            /* Header section styling */
+            .header {
+              text-align: center;
+              margin-bottom: 30px;
+              border-bottom: 3px solid #0275d8;
+              padding-bottom: 10px;
+              background-color: #eaf4fc;
             }
-          }
-        </style>
-      </head>
-      <body>
-      <!-- Header -->
+            .header h1 {
+              font-size: 28px;
+              margin: 0;
+              color: #0275d8;
+            }
+            .header p {
+              font-size: 14px;
+              color: #555;
+            }
+
+            /* Table styling */
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin: 20px 0;
+              background-color: white;
+              border-radius: 8px;
+              overflow: hidden;
+            }
+            th, td {
+              border: 1px solid #ddd;
+              padding: 12px;
+              text-align: left;
+              font-size: 14px;
+            }
+            th {
+              background-color: #0275d8;
+              color: white;
+              font-weight: bold;
+              text-transform: uppercase;
+            }
+            td {
+              color: #333;
+            }
+            tr:nth-child(even) {
+              background-color: #f9f9f9;
+            }
+            tr:nth-child(odd) {
+              background-color: #eaf4fc;
+            }
+            tr:hover {
+              background-color: #d9edf7;
+            }
+
+            /* Footer section styling */
+            .footer {
+              text-align: center;
+              font-size: 12px;
+              color: #0275d8;
+              margin-top: 30px;
+              border-top: 1px solid #ddd;
+              padding-top: 10px;
+            }
+
+            /* Print-specific adjustments */
+            @media print {
+              body {
+                margin: 0;
+              }
+              .header, .footer {
+                page-break-inside: avoid;
+              }
+            }
+          </style>
+        </head>
+        <body>
+        <!-- Header -->
         <div class="header">
-          <h1>Détails</h1>
+          <h1>Etat Paiement Professeurs</h1>
           <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
         </div>
+
+        <!-- Table des étudiants -->
+        <div id="printSection">
           ${printContent.outerHTML}
+        </div>
+
+        <!-- Détails des étudiants -->
+        <div class="total-etudiants mt-4">
+          ${this.nbrEtud
+            .map(
+              (n) => `
+            <div class="border p-3">
+              <h4>${n.cours}: ${n.nombreEtudiants}</h4>
+            </div>
+          `
+            )
+            .join('')}
+        </div>
+
+        <!-- Total -->
+        <div class="total-etudiants mt-4">
+          <div class="border p-3">
+            <h4>
+              <span style="background-color: #ffbb00; padding: 5px; border-radius: 5px;">Total :</span>
+              ${this.somme}
+            </h4>
+          </div>
+        </div>
+
         </body>
       </html>
     `);
 
-    // Fermer le flux d'écriture et lancer l'impression
-    windowPrint.document.close();
-    windowPrint.print();
+      // Fermer le flux d'écriture et lancer l'impression
+      windowPrint.document.close();
+      windowPrint.print();
+    }
   }
-}
-
 }

@@ -278,7 +278,7 @@ export class CoursComponent implements OnInit {
     printWindow.document.write(`
     <html>
       <head>
-        <title>Cours List</title>
+        <title>Liste des Cours</title>
         <style>
           /* General body styling */
           body {
@@ -365,7 +365,7 @@ export class CoursComponent implements OnInit {
       <body>
         <!-- Header -->
         <div class="header">
-          <h1>Cours List</h1>
+          <h1>Liste des Cours</h1>
           <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
         </div>
 
@@ -374,7 +374,7 @@ export class CoursComponent implements OnInit {
 
         <!-- Footer -->
         <div class="footer">
-          © ${new Date().getFullYear()} Campus | Gestion des langues, cours, matières et inscriptions.
+          © ${new Date().getFullYear()} Campus | Gestion des langues.
         </div>
       </body>
     </html>
