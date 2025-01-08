@@ -39,7 +39,7 @@ export class ChargesComponent {
         this.isLoading = false; // Désactiver le spinner
       },
       (error) => {
-       this.isLoading = false; // Désactiver le spinner même en cas d'erreur
+        this.isLoading = false; // Désactiver le spinner même en cas d'erreur
         this.deletesMessage =
           'Problème de connexion. Veuillez vérifier votre réseau.';
         // Clear the error message after 3 seconds
@@ -280,7 +280,7 @@ export class ChargesComponent {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Charges Scolaire</title>
+          <title>les charges scolaire</title>
           <style>
             /* General body styling */
             body {
@@ -367,7 +367,7 @@ export class ChargesComponent {
         <body>
           <!-- Header -->
           <div class="header">
-            <h1>Charges Scolaire</h1>
+            <h1>les charges scolaire</h1>
             <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
           </div>
   
@@ -376,7 +376,7 @@ export class ChargesComponent {
   
           <!-- Footer -->
           <div class="footer">
-            © ${new Date().getFullYear()} Campus | Gestion des langues, cours, matières et inscriptions.
+            © ${new Date().getFullYear()} Campus | Gestion des langues.
           </div>
         </body>
       </html>

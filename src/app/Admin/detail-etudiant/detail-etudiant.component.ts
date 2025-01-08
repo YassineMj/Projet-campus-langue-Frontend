@@ -263,7 +263,7 @@ export class DetailEtudiantComponent {
     printWindow.document.write(`
     <html>
       <head>
-        <title>Detail D'etudiant</title>
+        <title> Liste de cours</title>
         <style>
           /* General body styling */
           body {
@@ -350,7 +350,7 @@ export class DetailEtudiantComponent {
       <body>
         <!-- Header -->
         <div class="header">
-          <h1>Detail D'etudiant</h1>
+          <h1> Liste de cours</h1>
           <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
         </div>
 
@@ -359,7 +359,7 @@ export class DetailEtudiantComponent {
 
         <!-- Footer -->
         <div class="footer">
-          © ${new Date().getFullYear()} Campus | Gestion des langues, cours, matières et inscriptions.
+          © ${new Date().getFullYear()} Campus | Gestion des langues.
         </div>
       </body>
     </html>

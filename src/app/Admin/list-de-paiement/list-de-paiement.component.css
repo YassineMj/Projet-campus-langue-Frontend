@@ -12,6 +12,10 @@
     transition: all 0.3s ease;
     /* Smooth transition */
 }
+thead {
+  position: sticky;
+  top: 0;
+}
 
 
 button.btn-round.colormodalmodifier:disabled {

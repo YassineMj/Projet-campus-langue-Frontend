@@ -104,7 +104,7 @@
                   <th><b>Nom</b></th>
                   <th><b>Prénom</b></th>
                   <th><b>Etablissement</b></th>
-                  <th><b>Niveaux</b></th>
+                  <th><b>Niveau</b></th>
                   <!-- <th><b>Commentaire</b></th> -->
                   <th class="text-right"><b>Actions</b></th>
                   <!-- Align header to right -->
@@ -319,6 +319,29 @@
                             <option value="2038/2039">2038/2039</option>
                             <option value="2039/2040">2039/2040</option>
                             <option value="2040/2041">2040/2041</option>
+                            <option value="2041/2042">2041/2042</option>
+                            <option value="2042/2043">2042/2043</option>
+                            <option value="2043/2044">2043/2044</option>
+                            <option value="2044/2045">2044/2045</option>
+                            <option value="2045/2046">2045/2046</option>
+                            <option value="2046/2047">2046/2047</option>
+                            <option value="2047/2048">2047/2048</option>
+                            <option value="2048/2049">2048/2049</option>
+                            <option value="2049/2050">2049/2050</option>
+                            <option value="2050/2051">2050/2051</option>
+                            <option value="2051/2052">2051/2052</option>
+                            <option value="2052/2053">2052/2053</option>
+                            <option value="2053/2054">2053/2054</option>
+                            <option value="2054/2055">2054/2055</option>
+                            <option value="2055/2056">2055/2056</option>
+                            <option value="2056/2057">2056/2057</option>
+                            <option value="2057/2058">2057/2058</option>
+                            <option value="2058/2059">2058/2059</option>
+                            <option value="2059/2060">2059/2060</option>
+                            <option value="2060/2061">2060/2061</option>
+                            <option value="2061/2062">2061/2062</option>
+                            <option value="2062/2063">2062/2063</option>
+                            <option value="2063/2064">2063/2064</option>
                           </select>
                           <div
                             *ngIf="editAnnee.invalid && editAnnee.touched"
@@ -443,7 +466,7 @@
             />
           </div>
           <!-- Table for displaying list of items with only the required attributes -->
-          <div class="table-responsive table-container" id="list-etudiantTable">
+          <div class="table-responsive table-container" >
             <div *ngIf="isLoading" style="text-align: center">
               <div>
                 <div class="spinner-border" role="status">
@@ -451,7 +474,7 @@
                 </div>
               </div>
             </div>
-            <table *ngIf="!isLoading" class="table" id="etudianttable">
+            <table *ngIf="!isLoading" class="table" >
               <thead>
                 <tr>
                   <!-- New Date column -->
@@ -460,7 +483,7 @@
                   <th><b>Nom</b></th>
                   <th><b>Prénom</b></th>
                   <th><b>Etablissement</b></th>
-                  <th><b>Niveaux</b></th>
+                  <th><b>Niveau</b></th>
                   <th><b>Montant</b></th>
                   <th><b>Produit</b></th>
                   <th><b>Année</b></th>

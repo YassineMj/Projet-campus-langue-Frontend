@@ -396,7 +396,7 @@ export class PassagerComponent implements OnInit {
     printWindow.document.write(`
     <html>
       <head>
-        <title>Passager List</title>
+        <title>Liste des Passages</title>
         <style>
           /* General body styling */
           body {
@@ -483,7 +483,7 @@ export class PassagerComponent implements OnInit {
       <body>
         <!-- Header -->
         <div class="header">
-          <h1>Passager List</h1>
+          <h1>Liste des Passages</h1>
           <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
         </div>
 
@@ -492,7 +492,7 @@ export class PassagerComponent implements OnInit {
 
         <!-- Footer -->
         <div class="footer">
-          © ${new Date().getFullYear()} Campus | Gestion des langues, cours, matières et inscriptions.
+          © ${new Date().getFullYear()} Campus | Gestion des langues.
         </div>
       </body>
     </html>

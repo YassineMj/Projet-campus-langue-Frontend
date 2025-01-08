@@ -248,7 +248,7 @@ export class BibliothequeComponent {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Scolaire annuelle</title>
+          <title>Produits Annuels</title>
           <style>
             /* General body styling */
             body {
@@ -335,7 +335,7 @@ export class BibliothequeComponent {
         <body>
           <!-- Header -->
           <div class="header">
-            <h1>Scolaire annuelle</h1>
+            <h1>Produits Annuels</h1>
             <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
           </div>
   
@@ -344,7 +344,7 @@ export class BibliothequeComponent {
   
           <!-- Footer -->
           <div class="footer">
-            © ${new Date().getFullYear()} Campus | Gestion des langues, cours, matières et inscriptions.
+            © ${new Date().getFullYear()} Campus | Gestion des langues.
           </div>
         </body>
       </html>

@@ -283,7 +283,7 @@ export class ListEtudiantComponent {
     printWindow.document.write(`
     <html>
       <head>
-        <title> List des etudiant </title>
+        <title>Liste des étudiants </title>
         <style>
           /* General body styling */
           body {
@@ -370,7 +370,7 @@ export class ListEtudiantComponent {
       <body>
         <!-- Header -->
         <div class="header">
-          <h1>List des etudiant</h1>
+          <h1>Liste des étudiants</h1>
           <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
         </div>
 
@@ -379,7 +379,7 @@ export class ListEtudiantComponent {
 
         <!-- Footer -->
         <div class="footer">
-          © ${new Date().getFullYear()} Campus | Gestion des langues, cours, matières et inscriptions.
+          © ${new Date().getFullYear()} Campus | Gestion des langues.
         </div>
       </body>
     </html>

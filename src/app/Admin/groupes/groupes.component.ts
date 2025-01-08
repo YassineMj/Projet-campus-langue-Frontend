@@ -300,7 +300,7 @@ export class GroupesComponent {
     printWindow.document.write(`
     <html>
       <head>
-        <title>Groupe List</title>
+        <title>Liste de groupes</title>
         <style>
           /* General body styling */
           body {
@@ -387,7 +387,7 @@ export class GroupesComponent {
       <body>
         <!-- Header -->
         <div class="header">
-          <h1>Groupe List</h1>
+          <h1>Liste de groupes</h1>
           <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
         </div>
 
@@ -396,7 +396,7 @@ export class GroupesComponent {
 
         <!-- Footer -->
         <div class="footer">
-          © ${new Date().getFullYear()} Campus | Gestion des langues, cours, matières et inscriptions.
+          © ${new Date().getFullYear()} Campus | Gestion des langues.
         </div>
       </body>
     </html>

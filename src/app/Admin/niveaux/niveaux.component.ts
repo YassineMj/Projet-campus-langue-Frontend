@@ -227,7 +227,7 @@ export class NiveauxComponent implements OnInit {
     printWindow.document.write(`
     <html>
       <head>
-        <title>Niveaux List</title>
+        <title>Liste des Niveaux</title>
         <style>
           /* General body styling */
           body {
@@ -314,7 +314,7 @@ export class NiveauxComponent implements OnInit {
       <body>
         <!-- Header -->
         <div class="header">
-          <h1>Niveaux List</h1>
+          <h1>Liste des Niveaux</h1>
           <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
         </div>
 
@@ -323,7 +323,7 @@ export class NiveauxComponent implements OnInit {
 
         <!-- Footer -->
         <div class="footer">
-          © ${new Date().getFullYear()} Campus | Gestion des langues, cours, matières et inscriptions.
+          © ${new Date().getFullYear()} Campus | Gestion des langues.
         </div>
       </body>
     </html>
