@@ -506,6 +506,8 @@ export class DashboardComponent {
   somme: number = 0.0;
 
   getListEtud() {
+    this.pourcentage=null;
+    this.resultat=0
     this.loadingEtu = true;
     this._service.getListEtud(this.annee, this.mois, this.profId).subscribe(
       (data) => {
@@ -528,8 +530,34 @@ export class DashboardComponent {
     );
   }
 
+  pourcentage:any
+  resultat:number=0
+  calculResultat(){
+    if(this.somme!=0){
+      this.resultat=(this.somme*this.pourcentage)/100
+    }
+  }
+
   print(): void {
-    // Sélectionner la section à imprimer
+    console.log(this.profId);
+    console.log(this.profsList);
+    
+    
+    const professeursFiltres = this.profsList.filter(prof => prof.id.toString() === this.profId?.toString());
+    console.log(professeursFiltres);
+    
+
+    let nomProf = "";
+    let prenomProf = "";
+
+    if (professeursFiltres.length > 0) {
+      const professeur = professeursFiltres[0]; // Premier élément correspondant
+      nomProf = professeur.nom;
+      prenomProf = professeur.prenom;
+    } else {
+      console.error("Professeur introuvable !");
+    }
+
     const printContent = document.getElementById('printSection');
     const windowPrint = window.open('', '', 'width=800,height=600');
 
@@ -632,7 +660,7 @@ export class DashboardComponent {
         </div>
         <!-- Nom du Professeur -->
         <div style="margin-bottom: 20px; font-size: 18px; font-weight: bold; text-align: center; padding: 10px; background-color: #eaf4fc; border: 1px solid #0275d8; border-radius: 8px; color: #0275d8;">
-        Professeur : Oumaima Hajji
+        Professeur : ${nomProf} ${prenomProf}
         </div>
 
         <!-- Table des étudiants -->
@@ -658,7 +686,32 @@ export class DashboardComponent {
           <div class="border p-3">
             <h4>
               <span style="background-color: #ffbb00; padding: 5px; border-radius: 5px;">Total :</span>
-              ${this.somme}
+              ${this.somme}Dh
+            </h4>
+          </div>
+        </div>
+        
+        ${
+        this.somme > 0
+          ? `
+        <!-- Pourcentage -->
+        <div class="total-etudiants mt-4">
+          <div class="border p-3">
+            <h4>
+              <span style="background-color: #ffbb00; padding: 5px; border-radius: 5px;">Pourcentage :</span>
+              ${this.pourcentage}%
+            </h4>
+          </div>
+        </div>`
+        : ''
+      }
+
+        <!-- Résultat -->
+        <div class="total-etudiants mt-4">
+          <div class="border p-3">
+            <h4>
+              <span style="background-color: #ffbb00; padding: 5px; border-radius: 5px;">Résultat :</span>
+              ${this.resultat}Dh
             </h4>
           </div>
         </div>
