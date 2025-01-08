@@ -58,8 +58,10 @@ export class ChargesComponent {
     const jour = date.getDate().toString().padStart(2, '0');
     const mois = (date.getMonth() + 1).toString().padStart(2, '0'); // Les mois commencent à 0
     const annee = date.getFullYear().toString().slice(-4); // Année sur 4 chiffres
-    const heures = date.getHours().toString().padStart(2, '0');
+    const heures = (date.getHours()+1).toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
+    console.log(heures);
+    
 
     return `${jour}-${mois}-${annee} | ${heures}:${minutes}`;
   }
@@ -81,6 +83,30 @@ export class ChargesComponent {
     ];
     return moisNoms[mois - 1] || 'Inconnu';
   }
+
+  convertMonthToNumber(month: string): number {
+  const months: string[] = [
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre'
+  ];
+
+  // Cherche l'index du mois, ajoute 1 car janvier correspond à 1
+  const monthIndex = months.indexOf(month);
+  if (monthIndex !== -1) {
+    return monthIndex + 1;
+  }
+  return 0
+}
 
   filterCharge(): void {
     this.filteredCharges = this.charges.filter(
@@ -159,15 +185,20 @@ export class ChargesComponent {
 
   id: any;
   openEdit(item: any) {
+    
     this.editData.montant = item.montant; // Set the current subject's name
     this.editData.description = item.description; // Set the current subject's description
     this.editData.annee = item.annee;
-    this.editData.mois = item.mois;
+    this.editData.mois =this.convertMonthToNumber(item.mois).toString();
+
+    console.log(this.editData);
 
     this.id = item.id;
   }
 
   onEditSubmit(form: any) {
+        console.log(this.editData);
+
     if (form.valid) {
       this.isLoading = true;
 
