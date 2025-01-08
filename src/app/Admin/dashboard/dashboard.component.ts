@@ -626,7 +626,13 @@ export class DashboardComponent {
         <!-- Header -->
         <div class="header">
           <h1>Etat Paiement Professeurs</h1>
+
           <p>Printed on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+                    
+        </div>
+        <!-- Nom du Professeur -->
+        <div style="margin-bottom: 20px; font-size: 18px; font-weight: bold; text-align: center; padding: 10px; background-color: #eaf4fc; border: 1px solid #0275d8; border-radius: 8px; color: #0275d8;">
+        Professeur : Oumaima Hajji
         </div>
 
         <!-- Table des étudiants -->
