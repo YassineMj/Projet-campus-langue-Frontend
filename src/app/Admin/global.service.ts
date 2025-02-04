@@ -9,7 +9,7 @@ export class GlobalService {
 
 
 
-  private baseUrl = 'https://projet-campus-langue-backend-v17.onrender.com/api';
+  private baseUrl = 'http://192.168.1.89:9999/RestApi/api';
 
   constructor(private http: HttpClient) {}
 
